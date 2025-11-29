@@ -109,7 +109,7 @@ public class ExpressionRuleUnitTests(ITestOutputHelper output)
   [Theory]
   [InlineData("")]
   [InlineData(" ")]
-  public void Parse_ShouldThrowArgumentException_InvalidFieldOperatorValue(string op)
+  public void Parse_ShouldThrowArgumentException_InvalidOperatorPropertyValue(string op)
   {
     // null - invalid json property type
     var rule = new
