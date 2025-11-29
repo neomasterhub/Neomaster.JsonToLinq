@@ -1,3 +1,4 @@
+#pragma warning disable SA1512
 using System.Text.Json;
 using Neomaster.JsonToLinq.UnitTests;
 
@@ -18,7 +19,11 @@ internal class Menu
 
     while (key != ConsoleKey.Escape)
     {
-      Console.WriteLine(); // Wrap after key output.
+      var (left, top) = Console.GetCursorPosition();
+      Console.SetCursorPosition(left - 1, top);
+      Console.ForegroundColor = ConsoleColor.Green;
+      Console.Write($"🧪 {(char)key}\n\n"); // Wrap after key output.
+      Console.ResetColor();
 
       switch (key)
       {
@@ -37,7 +42,7 @@ internal class Menu
   {
     Console.Clear();
     Console.ForegroundColor = ConsoleColor.Cyan;
-    Console.WriteLine("🔗 JsonToLinq Demos 🔗");
+    Console.WriteLine("🔗 JsonToLinq Demos 🔗\n");
     Console.ForegroundColor = ConsoleColor.DarkGray;
     Console.WriteLine(
       """
@@ -46,7 +51,6 @@ internal class Menu
       Other - Clear
 
       """);
-    Console.ResetColor();
   }
 
   private void FilteringUsers()
@@ -107,5 +111,7 @@ internal class Menu
 
     // Id: 1
     // Id: 3
+
+    Console.ReadKey();
   }
 }
