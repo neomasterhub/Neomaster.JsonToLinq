@@ -54,7 +54,7 @@ public static class Consts
   public static class JsonLinqOptionsPropertyNames
   {
     public const string LogicOperator = "Logic";
-    public const string Rules = "Rules";
+    public const string Rules = nameof(Rules);
     public const string Operator = nameof(ExpressionRule.Operator);
     public const string Field = nameof(ExpressionRule.Field);
     public const string Value = nameof(ExpressionRule.Value);
