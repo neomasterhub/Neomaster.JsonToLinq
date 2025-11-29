@@ -16,10 +16,14 @@ internal class Menu
     Console.WriteLine(
       """
       Esc   - Exit
-      1     - 
+      1     - Filtering Users
       Other - Clear
 
       """);
     Console.ResetColor();
+  }
+
+  private void FilteringUsers()
+  {
   }
 }
