@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Cocona" Version="2.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Neomaster.JsonToLinq.UnitTests\Neomaster.JsonToLinq.UnitTests.csproj" />
   </ItemGroup>
 
