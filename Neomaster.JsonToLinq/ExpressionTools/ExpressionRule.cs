@@ -75,7 +75,7 @@ public class ExpressionRule
     return property;
   }
 
-  public static string GetPropertyRequiredStringValue(
+  private static string GetPropertyRequiredStringValue(
     JsonElement obj,
     string propertyName,
     JsonValueKind? expectedPropertyType = null)
