@@ -7,6 +7,29 @@ internal class Menu
     Console.OutputEncoding = System.Text.Encoding.UTF8;
   }
 
+  public void Show()
+  {
+    ShowCommands();
+
+    var key = Console.ReadKey().Key;
+
+    while (key != ConsoleKey.Escape)
+    {
+      Console.WriteLine(); // Wrap after key output.
+
+      switch (key)
+      {
+        case ConsoleKey.D1:
+          FilteringUsers();
+          break;
+      }
+
+      ShowCommands();
+
+      key = Console.ReadKey().Key;
+    }
+  }
+
   private static void ShowCommands()
   {
     Console.Clear();
