@@ -9,13 +9,14 @@
     <NoWarn>$(NoWarn);IDE0079</NoWarn>
     <PackageId>JsonToLinq</PackageId>
     <PackageIcon>logo.png</PackageIcon>
-    <Version>1.0.0-rc4</Version>
+    <Version>1.0.0-rc5</Version>
     <Authors>Neomaster</Authors>
     <Company>Neomaster</Company>
     <Copyright>Copyright © 2025 Neomaster</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/neomasterhub/Neomaster.JsonToLinq</RepositoryUrl>
+    <PackageReadmeFile>readme-nuget.md</PackageReadmeFile>
     <PackageTags>
       json-to-linq;
       json;linq;
@@ -30,6 +31,8 @@
 
   <ItemGroup>
     <None Include="../Docs/img/logo.png" Pack="true" PackagePath="" />
+    <None Include="../Docs/img/title_path.svg" Pack="true" PackagePath="" />
+    <None Include="../readme-nuget.md" Pack="true" PackagePath="" />
   </ItemGroup>
 
   <ItemGroup>

@@ -65,13 +65,12 @@ var demosText = string.Join(
     ```
     """));
 
-var readmeTemplatePath = Path.Combine(
+var readmeTemplateFolder = Path.Combine(
   SolutionInfo.SolutionPath,
   "Docs",
-  "readme",
-  "template.md");
+  "readme");
 
-var readme = File.ReadAllText(readmeTemplatePath)
+var readme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template.md"))
   .InsertReadmeTemplate("logo")
   .InsertReadmeTemplate("shields")
   .InsertReadmeTemplate("title")
@@ -79,4 +78,12 @@ var readme = File.ReadAllText(readmeTemplatePath)
   .InsertReadmeTemplate("operators")
   .Replace("{demos}", $"## 🧪 Demos\n{demosText}");
 
+var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-nuget.md"))
+  .InsertReadmeTemplate("logo")
+  .InsertReadmeTemplate("title")
+  .InsertReadmeTemplate("use-cases")
+  .InsertReadmeTemplate("operators")
+  .Replace("{demos}", $"## 🧪 Demos\n{demosText}");
+
 File.WriteAllText(SolutionInfo.ReadmePath, readme);
+File.WriteAllText(SolutionInfo.NugetReadmePath, nugetReadme);
