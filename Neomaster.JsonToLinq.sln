@@ -16,6 +16,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neomaster.JsonToLinq.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neomaster.JsonToLinq.Demo", "Neomaster.JsonToLinq.Demo\Neomaster.JsonToLinq.Demo.csproj", "{1ABA76FA-988D-40FE-86D3-6A2482FC60DF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neomaster.JsonToLinq.ReadmeBuilder", "Neomaster.JsonToLinq.ReadmeBuilder\Neomaster.JsonToLinq.ReadmeBuilder.csproj", "{22770BFC-FE3B-4BAC-BC50-E12DFDBCBE12}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{2C6AA85D-CFF1-4563-AEA4-3780275EAAD9}"
+	ProjectSection(SolutionItems) = preProject
+		Docs\readme\logo.md = Docs\readme\logo.md
+		Docs\readme\operators.md = Docs\readme\operators.md
+		Docs\readme\shields.md = Docs\readme\shields.md
+		Docs\readme\template.md = Docs\readme\template.md
+		Docs\readme\title.md = Docs\readme\title.md
+		Docs\readme\use-cases.md = Docs\readme\use-cases.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,9 +46,16 @@ Global
 		{1ABA76FA-988D-40FE-86D3-6A2482FC60DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1ABA76FA-988D-40FE-86D3-6A2482FC60DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1ABA76FA-988D-40FE-86D3-6A2482FC60DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22770BFC-FE3B-4BAC-BC50-E12DFDBCBE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22770BFC-FE3B-4BAC-BC50-E12DFDBCBE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22770BFC-FE3B-4BAC-BC50-E12DFDBCBE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22770BFC-FE3B-4BAC-BC50-E12DFDBCBE12}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2C6AA85D-CFF1-4563-AEA4-3780275EAAD9} = {8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F586BFE6-D47E-44B8-9A31-90F7CFEC5886}

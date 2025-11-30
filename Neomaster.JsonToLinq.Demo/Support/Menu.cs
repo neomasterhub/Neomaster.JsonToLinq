@@ -53,6 +53,9 @@ internal class Menu
       """);
   }
 
+  /// <summary>
+  /// Filtering Users.
+  /// </summary>
   private void FilteringUsers()
   {
     // 1. Source data.

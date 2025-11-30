@@ -8,16 +8,19 @@
 
   [![License](https://img.shields.io/badge/🧾License-MIT-green?style=flat)](https://opensource.org/licenses/MIT)
   [![Telegram Channel](https://img.shields.io/badge/Telegram-Neomaster-2CA5E0?style=flat&logo=telegram)](https://t.me/neomaster_dev)
-  [![.NET Vesion](https://img.shields.io/badge/.NET_Standard-2.1-blueviolet?style=flat&logo=dotnet)](#)  
+  [![.NET Version](https://img.shields.io/badge/.NET_Standard-2.1-blueviolet?style=flat&logo=dotnet)](#)  
   [![NuGet](https://img.shields.io/nuget/v/JsonToLinq.svg?label=NuGet&logo=nuget&logoColor=white&labelColor=gray&color=blue)](https://www.nuget.org/packages/JsonToLinq)
 
 </div>
 
 # JsonToLinq
+
 **JsonToLinq** - lightweight C# library that converts JSON-based query definitions into LINQ expressions. Ideal for building dynamic filters, predicates, and queries.
 
-## 🚀 Use Cases
+## 🗂️ Use Cases
+
 **JsonToLinq** can be applied in various scenarios where dynamic, runtime-defined queries are needed. Examples include:
+
 - **Server-side filtering:** Apply JSON-defined filters received from front-end applications to collections or database queries.
 - **Dynamic reporting:** Build complex filters and predicates for reports without hardcoding logic.
 - **Custom dashboards:** Let users define queries for dashboards dynamically and translate them to LINQ expressions.
@@ -25,8 +28,9 @@
 - **Audit & logging filters:** Dynamically select subsets of data based on JSON rules for auditing or logging purposes.
 
 ## 📌 Default Operator Mapping
+
 | JSON   | LINQ Expression                 | Description           |
-|-----   |---------------------------------|-----------------------|
+|--------|---------------------------------|-----------------------|
 | `&`    | `Expression.And`                | Bitwise AND           |
 | `&&`   | `Expression.AndAlso`            | Logical AND           |
 | `\|`   | `Expression.Or`                 | Bitwise OR            |
@@ -40,11 +44,8 @@
 
 ## 🧪 Demos
 ### Filtering Users
-```csharp
-using System.Text.Json;
-using Neomaster.JsonToLinq;
-using Neomaster.JsonToLinq.UnitTests;
 
+```csharp
 // 1. Source data.
 var users = new List<User>
 {
