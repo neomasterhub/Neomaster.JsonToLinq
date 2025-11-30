@@ -10,8 +10,10 @@ public static class SolutionInfo
       0, Environment.CurrentDirectory.IndexOf(solutionName) + solutionName.Length);
 
     ReadmePath = Path.Combine(SolutionPath, "readme.md");
+    NugetReadmePath = Path.Combine(SolutionPath, "readme-nuget.md");
   }
 
   public static string SolutionPath { get; }
   public static string ReadmePath { get; }
+  public static string NugetReadmePath { get; }
 }
