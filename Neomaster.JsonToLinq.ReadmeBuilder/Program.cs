@@ -84,6 +84,7 @@ var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-
   .InsertReadmeTemplate("use-cases")
   .InsertReadmeTemplate("operators")
   .Replace(@"`\|`", "`|`")
+  .Replace(@"`\|\|`", "`||`")
   .Replace("{demos}", $"## 🧪 Demos\n{demosText}");
 
 File.WriteAllText(SolutionInfo.ReadmePath, readme);
