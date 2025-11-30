@@ -1,4 +1,7 @@
-{logo}
+<div align="center">
+  <img src="Docs/img/title_path.svg">
+</div>
+
 <br>
 
 <div align="center">
