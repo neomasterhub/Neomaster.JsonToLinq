@@ -71,7 +71,7 @@ var readmeTemplateFolder = Path.Combine(
   "readme");
 
 var readme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template.md"))
-  .InsertReadmeTemplate("logo-html")
+  .InsertReadmeTemplate("logo")
   .InsertReadmeTemplate("shields")
   .InsertReadmeTemplate("title")
   .InsertReadmeTemplate("use-cases")
@@ -79,7 +79,6 @@ var readme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template.md"))
   .Replace("{demos}", $"## 🧪 Demos\n{demosText}");
 
 var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-nuget.md"))
-  .InsertReadmeTemplate("logo-md")
   .InsertReadmeTemplate("title")
   .InsertReadmeTemplate("use-cases")
   .InsertReadmeTemplate("operators")
