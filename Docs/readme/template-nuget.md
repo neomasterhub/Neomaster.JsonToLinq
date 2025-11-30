@@ -1,4 +1,4 @@
-{logo}
+{logo-md}
 {title}
 {use-cases}
 {operators}

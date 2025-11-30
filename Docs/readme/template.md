@@ -1,4 +1,4 @@
-{logo}
+{logo-html}
 {shields}
 {title}
 {use-cases}
