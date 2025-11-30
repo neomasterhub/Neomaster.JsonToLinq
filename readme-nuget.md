@@ -21,7 +21,7 @@
 | `&`    | `Expression.And`                | Bitwise AND           |
 | `&&`   | `Expression.AndAlso`            | Logical AND           |
 | `|`   | `Expression.Or`                 | Bitwise OR            |
-| `\|\|` | `Expression.OrElse`             | Logical OR            |
+| `||` | `Expression.OrElse`             | Logical OR            |
 | `=`    | `Expression.Equal`              | Equal                 |
 | `!=`   | `Expression.NotEqual`           | Not equal             |
 | `>`    | `Expression.GreaterThan`        | Greater than          |
