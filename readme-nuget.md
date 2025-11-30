@@ -1,7 +1,4 @@
-<div align="center">
-  <img src="Docs/img/title_path.svg">
-</div>
-
+{logo}
 # JsonToLinq
 
 **JsonToLinq** - lightweight C# library that converts JSON-based query definitions into LINQ expressions. Ideal for building dynamic filters, predicates, and queries.
@@ -22,7 +19,7 @@
 |--------|---------------------------------|-----------------------|
 | `&`    | `Expression.And`                | Bitwise AND           |
 | `&&`   | `Expression.AndAlso`            | Logical AND           |
-| `\|`   | `Expression.Or`                 | Bitwise OR            |
+| `|`   | `Expression.Or`                 | Bitwise OR            |
 | `\|\|` | `Expression.OrElse`             | Logical OR            |
 | `=`    | `Expression.Equal`              | Equal                 |
 | `!=`   | `Expression.NotEqual`           | Not equal             |
