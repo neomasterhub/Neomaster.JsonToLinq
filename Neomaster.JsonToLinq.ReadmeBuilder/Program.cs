@@ -6,6 +6,11 @@ var menuPath = Path.Combine(
   "Neomaster.JsonToLinq.Demo",
   "Support",
   "Menu.cs");
+var readmeTemplateFolder = Path.Combine(
+  SolutionInfo.SolutionPath,
+  "Docs",
+  "readme");
+var readmeTemplate = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template.md"));
 
 string demoName = null;
 var demo = new StringBuilder();
@@ -54,4 +59,17 @@ while (menuLineEnumerator.MoveNext())
   }
 }
 
-var x = 1;
+var demosText = string.Join(
+  "\n",
+  demos.Select(kv =>
+    $"""
+    ### {kv.Key}
+
+    ```csharp
+    {kv.Value}
+    ```
+    """));
+
+var readme = readmeTemplate.Replace("{demos}", $"## 🧪 Demos\n{demosText}");
+
+File.WriteAllText(SolutionInfo.ReadmePath, readme);
