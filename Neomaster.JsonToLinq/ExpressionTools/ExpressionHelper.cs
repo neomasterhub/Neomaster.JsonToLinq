@@ -6,29 +6,17 @@ namespace Neomaster.JsonToLinq;
 
 public static class ExpressionHelper
 {
-  public static Expression<Func<T, bool>> ParseToFilterExpression<T>(
+  public static Expression<Func<T, bool>> ParseExpressionLambda<T>(
     JsonDocument doc,
     ExpressionFieldMapper fieldMapper,
-    ExpressionOperatorMapper operatorMapper,
-    string logicOperatorPropertyName,
-    string rulesPropertyName,
-    string operatorPropertyName,
-    string fieldPropertyName,
-    string valuePropertyName,
-    Func<ExpressionBind, Expression, Expression, Expression> bindBuilder)
+    ExpressionParsingOptions parsingOptions)
   {
     var par = Expression.Parameter(typeof(T));
     var condition = ParseExpression<T>(
       doc.RootElement,
       par,
       fieldMapper,
-      operatorMapper,
-      logicOperatorPropertyName,
-      rulesPropertyName,
-      operatorPropertyName,
-      fieldPropertyName,
-      valuePropertyName,
-      bindBuilder);
+      parsingOptions);
 
     if (condition.CanReduce)
     {
@@ -44,16 +32,17 @@ public static class ExpressionHelper
     JsonElement condition,
     ParameterExpression par,
     ExpressionFieldMapper fieldMapper,
-    ExpressionOperatorMapper operatorMapper,
-    string logicOperatorPropertyName,
-    string rulesPropertyName,
-    string operatorPropertyName,
-    string fieldPropertyName,
-    string valuePropertyName,
-    Func<ExpressionBind, Expression, Expression, Expression> bindBuilder)
+    ExpressionParsingOptions parsingOptions)
   {
-    var bind = CreateExpressionBind(condition, logicOperatorPropertyName, operatorMapper, bindBuilder);
-    var rules = EnumerateExpressionRules(condition, rulesPropertyName);
+    var bind = CreateExpressionBind(
+      condition,
+      parsingOptions.LogicOperatorPropertyName,
+      parsingOptions.OperatorMapper,
+      parsingOptions.BindBuilder);
+
+    var rules = EnumerateExpressionRules(
+      condition,
+      parsingOptions.RulesPropertyName);
 
     Expression left = null;
 
@@ -61,19 +50,13 @@ public static class ExpressionHelper
     {
       Expression right = null;
 
-      if (r.TryGetProperty(logicOperatorPropertyName, out _))
+      if (r.TryGetProperty(parsingOptions.LogicOperatorPropertyName, out _))
       {
         right = ParseExpression<T>(
           r,
           par,
           fieldMapper,
-          operatorMapper,
-          logicOperatorPropertyName,
-          rulesPropertyName,
-          operatorPropertyName,
-          fieldPropertyName,
-          valuePropertyName,
-          bindBuilder);
+          parsingOptions);
 
         left = bind(left, right);
 
@@ -83,11 +66,11 @@ public static class ExpressionHelper
       var rule = ExpressionRule.Parse(
         r,
         fieldMapper,
-        operatorPropertyName,
-        fieldPropertyName,
-        valuePropertyName);
+        parsingOptions.OperatorPropertyName,
+        parsingOptions.FieldPropertyName,
+        parsingOptions.ValuePropertyName);
 
-      right = rule.CreateFilterExpression(par, operatorMapper);
+      right = rule.CreateFilterExpression(par, parsingOptions.OperatorMapper);
       left = bind(left, right);
     }
 

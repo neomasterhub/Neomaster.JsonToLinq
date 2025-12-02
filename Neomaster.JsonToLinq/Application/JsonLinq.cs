@@ -26,15 +26,9 @@ public static class JsonLinq
     fieldMapper ??= ExpressionFieldMapperFactory
       .CreateForPublicProperties<T>(options.ConvertPropertyNameForJson);
 
-    return ExpressionHelper.ParseToFilterExpression<T>(
+    return ExpressionHelper.ParseExpressionLambda<T>(
       doc,
       fieldMapper,
-      options.OperatorMapper,
-      options.LogicOperatorPropertyName,
-      options.RulesPropertyName,
-      options.OperatorPropertyName,
-      options.FieldPropertyName,
-      options.ValuePropertyName,
-      options.BindBuilder);
+      options);
   }
 }
