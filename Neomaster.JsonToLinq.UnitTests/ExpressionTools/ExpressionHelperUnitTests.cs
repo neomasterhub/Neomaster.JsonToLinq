@@ -6,6 +6,11 @@ namespace Neomaster.JsonToLinq.UnitTests;
 
 public class ExpressionHelperUnitTests
 {
+  [Fact]
+  public void ParseExpression()
+  {
+  }
+
   [Theory]
   [InlineData(null, null, null)]
   [InlineData(null, true, null)]
