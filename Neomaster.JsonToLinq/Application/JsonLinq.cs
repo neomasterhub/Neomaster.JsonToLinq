@@ -8,8 +8,6 @@ namespace Neomaster.JsonToLinq;
 /// </summary>
 public static class JsonLinq
 {
-  private static readonly JsonLinqOptions _defaultOptions = new();
-
   /// <summary>
   /// Parses a JSON document into a LINQ expression filter for <typeparamref name="T"/>.
   /// </summary>
@@ -23,7 +21,7 @@ public static class JsonLinq
     ExpressionFieldMapper fieldMapper = null,
     JsonLinqOptions options = null)
   {
-    options ??= _defaultOptions;
+    options ??= Consts.Options.Default;
 
     fieldMapper ??= ExpressionFieldMapperFactory
       .CreateForPublicProperties<T>(options.ConvertPropertyNameForJson);

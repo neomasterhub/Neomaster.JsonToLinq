@@ -6,6 +6,11 @@ public static class Consts
 {
   public delegate Expression ExpressionBind(Expression left, Expression right);
 
+  public static class Options
+  {
+    public static readonly JsonLinqOptions Default = new();
+  }
+
   public static class ExpressionOperatorMappers
   {
     public static readonly ExpressionOperatorMapper Default = new ExpressionOperatorMapper()
