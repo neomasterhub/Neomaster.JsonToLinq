@@ -212,4 +212,19 @@ public class ExpressionHelperUnitTests
 
     Assert.Equal(expectedLambdaResult, lambda.DynamicInvoke());
   }
+
+  private static void ParseExpressionTest<TItem>(string conditionJson)
+  {
+    var condition = JsonDocument.Parse(conditionJson).RootElement;
+
+    var fieldMapper = ExpressionFieldMapperFactory
+      .CreateForPublicProperties<TItem>(
+        Options.Default.ConvertPropertyNameForJson);
+
+    var expr = ExpressionHelper.ParseExpression<TItem>(
+      condition,
+      Expression.Parameter(typeof(TItem)),
+      fieldMapper,
+      Options.Default);
+  }
 }
