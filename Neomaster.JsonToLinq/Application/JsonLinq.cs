@@ -8,8 +8,6 @@ namespace Neomaster.JsonToLinq;
 /// </summary>
 public static class JsonLinq
 {
-  private static readonly JsonLinqOptions _defaultOptions = new();
-
   /// <summary>
   /// Parses a JSON document into a LINQ expression filter for <typeparamref name="T"/>.
   /// </summary>
@@ -21,22 +19,16 @@ public static class JsonLinq
   public static Expression<Func<T, bool>> ParseToFilterExpression<T>(
     JsonDocument doc,
     ExpressionFieldMapper fieldMapper = null,
-    JsonLinqOptions options = null)
+    ExpressionParsingOptions options = null)
   {
-    options ??= _defaultOptions;
+    options ??= Consts.Options.Default;
 
     fieldMapper ??= ExpressionFieldMapperFactory
       .CreateForPublicProperties<T>(options.ConvertPropertyNameForJson);
 
-    return ExpressionHelper.ParseToFilterExpression<T>(
+    return ExpressionHelper.ParseExpressionLambda<T>(
       doc,
       fieldMapper,
-      options.OperatorMapper,
-      options.LogicOperatorPropertyName,
-      options.RulesPropertyName,
-      options.OperatorPropertyName,
-      options.FieldPropertyName,
-      options.ValuePropertyName,
-      options.BindBuilder);
+      options);
   }
 }

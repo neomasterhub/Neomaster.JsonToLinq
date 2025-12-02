@@ -1,11 +1,38 @@
 using System.Linq.Expressions;
 using System.Text.Json;
+using Xunit.Abstractions;
 using static Neomaster.JsonToLinq.Consts;
 
 namespace Neomaster.JsonToLinq.UnitTests;
 
-public class ExpressionHelperUnitTests
+public class ExpressionHelperUnitTests(ITestOutputHelper output)
 {
+  [Fact]
+  public void ParseExpression_SingleRule()
+  {
+    var tString = typeof(string);
+    var obj = new PropertiesPublicGetSet();
+
+    foreach (var prop in obj.GetType().GetProperties())
+    {
+      var value = prop.GetValue(obj);
+      var valueString = value ?? "null";
+      if (value != null && prop.PropertyType == tString)
+      {
+        valueString = $"\"{valueString}\"";
+      }
+
+      var expectedView = $"(x.{prop.Name} == {valueString})";
+      var jsonField = Options.Default.ConvertPropertyNameForJson(prop.Name);
+      var jsonValue = JsonSerializer.Serialize(value);
+      var conditionJson = CreateConditionJson("&&", "=", jsonField, jsonValue);
+
+      ParseExpressionTest<PropertiesPublicGetSet>(conditionJson, expectedView);
+
+      output.WriteLine(expectedView);
+    }
+  }
+
   [Theory]
   [InlineData(null, null, null)]
   [InlineData(null, true, null)]
@@ -206,5 +233,41 @@ public class ExpressionHelperUnitTests
     var lambda = buildLambda(binded).Compile();
 
     Assert.Equal(expectedLambdaResult, lambda.DynamicInvoke());
+  }
+
+  private static void ParseExpressionTest<TItem>(string conditionJson, string expectedView)
+  {
+    var condition = JsonDocument.Parse(conditionJson).RootElement;
+
+    var fieldMapper = ExpressionFieldMapperFactory
+      .CreateForPublicProperties<TItem>(
+        Options.Default.ConvertPropertyNameForJson);
+
+    var expr = ExpressionHelper.ParseExpression<TItem>(
+      condition,
+      Expression.Parameter(typeof(TItem), "x"),
+      fieldMapper,
+      Options.Default);
+
+    Assert.Equal(expectedView, expr.ToString());
+  }
+
+  private static string CreateConditionJson(string logic, string op, string field, string value)
+  {
+    var condition =
+      $$"""
+      {
+        "Logic": "{{logic}}",
+        "Rules": [
+          {
+            "Operator": "{{op}}",
+            "Field": "{{field}}",
+            "Value": {{value}}
+          }
+        ]
+      }
+      """;
+
+    return condition;
   }
 }
