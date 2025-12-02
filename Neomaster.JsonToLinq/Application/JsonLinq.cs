@@ -19,7 +19,7 @@ public static class JsonLinq
   public static Expression<Func<T, bool>> ParseToFilterExpression<T>(
     JsonDocument doc,
     ExpressionFieldMapper fieldMapper = null,
-    JsonLinqOptions options = null)
+    ExpressionParsingOptions options = null)
   {
     options ??= Consts.Options.Default;
 

@@ -8,7 +8,7 @@ public static class Consts
 
   public static class Options
   {
-    public static readonly JsonLinqOptions Default = new();
+    public static readonly ExpressionParsingOptions Default = new();
   }
 
   public static class ExpressionOperatorMappers

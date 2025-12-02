@@ -7,7 +7,7 @@ namespace Neomaster.JsonToLinq;
 /// <summary>
 /// Provides configuration options for JSON-to-LINQ expression parsing.
 /// </summary>
-public record JsonLinqOptions
+public record ExpressionParsingOptions
 {
   /// <summary>
   /// Gets or sets the JSON property name that specifies the logical operator used to combine rules.
