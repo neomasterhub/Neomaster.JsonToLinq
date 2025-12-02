@@ -227,4 +227,22 @@ public class ExpressionHelperUnitTests
       fieldMapper,
       Options.Default);
   }
+
+  private static string CreateConditionJson(string logic, string op, string field, string value)
+  {
+    var condition = $$"""
+      {
+        "Logic": "{{logic}}",
+        "Rules": [
+          {
+            "Operator": "{{op}}",
+            "Field": "{{field}}",
+            "Value": {{value}}
+          }
+        ]
+      }
+      """;
+
+    return condition;
+  }
 }
