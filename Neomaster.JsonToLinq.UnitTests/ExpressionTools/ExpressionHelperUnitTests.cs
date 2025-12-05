@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.Json;
 using Xunit.Abstractions;
 using static Neomaster.JsonToLinq.Consts;
@@ -15,13 +16,7 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
 
     foreach (var prop in obj.GetType().GetProperties())
     {
-      var value = prop.GetValue(obj);
-      var valueString = value ?? "null";
-      if (value != null && prop.PropertyType == tString)
-      {
-        valueString = $"\"{valueString}\"";
-      }
-
+      var (value, valueString) = GetPropertyValue(obj, prop);
       var expectedView = $"(x.{prop.Name} == {valueString})";
       var jsonField = Options.Default.ConvertPropertyNameForJson(prop.Name);
       var jsonValue = JsonSerializer.Serialize(value);
@@ -210,6 +205,18 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
     Assert.Equal(treeJson, ex.Data[ErrorDataKeys.Json]);
     Assert.Equal(JsonValueKind.Array, ex.Data[ErrorDataKeys.ExpectedType]);
     Assert.Equal(JsonValueKind.String, ex.Data[ErrorDataKeys.CurrentType]);
+  }
+
+  private static (object value, object valueString) GetPropertyValue<T>(T obj, PropertyInfo prop)
+  {
+    var value = prop.GetValue(obj);
+    var valueString = value ?? "null";
+    if (value != null && prop.PropertyType == typeof(string))
+    {
+      valueString = $"\"{valueString}\"";
+    }
+
+    return (value, valueString);
   }
 
   private static void CreateExpressionBindTest<TResult>(
