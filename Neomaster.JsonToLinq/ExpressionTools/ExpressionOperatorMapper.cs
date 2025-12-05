@@ -6,6 +6,23 @@ public class ExpressionOperatorMapper : ICloneable<ExpressionOperatorMapper>
 {
   private readonly Dictionary<string, ExpressionBind> _operators = [];
 
+  public ExpressionOperatorMapper()
+  {
+  }
+
+  public ExpressionOperatorMapper(ExpressionOperatorMapper source)
+    : this(source._operators)
+  {
+  }
+
+  public ExpressionOperatorMapper(IDictionary<string, ExpressionBind> sourceOperators)
+  {
+    foreach (var op in sourceOperators)
+    {
+      _operators.Add(op.Key, op.Value);
+    }
+  }
+
   public ExpressionBind this[string op] => _operators[op];
 
   public ExpressionOperatorMapper Add(string op, ExpressionBind bind)
