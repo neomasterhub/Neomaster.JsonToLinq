@@ -36,4 +36,14 @@ public class ExpressionOperatorMapperUnitTests
     Assert.Equal(source.Operators, mapper.Operators);
     Assert.NotStrictEqual(source.Operators, mapper.Operators);
   }
+
+  [Fact]
+  public void Ctor_OnDefault()
+  {
+    var mapper = ExpressionOperatorMapper.OnDefault();
+
+    Assert.NotEqual(ExpressionOperatorMappers.Default, mapper);
+    Assert.Equal(ExpressionOperatorMappers.Default.Operators, mapper.Operators);
+    Assert.NotStrictEqual(ExpressionOperatorMappers.Default.Operators, mapper.Operators);
+  }
 }
