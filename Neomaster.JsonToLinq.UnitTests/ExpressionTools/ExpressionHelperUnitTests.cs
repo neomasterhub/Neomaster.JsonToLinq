@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text.Json;
 using Xunit.Abstractions;
 using static Neomaster.JsonToLinq.Consts;
@@ -8,6 +9,29 @@ namespace Neomaster.JsonToLinq.UnitTests;
 public class ExpressionHelperUnitTests(ITestOutputHelper output)
 {
   [Fact]
+  public void ParseExpressionLambda_SingleRule()
+  {
+    var tString = typeof(string);
+    var obj = new PropertiesPublicGetSet();
+
+    foreach (var prop in obj.GetType().GetProperties())
+    {
+      var (value, valueString) = GetPropertyValue(obj, prop);
+      var expectedView = $"(Param_0.{prop.Name} == {valueString})";
+      var jsonField = Options.Default.ConvertPropertyNameForJson(prop.Name);
+      var jsonValue = JsonSerializer.Serialize(value);
+      var conditionJson = CreateConditionJson("&&", "=", jsonField, jsonValue);
+
+      var lambda = ParseExpressionLambda<PropertiesPublicGetSet>(conditionJson);
+
+      Assert.Equal(expectedView, lambda.Body.ToString());
+      Assert.True(lambda.Compile()(obj));
+
+      output.WriteLine(expectedView);
+    }
+  }
+
+  [Fact]
   public void ParseExpression_SingleRule()
   {
     var tString = typeof(string);
@@ -15,19 +39,15 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
 
     foreach (var prop in obj.GetType().GetProperties())
     {
-      var value = prop.GetValue(obj);
-      var valueString = value ?? "null";
-      if (value != null && prop.PropertyType == tString)
-      {
-        valueString = $"\"{valueString}\"";
-      }
-
+      var (value, valueString) = GetPropertyValue(obj, prop);
       var expectedView = $"(x.{prop.Name} == {valueString})";
       var jsonField = Options.Default.ConvertPropertyNameForJson(prop.Name);
       var jsonValue = JsonSerializer.Serialize(value);
       var conditionJson = CreateConditionJson("&&", "=", jsonField, jsonValue);
 
-      ParseExpressionTest<PropertiesPublicGetSet>(conditionJson, expectedView);
+      var expr = ParseExpression<PropertiesPublicGetSet>(conditionJson);
+
+      Assert.Equal(expectedView, expr.ToString());
 
       output.WriteLine(expectedView);
     }
@@ -210,6 +230,18 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
     Assert.Equal(JsonValueKind.String, ex.Data[ErrorDataKeys.CurrentType]);
   }
 
+  private static (object value, object valueString) GetPropertyValue<T>(T obj, PropertyInfo prop)
+  {
+    var value = prop.GetValue(obj);
+    var valueString = value ?? "null";
+    if (value != null && prop.PropertyType == typeof(string))
+    {
+      valueString = $"\"{valueString}\"";
+    }
+
+    return (value, valueString);
+  }
+
   private static void CreateExpressionBindTest<TResult>(
     Func<ExpressionBind, Expression, Expression, Expression> buildBind,
     string logicOperator,
@@ -235,7 +267,23 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
     Assert.Equal(expectedLambdaResult, lambda.DynamicInvoke());
   }
 
-  private static void ParseExpressionTest<TItem>(string conditionJson, string expectedView)
+  private static Expression<Func<TItem, bool>> ParseExpressionLambda<TItem>(string conditionJson)
+  {
+    var condition = JsonDocument.Parse(conditionJson);
+
+    var fieldMapper = ExpressionFieldMapperFactory
+      .CreateForPublicProperties<TItem>(
+        Options.Default.ConvertPropertyNameForJson);
+
+    var lambda = ExpressionHelper.ParseExpressionLambda<TItem>(
+      condition,
+      fieldMapper,
+      Options.Default);
+
+    return lambda;
+  }
+
+  private static Expression ParseExpression<TItem>(string conditionJson)
   {
     var condition = JsonDocument.Parse(conditionJson).RootElement;
 
@@ -249,7 +297,7 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
       fieldMapper,
       Options.Default);
 
-    Assert.Equal(expectedView, expr.ToString());
+    return expr;
   }
 
   private static string CreateConditionJson(string logic, string op, string field, string value)
