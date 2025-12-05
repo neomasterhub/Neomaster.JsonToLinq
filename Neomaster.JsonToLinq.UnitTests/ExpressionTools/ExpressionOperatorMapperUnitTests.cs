@@ -92,4 +92,18 @@ public class ExpressionOperatorMapperUnitTests
     var ex = Assert.Throws<InvalidOperationException>(() => mapper.Add(key, default));
     Assert.Equal(expectedExMessage, ex.Message);
   }
+
+  [Fact]
+  public void TryGet()
+  {
+    var mapper = new ExpressionOperatorMapper().Add("&", Expression.And);
+
+    var andSuccess = mapper.TryGet("&", out var andExpr);
+    var orSuccess = mapper.TryGet("|", out var orExpr);
+
+    Assert.True(andSuccess);
+    Assert.Equal(Expression.And, andExpr);
+    Assert.False(orSuccess);
+    Assert.Null(orExpr);
+  }
 }
