@@ -25,6 +25,11 @@ public class ExpressionOperatorMapper : ICloneable<ExpressionOperatorMapper>
 
   public ExpressionBind this[string op] => _operators[op];
 
+  public static ExpressionOperatorMapper OnDefault()
+  {
+    return new ExpressionOperatorMapper(ExpressionOperatorMappers.Default);
+  }
+
   public ExpressionOperatorMapper Add(string op, ExpressionBind bind)
   {
     if (_operators.ContainsKey(op))
