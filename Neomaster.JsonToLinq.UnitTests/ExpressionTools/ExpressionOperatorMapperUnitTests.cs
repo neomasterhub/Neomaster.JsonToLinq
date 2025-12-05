@@ -48,6 +48,17 @@ public class ExpressionOperatorMapperUnitTests
   }
 
   [Fact]
+  public void Clone()
+  {
+    var m1 = new ExpressionOperatorMapper();
+
+    var m2 = m1.Clone();
+
+    Assert.NotEqual(m1, m2);
+    Assert.NotStrictEqual(m1.Operators, m2.Operators);
+  }
+
+  [Fact]
   public void Ctor_Add()
   {
     var mapper = ExpressionOperatorMapper.OnDefault();
