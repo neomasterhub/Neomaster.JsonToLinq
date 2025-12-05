@@ -9,6 +9,29 @@ namespace Neomaster.JsonToLinq.UnitTests;
 public class ExpressionHelperUnitTests(ITestOutputHelper output)
 {
   [Fact]
+  public void ParseExpressionLambda_SingleRule()
+  {
+    var tString = typeof(string);
+    var obj = new PropertiesPublicGetSet();
+
+    foreach (var prop in obj.GetType().GetProperties())
+    {
+      var (value, valueString) = GetPropertyValue(obj, prop);
+      var expectedView = $"(Param_0.{prop.Name} == {valueString})";
+      var jsonField = Options.Default.ConvertPropertyNameForJson(prop.Name);
+      var jsonValue = JsonSerializer.Serialize(value);
+      var conditionJson = CreateConditionJson("&&", "=", jsonField, jsonValue);
+
+      var lambda = ParseExpressionLambda<PropertiesPublicGetSet>(conditionJson);
+
+      Assert.Equal(expectedView, lambda.Body.ToString());
+      Assert.True(lambda.Compile()(obj));
+
+      output.WriteLine(expectedView);
+    }
+  }
+
+  [Fact]
   public void ParseExpression_SingleRule()
   {
     var tString = typeof(string);
@@ -242,6 +265,22 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
     var lambda = buildLambda(binded).Compile();
 
     Assert.Equal(expectedLambdaResult, lambda.DynamicInvoke());
+  }
+
+  private static Expression<Func<TItem, bool>> ParseExpressionLambda<TItem>(string conditionJson)
+  {
+    var condition = JsonDocument.Parse(conditionJson);
+
+    var fieldMapper = ExpressionFieldMapperFactory
+      .CreateForPublicProperties<TItem>(
+        Options.Default.ConvertPropertyNameForJson);
+
+    var lambda = ExpressionHelper.ParseExpressionLambda<TItem>(
+      condition,
+      fieldMapper,
+      Options.Default);
+
+    return lambda;
   }
 
   private static Expression ParseExpression<TItem>(string conditionJson)

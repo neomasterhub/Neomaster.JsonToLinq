@@ -15,8 +15,8 @@
 
 ### `ExpressionHelper`
 
-- [ ] `ParseToFilterExpression()`
-- [ ] `ParseExpression()`
+- [x] `ParseExpressionLambda()`
+- [x] `ParseExpression()`
 - [x] `CreateExpressionBind()`
 - [x] `CoalesceNullFalse()`
 - [x] `EnumerateExpressionRules()`
