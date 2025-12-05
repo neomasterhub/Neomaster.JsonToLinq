@@ -46,4 +46,28 @@ public class ExpressionOperatorMapperUnitTests
     Assert.Equal(ExpressionOperatorMappers.Default.Operators, mapper.Operators);
     Assert.NotStrictEqual(ExpressionOperatorMappers.Default.Operators, mapper.Operators);
   }
+
+  [Fact]
+  public void Ctor_Add()
+  {
+    var mapper = ExpressionOperatorMapper.OnDefault();
+    var prevOperators = mapper.Clone().Operators;
+    var newPairs = new Dictionary<string, ExpressionBind>
+    {
+      { "k1", Expression.Equal },
+      { "k2", Expression.NotEqual },
+    };
+
+    foreach (var newPair in newPairs)
+    {
+      mapper.Add(newPair.Key, newPair.Value);
+    }
+
+    Assert.All(newPairs, newPair =>
+    {
+      Assert.False(prevOperators.ContainsKey(newPair.Key));
+      Assert.True(mapper.Operators.ContainsKey(newPair.Key));
+      Assert.Equal(newPair.Value, mapper[newPair.Key]);
+    });
+  }
 }
