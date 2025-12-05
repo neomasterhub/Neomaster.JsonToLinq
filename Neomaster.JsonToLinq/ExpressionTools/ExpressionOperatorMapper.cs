@@ -1,12 +1,21 @@
+using static Neomaster.JsonToLinq.Consts;
+
 namespace Neomaster.JsonToLinq;
 
 public class ExpressionOperatorMapper
 {
-  public readonly Dictionary<string, Consts.ExpressionBind> Operators = [];
+  private readonly Dictionary<string, ExpressionBind> _operators = [];
 
-  public ExpressionOperatorMapper Add(string op, Consts.ExpressionBind bind)
+  public ExpressionBind this[string op] => _operators[op];
+
+  public ExpressionOperatorMapper Add(string op, ExpressionBind bind)
   {
-    Operators.Add(op, bind);
+    if (_operators.ContainsKey(op))
+    {
+      throw new InvalidOperationException(string.Format(ErrorMessages.OperatorRegistered, op));
+    }
+
+    _operators.Add(op, bind);
 
     return this;
   }

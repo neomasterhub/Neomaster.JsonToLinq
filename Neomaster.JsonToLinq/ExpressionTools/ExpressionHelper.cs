@@ -84,7 +84,7 @@ public static class ExpressionHelper
     Func<ExpressionBind, Expression, Expression, Expression> bindBuilder)
   {
     var logicOperator = condition.GetProperty(logicOperatorPropertyName).GetString();
-    var logicBind = operatorMapper.Operators[logicOperator];
+    var logicBind = operatorMapper[logicOperator];
 
     return (left, right) => bindBuilder(logicBind, left, right);
   }

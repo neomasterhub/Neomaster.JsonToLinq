@@ -39,7 +39,7 @@ public class ExpressionRule
     ExpressionOperatorMapper mapper)
   {
     var prop = Expression.Property(par, Field);
-    var body = mapper.Operators[Operator](prop, ValueConstantExpression);
+    var body = mapper[Operator](prop, ValueConstantExpression);
 
     return body;
   }

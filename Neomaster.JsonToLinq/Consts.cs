@@ -46,6 +46,7 @@ public static class Consts
     public const string JsonPropertyNotFound = "Json property \"{0}\" not found.";
     public const string JsonPropertyNotType = "Json property \"{0}\" must be of type \"{1}\".";
     public const string JsonPropertyEmpty = "Json property \"{0}\" is empty.";
+    public const string OperatorRegistered = "Operator \"{op}\" is already registered.";
   }
 
   public static class ErrorDataKeys
