@@ -42,6 +42,11 @@ public class ExpressionOperatorMapper : ICloneable<ExpressionOperatorMapper>
     return this;
   }
 
+  public bool TryGet(string op, out ExpressionBind bind)
+  {
+    return _operators.TryGetValue(op, out bind);
+  }
+
   public ExpressionOperatorMapper Clone()
   {
     var clone = new ExpressionOperatorMapper();
