@@ -70,4 +70,15 @@ public class ExpressionOperatorMapperUnitTests
       Assert.Equal(newPair.Value, mapper[newPair.Key]);
     });
   }
+
+  [Fact]
+  public void Ctor_Add_Duplicate()
+  {
+    const string key = nameof(key);
+    var mapper = new ExpressionOperatorMapper().Add(key, default);
+    var expectedExMessage = string.Format(ErrorMessages.OperatorRegistered, key);
+
+    var ex = Assert.Throws<InvalidOperationException>(() => mapper.Add(key, default));
+    Assert.Equal(expectedExMessage, ex.Message);
+  }
 }
