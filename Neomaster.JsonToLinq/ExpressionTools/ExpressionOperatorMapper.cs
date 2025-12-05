@@ -1,13 +1,63 @@
+using static Neomaster.JsonToLinq.Consts;
+
 namespace Neomaster.JsonToLinq;
 
-public class ExpressionOperatorMapper
+public class ExpressionOperatorMapper : ICloneable<ExpressionOperatorMapper>
 {
-  public readonly Dictionary<string, Consts.ExpressionBind> Operators = [];
+  private readonly Dictionary<string, ExpressionBind> _operators = [];
 
-  public ExpressionOperatorMapper Add(string op, Consts.ExpressionBind bind)
+  public ExpressionOperatorMapper()
   {
-    Operators.Add(op, bind);
+  }
+
+  public ExpressionOperatorMapper(ExpressionOperatorMapper source)
+    : this(source._operators)
+  {
+  }
+
+  public ExpressionOperatorMapper(IDictionary<string, ExpressionBind> sourceOperators)
+  {
+    foreach (var op in sourceOperators)
+    {
+      _operators.Add(op.Key, op.Value);
+    }
+  }
+
+  public IReadOnlyDictionary<string, ExpressionBind> Operators => _operators;
+
+  public ExpressionBind this[string op] => _operators[op];
+
+  public static ExpressionOperatorMapper OnDefault()
+  {
+    return new ExpressionOperatorMapper(ExpressionOperatorMappers.Default);
+  }
+
+  public ExpressionOperatorMapper Add(string op, ExpressionBind bind)
+  {
+    if (_operators.ContainsKey(op))
+    {
+      throw new InvalidOperationException(string.Format(ErrorMessages.OperatorRegistered, op));
+    }
+
+    _operators.Add(op, bind);
 
     return this;
+  }
+
+  public bool TryGet(string op, out ExpressionBind bind)
+  {
+    return _operators.TryGetValue(op, out bind);
+  }
+
+  public ExpressionOperatorMapper Clone()
+  {
+    var clone = new ExpressionOperatorMapper();
+
+    foreach (var op in _operators)
+    {
+      clone.Add(op.Key, op.Value);
+    }
+
+    return clone;
   }
 }
