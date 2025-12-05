@@ -23,6 +23,8 @@ public class ExpressionOperatorMapper : ICloneable<ExpressionOperatorMapper>
     }
   }
 
+  public IReadOnlyDictionary<string, ExpressionBind> Operators => _operators;
+
   public ExpressionBind this[string op] => _operators[op];
 
   public static ExpressionOperatorMapper OnDefault()
