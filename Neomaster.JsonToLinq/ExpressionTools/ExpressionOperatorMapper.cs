@@ -2,7 +2,7 @@ using static Neomaster.JsonToLinq.Consts;
 
 namespace Neomaster.JsonToLinq;
 
-public class ExpressionOperatorMapper
+public class ExpressionOperatorMapper : ICloneable<ExpressionOperatorMapper>
 {
   private readonly Dictionary<string, ExpressionBind> _operators = [];
 
@@ -18,5 +18,17 @@ public class ExpressionOperatorMapper
     _operators.Add(op, bind);
 
     return this;
+  }
+
+  public ExpressionOperatorMapper Clone()
+  {
+    var clone = new ExpressionOperatorMapper();
+
+    foreach (var op in _operators)
+    {
+      clone.Add(op.Key, op.Value);
+    }
+
+    return clone;
   }
 }
