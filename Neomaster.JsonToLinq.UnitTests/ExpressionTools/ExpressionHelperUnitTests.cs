@@ -27,7 +27,9 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
       var jsonValue = JsonSerializer.Serialize(value);
       var conditionJson = CreateConditionJson("&&", "=", jsonField, jsonValue);
 
-      ParseExpressionTest<PropertiesPublicGetSet>(conditionJson, expectedView);
+      var expr = ParseExpression<PropertiesPublicGetSet>(conditionJson);
+
+      Assert.Equal(expectedView, expr.ToString());
 
       output.WriteLine(expectedView);
     }
@@ -235,7 +237,7 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
     Assert.Equal(expectedLambdaResult, lambda.DynamicInvoke());
   }
 
-  private static void ParseExpressionTest<TItem>(string conditionJson, string expectedView)
+  private static Expression ParseExpression<TItem>(string conditionJson)
   {
     var condition = JsonDocument.Parse(conditionJson).RootElement;
 
@@ -249,7 +251,7 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
       fieldMapper,
       Options.Default);
 
-    Assert.Equal(expectedView, expr.ToString());
+    return expr;
   }
 
   private static string CreateConditionJson(string logic, string op, string field, string value)
