@@ -1,3 +1,5 @@
+using static Neomaster.JsonToLinq.Consts;
+
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class MapperUnitTests
@@ -62,5 +64,20 @@ public class MapperUnitTests
       Assert.True(mapper.Pairs.ContainsKey(newPair.Key));
       Assert.Equal(newPair.Value, mapper[newPair.Key]);
     });
+  }
+
+  [Fact]
+  public void Ctor_Add_Duplicate()
+  {
+    var mapper = new Mapper<int, string>(
+      new Dictionary<int, string>
+      {
+        [1] = "1",
+        [2] = "2",
+      });
+    var expectedExMessage = string.Format(ErrorMessages.KeyRegistered, "1");
+
+    var ex = Assert.Throws<InvalidOperationException>(() => mapper.Add(1, "3"));
+    Assert.Equal(expectedExMessage, ex.Message);
   }
 }
