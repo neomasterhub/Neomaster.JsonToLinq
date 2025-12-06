@@ -23,9 +23,7 @@ public static class Consts
       .Add(">", Expression.GreaterThan)
       .Add(">=", Expression.GreaterThanOrEqual)
       .Add("<", Expression.LessThan)
-      .Add("<=", Expression.LessThanOrEqual)
-      // TODO: contains, does not contain
-      ;
+      .Add("<=", Expression.LessThanOrEqual);
   }
 
   public static class ExpressionBindBuilders
@@ -46,7 +44,9 @@ public static class Consts
     public const string JsonPropertyNotFound = "Json property \"{0}\" not found.";
     public const string JsonPropertyNotType = "Json property \"{0}\" must be of type \"{1}\".";
     public const string JsonPropertyEmpty = "Json property \"{0}\" is empty.";
+    public const string KeyRegistered = "Key \"{0}\" is already registered.";
     public const string OperatorRegistered = "Operator \"{0}\" is already registered.";
+    public const string SourceFieldRegistered = "Source field \"{0}\" is already registered.";
   }
 
   public static class ErrorDataKeys

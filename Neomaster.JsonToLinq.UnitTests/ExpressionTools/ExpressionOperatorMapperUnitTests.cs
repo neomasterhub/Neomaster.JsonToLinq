@@ -16,8 +16,8 @@ public class ExpressionOperatorMapperUnitTests
 
     var mapper = new ExpressionOperatorMapper(source);
 
-    Assert.Equal(source, mapper.Operators);
-    Assert.NotStrictEqual(source, mapper.Operators);
+    Assert.Equal(source, mapper.Pairs);
+    Assert.NotStrictEqual(source, mapper.Pairs);
   }
 
   [Fact]
@@ -33,18 +33,18 @@ public class ExpressionOperatorMapperUnitTests
     var mapper = new ExpressionOperatorMapper(source);
 
     Assert.NotEqual(source, mapper);
-    Assert.Equal(source.Operators, mapper.Operators);
-    Assert.NotStrictEqual(source.Operators, mapper.Operators);
+    Assert.Equal(source.Pairs, mapper.Pairs);
+    Assert.NotStrictEqual(source.Pairs, mapper.Pairs);
   }
 
   [Fact]
-  public void Ctor_OnDefault()
+  public void OnDefault()
   {
     var mapper = ExpressionOperatorMapper.OnDefault();
 
     Assert.NotEqual(ExpressionOperatorMappers.Default, mapper);
-    Assert.Equal(ExpressionOperatorMappers.Default.Operators, mapper.Operators);
-    Assert.NotStrictEqual(ExpressionOperatorMappers.Default.Operators, mapper.Operators);
+    Assert.Equal(ExpressionOperatorMappers.Default.Pairs, mapper.Pairs);
+    Assert.NotStrictEqual(ExpressionOperatorMappers.Default.Pairs, mapper.Pairs);
   }
 
   [Fact]
@@ -55,14 +55,14 @@ public class ExpressionOperatorMapperUnitTests
     var m2 = m1.Clone();
 
     Assert.NotEqual(m1, m2);
-    Assert.NotStrictEqual(m1.Operators, m2.Operators);
+    Assert.NotStrictEqual(m1.Pairs, m2.Pairs);
   }
 
   [Fact]
   public void Ctor_Add()
   {
     var mapper = ExpressionOperatorMapper.OnDefault();
-    var prevOperators = mapper.Clone().Operators;
+    var prevOperators = mapper.Clone().Pairs;
     var newPairs = new Dictionary<string, ExpressionBind>
     {
       { "k1", Expression.Equal },
@@ -77,7 +77,7 @@ public class ExpressionOperatorMapperUnitTests
     Assert.All(newPairs, newPair =>
     {
       Assert.False(prevOperators.ContainsKey(newPair.Key));
-      Assert.True(mapper.Operators.ContainsKey(newPair.Key));
+      Assert.True(mapper.Pairs.ContainsKey(newPair.Key));
       Assert.Equal(newPair.Value, mapper[newPair.Key]);
     });
   }

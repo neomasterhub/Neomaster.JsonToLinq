@@ -17,8 +17,8 @@ public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
     var mapper = ExpressionFieldMapperFactory
       .CreateForPublicProperties<PropertiesPublicGetSet>();
 
-    Assert.Equal(props.Length, mapper.Fields.Count);
-    Assert.All(mapper.Fields, (f, i) =>
+    Assert.Equal(props.Length, mapper.Pairs.Count);
+    Assert.All(mapper.Pairs, (f, i) =>
     {
       var expectedName = props[i].Name;
       Assert.Equal(expectedName, f.Key);
@@ -40,7 +40,7 @@ public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
       .ToArray();
 
     var mapperValues = ExpressionFieldMapperFactory
-      .CreateForPublicProperties<PropertiesPublicGetSet>().Fields.Values
+      .CreateForPublicProperties<PropertiesPublicGetSet>().Pairs.Values
       .Select((v, i) => v.GetValue(jsonElements[i]).Value)
       .ToArray();
 
