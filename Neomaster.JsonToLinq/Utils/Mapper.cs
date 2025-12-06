@@ -2,7 +2,7 @@ using static Neomaster.JsonToLinq.Consts;
 
 namespace Neomaster.JsonToLinq;
 
-public abstract class Mapper<TKey, TValue>
+public class Mapper<TKey, TValue>
 {
   private readonly Dictionary<TKey, TValue> _pairs = [];
 
@@ -32,6 +32,11 @@ public abstract class Mapper<TKey, TValue>
   public static void RegisterDefault(Mapper<TKey, TValue> source)
   {
     Default = source;
+  }
+
+  public static Mapper<TKey, TValue> OnDefault()
+  {
+    return new Mapper<TKey, TValue>(Default);
   }
 
   public virtual Mapper<TKey, TValue> Add(
