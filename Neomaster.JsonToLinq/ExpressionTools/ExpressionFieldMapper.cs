@@ -3,22 +3,46 @@ using static Neomaster.JsonToLinq.Consts;
 namespace Neomaster.JsonToLinq;
 
 public class ExpressionFieldMapper
+  : Mapper<string, ExpressionField>,
+  IFluentAddPair<ExpressionFieldMapper, string, ExpressionField>,
+  ICloneable<ExpressionFieldMapper>
 {
-  private readonly Dictionary<string, ExpressionField> _fields = [];
-
-  public IReadOnlyDictionary<string, ExpressionField> Fields => _fields;
-
-  public ExpressionField this[string op] => _fields[op];
-
-  public ExpressionFieldMapper Add(string srcFieldName, ExpressionField dstField)
+  public ExpressionFieldMapper()
+    : base()
   {
-    if (_fields.ContainsKey(srcFieldName))
-    {
-      throw new InvalidOperationException(string.Format(ErrorMessages.SourceFieldRegistered, srcFieldName));
-    }
+  }
 
-    _fields.Add(srcFieldName, dstField);
+  public ExpressionFieldMapper(ExpressionFieldMapper source)
+    : base(source)
+  {
+  }
+
+  public ExpressionFieldMapper(IDictionary<string, ExpressionField> sourcePairs)
+    : base(sourcePairs)
+  {
+  }
+
+  public static ExpressionFieldMapper OnDefault()
+  {
+    return new ExpressionFieldMapper();
+  }
+
+  public ExpressionFieldMapper Add(string key, ExpressionField value)
+  {
+    Add(key, value, ErrorMessages.OperatorRegistered);
 
     return this;
+  }
+
+  public ExpressionFieldMapper Clone()
+  {
+    var clone = new ExpressionFieldMapper();
+
+    foreach (var p in Pairs)
+    {
+      clone.Add(p.Key, p.Value);
+    }
+
+    return clone;
   }
 }
