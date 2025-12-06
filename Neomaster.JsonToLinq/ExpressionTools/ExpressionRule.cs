@@ -22,7 +22,7 @@ public class ExpressionRule
     var srcFieldName = GetPropertyRequiredStringValue(jsonElement, fieldPropertyName, JsonValueKind.String);
     var valueProperty = GetProperty(jsonElement, valuePropertyName);
 
-    var field = mapper.Fields[srcFieldName];
+    var field = mapper[srcFieldName];
     var rule = new ExpressionRule
     {
       Operator = op,
