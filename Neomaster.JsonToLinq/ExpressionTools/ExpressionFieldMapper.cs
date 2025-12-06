@@ -29,7 +29,7 @@ public class ExpressionFieldMapper
 
   public ExpressionFieldMapper Add(string key, ExpressionField value)
   {
-    Add(key, value, ErrorMessages.OperatorRegistered);
+    Add(key, value, ErrorMessages.SourceFieldRegistered);
 
     return this;
   }
