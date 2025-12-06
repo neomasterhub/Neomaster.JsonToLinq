@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using static Neomaster.JsonToLinq.Consts;
 
 namespace Neomaster.JsonToLinq.UnitTests;
@@ -26,7 +27,25 @@ public class ExpressionOperatorMapperUnitTests
   }
 
   [Fact]
-  public void Ctor_FluentAdd_Duplicate()
+  public void FluentAdd()
+  {
+    var m1 = new ExpressionOperatorMapper();
+    var expectedPairs = new Dictionary<string, ExpressionBind>
+    {
+      ["&"] = Expression.And,
+      ["|"] = Expression.Or,
+    };
+
+    var m2 = m1
+      .Add("&", Expression.And)
+      .Add("|", Expression.Or);
+
+    Assert.Equal(m1, m2);
+    Assert.Equal(expectedPairs, m1.Pairs);
+  }
+
+  [Fact]
+  public void FluentAdd_Duplicate()
   {
     const string key = "op";
     var mapper = new ExpressionOperatorMapper().Add(key, default);

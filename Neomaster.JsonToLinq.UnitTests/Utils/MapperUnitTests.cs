@@ -37,7 +37,7 @@ public class MapperUnitTests
   }
 
   [Fact]
-  public void Ctor_Add()
+  public void Add()
   {
     var mapper = new Mapper<int, string>(
       new Dictionary<int, string>
@@ -67,7 +67,7 @@ public class MapperUnitTests
   }
 
   [Fact]
-  public void Ctor_Add_Duplicate()
+  public void Add_Duplicate()
   {
     var mapper = new Mapper<int, string>(
       new Dictionary<int, string>
@@ -82,7 +82,7 @@ public class MapperUnitTests
   }
 
   [Fact]
-  public void Ctor_Add_Duplicate_CustomErrorMessage()
+  public void Add_Duplicate_CustomErrorMessage()
   {
     var mapper = new Mapper<int, string>(
       new Dictionary<int, string>
