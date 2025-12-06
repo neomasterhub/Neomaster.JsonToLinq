@@ -22,14 +22,15 @@ public class ExpressionFieldMapper
   {
   }
 
-  public static ExpressionFieldMapper OnDefault()
+  public static ExpressionFieldMapper OnDefault<T>()
   {
-    return new ExpressionFieldMapper();
+    return ExpressionFieldMapperFactory.CreateForPublicProperties<T>(
+      Options.Default.ConvertPropertyNameForJson);
   }
 
   public ExpressionFieldMapper Add(string key, ExpressionField value)
   {
-    Add(key, value, ErrorMessages.OperatorRegistered);
+    Add(key, value, ErrorMessages.SourceFieldRegistered);
 
     return this;
   }

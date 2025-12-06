@@ -22,9 +22,7 @@ public static class JsonLinq
     ExpressionParsingOptions options = null)
   {
     options ??= Consts.Options.Default;
-
-    fieldMapper ??= ExpressionFieldMapperFactory
-      .CreateForPublicProperties<T>(options.ConvertPropertyNameForJson);
+    fieldMapper ??= ExpressionFieldMapper.OnDefault<T>();
 
     return ExpressionHelper.ParseExpressionLambda<T>(
       doc,
