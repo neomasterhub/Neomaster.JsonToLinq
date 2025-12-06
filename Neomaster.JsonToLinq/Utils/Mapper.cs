@@ -23,21 +23,9 @@ public class Mapper<TKey, TValue>
     }
   }
 
-  public static Mapper<TKey, TValue> Default { get; protected set; }
-
   public IReadOnlyDictionary<TKey, TValue> Pairs => _pairs;
 
   public TValue this[TKey key] => _pairs[key];
-
-  public static void RegisterDefault(Mapper<TKey, TValue> source)
-  {
-    Default = source;
-  }
-
-  public static Mapper<TKey, TValue> OnDefault()
-  {
-    return new Mapper<TKey, TValue>(Default);
-  }
 
   public virtual Mapper<TKey, TValue> Add(
     TKey key,
@@ -46,7 +34,7 @@ public class Mapper<TKey, TValue>
   {
     if (_pairs.ContainsKey(key))
     {
-      throw new InvalidOperationException(string.Format(ErrorMessages.KeyRegistered, key));
+      throw new InvalidOperationException(string.Format(errorMessage, key));
     }
 
     _pairs.Add(key, value);

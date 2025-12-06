@@ -4,14 +4,10 @@ namespace Neomaster.JsonToLinq;
 
 public class ExpressionOperatorMapper
   : Mapper<string, ExpressionBind>,
+  IFluentOnDefault<ExpressionOperatorMapper>,
   IFluentAddPair<ExpressionOperatorMapper, string, ExpressionBind>,
   ICloneable<ExpressionOperatorMapper>
 {
-  static ExpressionOperatorMapper()
-  {
-    Default = ExpressionOperatorMappers.Default;
-  }
-
   public ExpressionOperatorMapper()
     : base()
   {
@@ -32,6 +28,11 @@ public class ExpressionOperatorMapper
     Add(key, value, ErrorMessages.OperatorRegistered);
 
     return this;
+  }
+
+  public ExpressionOperatorMapper OnDefault()
+  {
+    return new ExpressionOperatorMapper(ExpressionOperatorMappers.Default);
   }
 
   public ExpressionOperatorMapper Clone()
