@@ -5,6 +5,26 @@ namespace Neomaster.JsonToLinq.UnitTests;
 public class ExpressionFieldMapperUnitTests
 {
   [Fact]
+  public void OnDefault()
+  {
+    var props = typeof(PropertiesPublicGetSet).GetProperties();
+
+    var mapper = ExpressionFieldMapper.OnDefault<PropertiesPublicGetSet>();
+
+    Assert.Equal(props.Length, mapper.Pairs.Count);
+    Assert.All(mapper.Pairs, (pair, i) =>
+    {
+      var prop = props[i];
+      var expectedExpressionFieldName = Options.Default.ConvertPropertyNameForJson(prop.Name);
+
+      Assert.Equal(expectedExpressionFieldName, pair.Key);
+      Assert.Equal(prop.Name, pair.Value.Name);
+      Assert.IsType<ExpressionField>(pair.Value);
+      Assert.NotNull(pair.Value);
+    });
+  }
+
+  [Fact]
   public void Clone()
   {
     var m1 = new ExpressionFieldMapper();
