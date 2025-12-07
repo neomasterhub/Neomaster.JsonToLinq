@@ -261,8 +261,8 @@ public class ExpressionHelperUnitTests(ITestOutputHelper output)
       operatorMapper,
       buildBind);
 
-    var binded = bind(leftExpression, rightExpression);
-    var lambda = buildLambda(binded).Compile();
+    var bound = bind(leftExpression, rightExpression);
+    var lambda = buildLambda(bound).Compile();
 
     Assert.Equal(expectedLambdaResult, lambda.DynamicInvoke());
   }
