@@ -11,15 +11,16 @@ internal class Menu
 
   private static readonly MenuRow[] _menuRows =
   [
-    new() { Text = "🧪1" },
-    new() { Text = "🧪2" },
-    new() { Text = "🧪3" },
+    new() { Text = "🧪 1. Filtering Users" },
+    new() { Text = "🧪 2." },
+    new() { Text = "🧪 3." },
   ];
 
   private static int _curY;
 
   static Menu()
   {
+    Console.CursorVisible = false;
     Console.OutputEncoding = System.Text.Encoding.UTF8;
 
     _curYMin = 6;
@@ -88,6 +89,17 @@ internal class Menu
 
     foreach (var row in _menuRows)
     {
+      var rowY = Console.GetCursorPosition().Top;
+
+      if (rowY == _curY)
+      {
+        Console.ForegroundColor = ConsoleColor.Gray;
+      }
+      else
+      {
+        Console.ForegroundColor = ConsoleColor.DarkGray;
+      }
+
       Console.WriteLine(row.Text);
     }
 
