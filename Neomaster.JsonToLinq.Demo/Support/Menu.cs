@@ -6,9 +6,25 @@ namespace Neomaster.JsonToLinq.Demo;
 
 internal class Menu
 {
+  private static readonly int _curYMin;
+  private static readonly int _curYMax;
+
+  private static int _curY;
+
+  private static readonly MenuRow[] _menuRows =
+  [
+    new() { Text = "🧪1" },
+    new() { Text = "🧪2" },
+    new() { Text = "🧪3" },
+  ];
+
   static Menu()
   {
     Console.OutputEncoding = System.Text.Encoding.UTF8;
+
+    _curYMin = 6;
+    _curYMax = _curYMin + _menuRows.Length - 1;
+    _curY = _curYMin;
   }
 
   public void Show()
