@@ -8,7 +8,6 @@ internal class Menu
 {
   private static readonly int _curYMin;
   private static readonly int _curYMax;
-
   private static readonly MenuRow[] _menuRows =
   [
     new() { Text = "🧪 1. Filtering Users" },
@@ -17,18 +16,19 @@ internal class Menu
   ];
 
   private static int _curY;
+  private static int _selectedY;
 
   static Menu()
   {
     Console.CursorVisible = false;
     Console.OutputEncoding = System.Text.Encoding.UTF8;
 
-    _curYMin = 6;
+    _curYMin = 5;
     _curYMax = _curYMin + _menuRows.Length - 1;
     _curY = _curYMin;
   }
 
-  public void Show()
+  public static void Show()
   {
     ShowCommands();
 
@@ -65,6 +65,10 @@ internal class Menu
           }
 
           break;
+
+        case ConsoleKey.Enter:
+          _selectedY = _curY;
+          break;
       }
 
       ShowCommands();
@@ -83,7 +87,6 @@ internal class Menu
       """
       Esc   - Exit
       Enter - Select
-      Other - Clear
 
       """);
 
@@ -93,11 +96,25 @@ internal class Menu
 
       if (rowY == _curY)
       {
-        Console.ForegroundColor = ConsoleColor.Gray;
+        if (rowY == _selectedY)
+        {
+          Console.ForegroundColor = ConsoleColor.Green;
+        }
+        else
+        {
+          Console.ForegroundColor = ConsoleColor.Gray;
+        }
       }
       else
       {
-        Console.ForegroundColor = ConsoleColor.DarkGray;
+        if (rowY == _selectedY)
+        {
+          Console.ForegroundColor = ConsoleColor.DarkGreen;
+        }
+        else
+        {
+          Console.ForegroundColor = ConsoleColor.DarkGray;
+        }
       }
 
       Console.WriteLine(row.Text);

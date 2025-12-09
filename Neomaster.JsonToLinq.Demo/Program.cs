@@ -6,5 +6,5 @@ var builder = CoconaApp.CreateBuilder();
 builder.Services.AddSingleton<Menu>();
 
 var app = builder.Build();
-app.AddCommand((Menu menu) => menu.Show());
+app.AddCommand(Menu.Show);
 app.Run();
