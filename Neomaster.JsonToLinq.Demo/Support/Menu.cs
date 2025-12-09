@@ -1,4 +1,5 @@
 #pragma warning disable SA1512
+using System.Text;
 using System.Text.Json;
 using Neomaster.JsonToLinq.UnitTests;
 
@@ -9,9 +10,11 @@ internal class Menu
   private readonly int _curYMin;
   private readonly int _curYMax;
   private readonly MenuItem[] _menuItems;
+  private readonly StringBuilder _demoOutput = new();
 
   private int _curY;
   private int _selectedY;
+  private bool _runDemo;
 
   static Menu()
   {
@@ -71,6 +74,8 @@ internal class Menu
 
         case ConsoleKey.Enter:
           _selectedY = _curY;
+          _demoOutput.Clear();
+          _runDemo = true;
           break;
       }
 
@@ -93,10 +98,18 @@ internal class Menu
 
       """);
 
+    Action runDemo = null;
+    string selectedMarker = null;
     foreach (var item in _menuItems)
     {
       var rowY = Console.GetCursorPosition().Top;
       var rowIsSelected = rowY == _selectedY;
+
+      if (rowIsSelected)
+      {
+        runDemo = item.action;
+        selectedMarker = " 👀";
+      }
 
       if (rowY == _curY)
       {
@@ -121,11 +134,18 @@ internal class Menu
         }
       }
 
-      var selectedMarker = rowIsSelected
-        ? " 👀"
-        : string.Empty;
       Console.WriteLine(item.Text + selectedMarker);
     }
+
+    if (_runDemo)
+    {
+      runDemo();
+      _runDemo = false;
+    }
+
+    Console.ResetColor();
+    Console.WriteLine();
+    Console.WriteLine(_demoOutput);
 
     Console.SetCursorPosition(0, _curY);
   }
@@ -186,12 +206,10 @@ internal class Menu
     // 5. Output results.
     foreach (var fu in filteredUsers)
     {
-      Console.WriteLine($"Id: {fu.Id}");
+      _demoOutput.AppendLine($"Id: {fu.Id}");
     }
 
     // Id: 1
     // Id: 3
-
-    Console.ReadKey();
   }
 }
