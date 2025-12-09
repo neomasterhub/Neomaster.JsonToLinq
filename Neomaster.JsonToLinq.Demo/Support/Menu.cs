@@ -6,29 +6,32 @@ namespace Neomaster.JsonToLinq.Demo;
 
 internal class Menu
 {
-  private static readonly int _curYMin;
-  private static readonly int _curYMax;
-  private static readonly MenuRow[] _menuRows =
-  [
-    new() { Text = "🧪 1. Filtering Users" },
-    new() { Text = "🧪 2." },
-    new() { Text = "🧪 3." },
-  ];
+  private readonly int _curYMin;
+  private readonly int _curYMax;
+  private readonly MenuItem[] _menuItems;
 
-  private static int _curY;
-  private static int _selectedY;
+  private int _curY;
+  private int _selectedY;
 
   static Menu()
   {
     Console.CursorVisible = false;
     Console.OutputEncoding = System.Text.Encoding.UTF8;
+  }
+
+  public Menu()
+  {
+    _menuItems =
+    [
+      new("🧪 1. Filtering Users", FilteringUsers),
+    ];
 
     _curYMin = 5;
-    _curYMax = _curYMin + _menuRows.Length - 1;
+    _curYMax = _curYMin + _menuItems.Length - 1;
     _curY = _curYMin;
   }
 
-  public static void Show()
+  public void Show()
   {
     ShowCommands();
 
@@ -77,7 +80,7 @@ internal class Menu
     }
   }
 
-  private static void ShowCommands()
+  private void ShowCommands()
   {
     Console.Clear();
     Console.ForegroundColor = ConsoleColor.Cyan;
@@ -90,13 +93,14 @@ internal class Menu
 
       """);
 
-    foreach (var row in _menuRows)
+    foreach (var item in _menuItems)
     {
       var rowY = Console.GetCursorPosition().Top;
+      var rowIsSelected = rowY == _selectedY;
 
       if (rowY == _curY)
       {
-        if (rowY == _selectedY)
+        if (rowIsSelected)
         {
           Console.ForegroundColor = ConsoleColor.Green;
         }
@@ -107,7 +111,7 @@ internal class Menu
       }
       else
       {
-        if (rowY == _selectedY)
+        if (rowIsSelected)
         {
           Console.ForegroundColor = ConsoleColor.DarkGreen;
         }
@@ -117,7 +121,10 @@ internal class Menu
         }
       }
 
-      Console.WriteLine(row.Text);
+      var selectedMarker = rowIsSelected
+        ? " 👀"
+        : string.Empty;
+      Console.WriteLine(item.Text + selectedMarker);
     }
 
     Console.SetCursorPosition(0, _curY);
