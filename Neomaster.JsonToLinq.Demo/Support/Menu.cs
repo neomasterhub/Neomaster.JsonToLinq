@@ -9,14 +9,14 @@ internal class Menu
   private static readonly int _curYMin;
   private static readonly int _curYMax;
 
-  private static int _curY;
-
   private static readonly MenuRow[] _menuRows =
   [
     new() { Text = "🧪1" },
     new() { Text = "🧪2" },
     new() { Text = "🧪3" },
   ];
+
+  private static int _curY;
 
   static Menu()
   {
@@ -35,16 +35,34 @@ internal class Menu
 
     while (key != ConsoleKey.Escape)
     {
-      var (left, top) = Console.GetCursorPosition();
-      Console.SetCursorPosition(left - 1, top);
-      Console.ForegroundColor = ConsoleColor.Green;
-      Console.Write($"🧪 {(char)key}\n\n"); // Wrap after key output.
-      Console.ResetColor();
-
       switch (key)
       {
-        case ConsoleKey.D1:
-          FilteringUsers();
+        case ConsoleKey.UpArrow:
+        case ConsoleKey.W:
+
+          if (_curY > _curYMin)
+          {
+            _curY--;
+          }
+          else
+          {
+            _curY = _curYMax;
+          }
+
+          break;
+
+        case ConsoleKey.DownArrow:
+        case ConsoleKey.S:
+
+          if (_curY < _curYMax)
+          {
+            _curY++;
+          }
+          else
+          {
+            _curY = _curYMin;
+          }
+
           break;
       }
 
@@ -63,10 +81,17 @@ internal class Menu
     Console.WriteLine(
       """
       Esc   - Exit
-      1     - Filtering Users
+      Enter - Select
       Other - Clear
 
       """);
+
+    foreach (var row in _menuRows)
+    {
+      Console.WriteLine(row.Text);
+    }
+
+    Console.SetCursorPosition(0, _curY);
   }
 
   /// <summary>
