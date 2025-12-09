@@ -8,7 +8,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.github\workflows\nuget-publish.yml = .github\workflows\nuget-publish.yml
 		readme-nuget.md = readme-nuget.md
 		readme.md = readme.md
-		tests.md = tests.md
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neomaster.JsonToLinq", "Neomaster.JsonToLinq\Neomaster.JsonToLinq.csproj", "{18772982-D0CA-9722-4B44-DF21E40AD685}"
@@ -21,8 +20,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neomaster.JsonToLinq.Readme
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{2C6AA85D-CFF1-4563-AEA4-3780275EAAD9}"
 	ProjectSection(SolutionItems) = preProject
-		Docs\readme\operators.md = Docs\readme\operators.md
 		Docs\readme\logo.md = Docs\readme\logo.md
+		Docs\readme\operators.md = Docs\readme\operators.md
 		Docs\readme\shields.md = Docs\readme\shields.md
 		Docs\readme\template-nuget.md = Docs\readme\template-nuget.md
 		Docs\readme\template.md = Docs\readme\template.md
