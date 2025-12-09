@@ -31,6 +31,9 @@ while (menuLineEnumerator.MoveNext())
 
   if (demoName != null)
   {
+    line = line
+      .Replace("_demoOutput.AppendLine", "Console.WriteLine");
+
     if (line == "  }")
     {
       demos.Add(demoName, demo.ToString().Trim());
