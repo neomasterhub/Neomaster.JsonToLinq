@@ -6,7 +6,7 @@ namespace Neomaster.JsonToLinq;
 /// <summary>
 /// Provides methods to convert JSON-based query definitions into LINQ expressions.
 /// </summary>
-public static class JsonLinq
+public static partial class JsonLinq
 {
   /// <summary>
   /// Filters a sequence of values based on a JSON filter definition.
