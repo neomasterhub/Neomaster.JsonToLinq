@@ -8,7 +8,13 @@ public static class Consts
 
   public static class Options
   {
-    public static readonly ExpressionParsingOptions Default = new();
+    private static readonly ExpressionParsingOptions _default = new();
+    private static ExpressionParsingOptions _custom;
+    public static ExpressionParsingOptions Default
+    {
+      get => _custom ?? _default;
+      set => _custom = value;
+    }
   }
 
   public static class ExpressionOperatorMappers

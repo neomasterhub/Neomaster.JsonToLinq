@@ -5,8 +5,9 @@ namespace Neomaster.JsonToLinq;
 
 public static partial class JsonLinq
 {
-  public static void Configure(Action<ExpressionParsingOptions> options)
+  public static void Configure(Action<ExpressionParsingOptions> setOptions)
   {
-    options(Options.Default);
+    Options.Default = new();
+    setOptions(Options.Default);
   }
 }
