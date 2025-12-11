@@ -6,6 +6,22 @@ namespace Neomaster.JsonToLinq.UnitTests;
 
 public class JsonLinqConfigUnitTests
 {
+  public JsonLinqConfigUnitTests()
+  {
+    JsonLinq.RestoreDefaultOptions();
+  }
+
+  [Fact]
+  public void RestoreDefaultOptions()
+  {
+    var prevDefaultOptions = Options.Default;
+    JsonLinq.Configure(_ => { });
+
+    JsonLinq.RestoreDefaultOptions();
+
+    Assert.StrictEqual(prevDefaultOptions, Options.Default);
+  }
+
   [Fact]
   public void Configure_AllDifferent()
   {
@@ -55,5 +71,7 @@ public class JsonLinqConfigUnitTests
     {
       Assert.NotEqual(prop.GetValue(prevDefaultOptions), prop.GetValue(Options.Default));
     }
+
+    JsonLinq.RestoreDefaultOptions();
   }
 }
