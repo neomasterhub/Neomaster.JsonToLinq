@@ -17,7 +17,7 @@
 
 **JsonToLinq** - lightweight C# library that converts JSON-based query definitions into LINQ expressions. Ideal for building dynamic filters, predicates, and queries.
 
-## 🗂️ Use Cases
+## 🎯 Use Cases
 
 **JsonToLinq** can be applied in various scenarios where dynamic, runtime-defined queries are needed. Examples include:
 
