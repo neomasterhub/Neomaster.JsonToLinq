@@ -1,4 +1,4 @@
-## 🗂️ Use Cases
+## 🎯 Use Cases
 
 **JsonToLinq** can be applied in various scenarios where dynamic, runtime-defined queries are needed. Examples include:
 
