@@ -9,6 +9,76 @@ namespace Neomaster.JsonToLinq;
 public static partial class JsonLinq
 {
   /// <summary>
+  /// Returns the last element in a sequence that satisfies a specified JSON filter
+  /// or a default value if no such element is found.
+  /// </summary>
+  /// <typeparam name="TElement">The type of the elements of source.</typeparam>
+  /// <param name="elements">An System.Collections.Generic.IEnumerable`1 to return an element from.</param>
+  /// <param name="filterJson">JSON filter definition.</param>
+  /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
+  /// <param name="options">Optional parser settings. Uses defaults if null.</param>
+  /// <returns>
+  /// The last element in the sequence that matches the JSON filter,
+  /// or default(TElement) if no matching element is found or the sequence is null.
+  /// </returns>
+  /// <exception cref="ArgumentNullException">
+  /// The source sequence or the JSON filter is null.
+  /// </exception>
+  public static TElement LastOrDefault<TElement>(
+    this IEnumerable<TElement> elements,
+    string filterJson,
+    ExpressionFieldMapper fieldMapper = null,
+    ExpressionParsingOptions options = null)
+  {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    return elements.LastOrDefault(JsonDocument.Parse(filterJson), fieldMapper, options);
+  }
+
+  /// <summary>
+  /// Returns the last element in a sequence that satisfies a specified JSON filter
+  /// or a default value if no such element is found.
+  /// </summary>
+  /// <typeparam name="TElement">The type of the elements of source.</typeparam>
+  /// <param name="elements">An System.Collections.Generic.IEnumerable`1 to return an element from.</param>
+  /// <param name="filter">JSON filter definition.</param>
+  /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
+  /// <param name="options">Optional parser settings. Uses defaults if null.</param>
+  /// <returns>
+  /// The last element in the sequence that matches the JSON filter,
+  /// or default(TElement) if no matching element is found or the sequence is null.
+  /// </returns>
+  /// <exception cref="ArgumentNullException">
+  /// The source sequence or the JSON filter is null.
+  /// </exception>
+  public static TElement LastOrDefault<TElement>(
+    this IEnumerable<TElement> elements,
+    JsonDocument filter,
+    ExpressionFieldMapper fieldMapper = null,
+    ExpressionParsingOptions options = null)
+  {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
+    if (filter == null)
+    {
+      throw new ArgumentNullException(nameof(filter));
+    }
+
+    return elements.LastOrDefault(ParseToFilterExpression<TElement>(filter, fieldMapper, options).Compile());
+  }
+
+  /// <summary>
   /// Returns the last element in a sequence that satisfies a specified JSON filter.
   /// </summary>
   /// <typeparam name="TElement">The type of the elements of source.</typeparam>
