@@ -1,7 +1,7 @@
 {logo}
 {shields}
 {title}
-{quick-start}
 {use-cases}
+{quick-start}
 {operators}
 {demos}
