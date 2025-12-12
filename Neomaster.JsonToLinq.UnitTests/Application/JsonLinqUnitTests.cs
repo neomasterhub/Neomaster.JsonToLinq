@@ -25,6 +25,8 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
     """;
 
   private static readonly IReadOnlyList<User> _users;
+  private static readonly IReadOnlyList<User> _usersNull = null;
+  private static readonly IReadOnlyList<User> _usersEmpty = [];
   private static readonly Func<User, bool> _filterFunc;
   private static readonly JsonDocument _filterJsonDocument;
 
@@ -58,5 +60,22 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
     {
       output.WriteLine($"{a.Balance}");
     }
+  }
+
+  [Fact]
+  public void Where_ArgumentExceptions()
+  {
+    TestArgumentNullException("elements", () => _usersNull.Where(_filterJson));
+    TestArgumentNullException("elements", () => _usersNull.Where(_filterJsonDocument));
+    TestArgumentNullException("filter", () => _users.Where((JsonDocument)null));
+    TestArgumentNullException("filterJson", () => _users.Where((string)null));
+    TestArgumentNullException("filterJson", () => _users.Where(string.Empty));
+    TestArgumentNullException("filterJson", () => _users.Where(" "));
+  }
+
+  private static void TestArgumentNullException(string expectedParamName, Action action)
+  {
+    var ex = Assert.Throws<ArgumentNullException>(() => action());
+    Assert.Equal(expectedParamName, ex.ParamName);
   }
 }
