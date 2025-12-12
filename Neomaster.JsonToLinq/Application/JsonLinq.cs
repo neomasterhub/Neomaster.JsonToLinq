@@ -13,7 +13,7 @@ public static partial class JsonLinq
   /// </summary>
   /// <typeparam name="TElement">Type of elements to filter.</typeparam>
   /// <param name="elements">An System.Collections.Generic.IEnumerable`1 to filter.</param>
-  /// <param name="json">JSON filter definition.</param>
+  /// <param name="filterJson">JSON filter definition.</param>
   /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
   /// <param name="options">Optional parser settings. Uses defaults if null.</param>
   /// <returns>
@@ -22,11 +22,11 @@ public static partial class JsonLinq
   /// </returns>
   public static IEnumerable<TElement> Where<TElement>(
     this IEnumerable<TElement> elements,
-    string json,
+    string filterJson,
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
-    return elements.Where(JsonDocument.Parse(json), fieldMapper, options);
+    return elements.Where(JsonDocument.Parse(filterJson), fieldMapper, options);
   }
 
   /// <summary>
@@ -34,7 +34,7 @@ public static partial class JsonLinq
   /// </summary>
   /// <typeparam name="TElement">Type of elements to filter.</typeparam>
   /// <param name="elements">An System.Collections.Generic.IEnumerable`1 to filter.</param>
-  /// <param name="doc">JSON filter definition.</param>
+  /// <param name="filter">JSON filter definition.</param>
   /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
   /// <param name="options">Optional parser settings. Uses defaults if null.</param>
   /// <returns>
@@ -43,23 +43,23 @@ public static partial class JsonLinq
   /// </returns>
   public static IEnumerable<TElement> Where<TElement>(
     this IEnumerable<TElement> elements,
-    JsonDocument doc,
+    JsonDocument filter,
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
-    return elements.Where(ParseToFilterExpression<TElement>(doc, fieldMapper, options).Compile());
+    return elements.Where(ParseToFilterExpression<TElement>(filter, fieldMapper, options).Compile());
   }
 
   /// <summary>
   /// Parses a JSON document into a LINQ expression filter for <typeparamref name="T"/>.
   /// </summary>
   /// <typeparam name="T">Type of objects to filter.</typeparam>
-  /// <param name="doc">JSON filter definition.</param>
+  /// <param name="filter">JSON filter definition.</param>
   /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
   /// <param name="options">Optional parser settings. Uses defaults if null.</param>
   /// <returns>An <see cref="Expression{Func}"/> representing the filter for <typeparamref name="T"/>.</returns>
   public static Expression<Func<T, bool>> ParseToFilterExpression<T>(
-    JsonDocument doc,
+    JsonDocument filter,
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
@@ -67,7 +67,7 @@ public static partial class JsonLinq
     fieldMapper ??= ExpressionFieldMapper.OnDefault<T>();
 
     return ExpressionHelper.ParseExpressionLambda<T>(
-      doc,
+      filter,
       fieldMapper,
       options);
   }
