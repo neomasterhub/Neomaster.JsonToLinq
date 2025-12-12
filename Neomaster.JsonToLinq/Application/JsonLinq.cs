@@ -9,6 +9,36 @@ namespace Neomaster.JsonToLinq;
 public static partial class JsonLinq
 {
   /// <summary>
+  /// Returns the first element in a sequence that satisfies a specified JSON filter.
+  /// </summary>
+  /// <typeparam name="TElement">The type of the elements of source.</typeparam>
+  /// <param name="elements">An System.Collections.Generic.IEnumerable`1 to return an element from.</param>
+  /// <param name="filter">JSON filter definition.</param>
+  /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
+  /// <param name="options">Optional parser settings. Uses defaults if null.</param>
+  /// <returns>The first element in the sequence that matches the JSON filter.</returns>
+  /// <exception cref="ArgumentNullException">
+  /// The source sequence or the JSON filter is null.
+  /// </exception>
+  /// <exception cref="InvalidOperationException">
+  /// No element satisfies the JSON filter,
+  /// or the source sequence is empty.
+  /// </exception>
+  public static TElement First<TElement>(
+    this IEnumerable<TElement> elements,
+    JsonDocument filter,
+    ExpressionFieldMapper fieldMapper = null,
+    ExpressionParsingOptions options = null)
+  {
+    if (filter == null)
+    {
+      throw new ArgumentNullException(nameof(filter));
+    }
+
+    return elements.First(ParseToFilterExpression<TElement>(filter, fieldMapper, options).Compile());
+  }
+
+  /// <summary>
   /// Filters a sequence of values based on a JSON filter definition.
   /// </summary>
   /// <typeparam name="TElement">Type of elements to filter.</typeparam>
