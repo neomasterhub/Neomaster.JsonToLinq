@@ -9,6 +9,76 @@ namespace Neomaster.JsonToLinq;
 public static partial class JsonLinq
 {
   /// <summary>
+  /// Determines whether all elements of a sequence satisfies a specified JSON filter.
+  /// </summary>
+  /// <typeparam name="TElement">The type of the elements of source.</typeparam>
+  /// <param name="elements">An System.Collections.Generic.IEnumerable`1 whose elements to apply the JSON filter to.</param>
+  /// <param name="filterJson">JSON filter definition.</param>
+  /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
+  /// <param name="options">Optional parser settings. Uses defaults if null.</param>
+  /// <returns>
+  /// true if every element of the source sequence passes the test in the specified JSON filter,
+  /// or if the sequence is empty;
+  /// otherwise, false.
+  /// </returns>
+  /// <exception cref="ArgumentNullException">
+  /// The source sequence or the JSON filter is null.
+  /// </exception>
+  public static bool All<TElement>(
+    this IEnumerable<TElement> elements,
+    string filterJson,
+    ExpressionFieldMapper fieldMapper = null,
+    ExpressionParsingOptions options = null)
+  {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    return elements.All(JsonDocument.Parse(filterJson), fieldMapper, options);
+  }
+
+  /// <summary>
+  /// Determines whether all elements of a sequence satisfies a specified JSON filter.
+  /// </summary>
+  /// <typeparam name="TElement">The type of the elements of source.</typeparam>
+  /// <param name="elements">An System.Collections.Generic.IEnumerable`1 whose elements to apply the JSON filter to.</param>
+  /// <param name="filter">JSON filter definition.</param>
+  /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
+  /// <param name="options">Optional parser settings. Uses defaults if null.</param>
+  /// <returns>
+  /// true if every element of the source sequence passes the test in the specified JSON filter,
+  /// or if the sequence is empty;
+  /// otherwise, false.
+  /// </returns>
+  /// <exception cref="ArgumentNullException">
+  /// The source sequence or the JSON filter is null.
+  /// </exception>
+  public static bool All<TElement>(
+    this IEnumerable<TElement> elements,
+    JsonDocument filter,
+    ExpressionFieldMapper fieldMapper = null,
+    ExpressionParsingOptions options = null)
+  {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
+    if (filter == null)
+    {
+      throw new ArgumentNullException(nameof(filter));
+    }
+
+    return elements.All(ParseToFilterExpression<TElement>(filter, fieldMapper, options).Compile());
+  }
+
+  /// <summary>
   /// Determines whether any element of a sequence satisfies a specified JSON filter.
   /// </summary>
   /// <typeparam name="TElement">The type of the elements of source.</typeparam>
