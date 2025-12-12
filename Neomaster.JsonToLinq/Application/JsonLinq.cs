@@ -50,12 +50,20 @@ public static partial class JsonLinq
   /// An System.Collections.Generic.IEnumerable`1
   /// that contains elements from the input sequence that satisfy the condition.
   /// </returns>
+  /// <exception cref="ArgumentNullException">
+  /// The source sequence or the JSON filter is null.
+  /// </exception>
   public static IEnumerable<TElement> Where<TElement>(
     this IEnumerable<TElement> elements,
     string filterJson,
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentNullException(nameof(filterJson));
+    }
+
     return elements.Where(JsonDocument.Parse(filterJson), fieldMapper, options);
   }
 
@@ -71,12 +79,20 @@ public static partial class JsonLinq
   /// An System.Collections.Generic.IEnumerable`1
   /// that contains elements from the input sequence that satisfy the condition.
   /// </returns>
+  /// <exception cref="ArgumentNullException">
+  /// The source sequence or the JSON filter is null.
+  /// </exception>
   public static IEnumerable<TElement> Where<TElement>(
     this IEnumerable<TElement> elements,
     JsonDocument filter,
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
+    if (filter == null)
+    {
+      throw new ArgumentNullException(nameof(filter));
+    }
+
     return elements.Where(ParseToFilterExpression<TElement>(filter, fieldMapper, options).Compile());
   }
 
