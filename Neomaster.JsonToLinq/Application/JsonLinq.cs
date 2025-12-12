@@ -30,6 +30,11 @@ public static partial class JsonLinq
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
     if (string.IsNullOrWhiteSpace(filterJson))
     {
       throw new ArgumentNullException(nameof(filterJson));
@@ -60,6 +65,11 @@ public static partial class JsonLinq
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
     if (filter == null)
     {
       throw new ArgumentNullException(nameof(filter));
@@ -89,6 +99,11 @@ public static partial class JsonLinq
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
     if (string.IsNullOrWhiteSpace(filterJson))
     {
       throw new ArgumentNullException(nameof(filterJson));
@@ -118,6 +133,11 @@ public static partial class JsonLinq
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
+    if (elements == null)
+    {
+      throw new ArgumentNullException(nameof(elements));
+    }
+
     if (filter == null)
     {
       throw new ArgumentNullException(nameof(filter));
