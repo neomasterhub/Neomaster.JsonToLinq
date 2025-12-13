@@ -101,6 +101,23 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
   }
 
   [Fact]
+  public void FirstOrDefault()
+  {
+    var users = _users
+      .Select(u =>
+      {
+        u.Balance += 1000;
+        return u;
+      })
+      .ToArray();
+
+    Assert.Null(users.FirstOrDefault(_filterJson));
+    Assert.Null(users.FirstOrDefault(_filterJsonDocument));
+    Assert.Null(_usersEmpty.FirstOrDefault(_filterJson));
+    Assert.Null(_usersEmpty.FirstOrDefault(_filterJsonDocument));
+  }
+
+  [Fact]
   public void FirstOrDefault_ArgumentExceptions()
   {
     TestArgumentNullException("elements", () => _usersNull.FirstOrDefault(_filterJson));
