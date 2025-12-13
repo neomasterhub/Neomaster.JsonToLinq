@@ -4,6 +4,7 @@ using Xunit.Abstractions;
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
+  : UnitTestsBase
 {
   private static readonly Type _propertiesPublicGetSet = typeof(PropertiesPublicGetSet);
 

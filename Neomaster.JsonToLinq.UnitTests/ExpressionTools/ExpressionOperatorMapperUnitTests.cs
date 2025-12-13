@@ -4,6 +4,7 @@ using static Neomaster.JsonToLinq.Consts;
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class ExpressionOperatorMapperUnitTests
+  : UnitTestsBase
 {
   [Fact]
   public void OnDefault()

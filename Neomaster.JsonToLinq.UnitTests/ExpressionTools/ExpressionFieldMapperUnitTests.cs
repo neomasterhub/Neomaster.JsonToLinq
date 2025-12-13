@@ -3,6 +3,7 @@ using static Neomaster.JsonToLinq.Consts;
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class ExpressionFieldMapperUnitTests
+  : UnitTestsBase
 {
   [Fact]
   public void OnDefault()
