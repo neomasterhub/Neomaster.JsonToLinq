@@ -4,6 +4,7 @@ using Xunit.Abstractions;
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class JsonLinqUnitTests(ITestOutputHelper output)
+  : UnitTestsBase
 {
   private const string _filterJson =
     """

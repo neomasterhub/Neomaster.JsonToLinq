@@ -4,6 +4,7 @@ using System.Text.Json;
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class ExpressionFieldUnitTests
+  : UnitTestsBase
 {
   [Fact]
   public void GetValue_SpecificTypeMethod()

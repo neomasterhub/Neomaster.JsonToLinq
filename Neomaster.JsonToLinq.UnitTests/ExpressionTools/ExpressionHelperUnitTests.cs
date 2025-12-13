@@ -7,6 +7,7 @@ using static Neomaster.JsonToLinq.Consts;
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class ExpressionHelperUnitTests(ITestOutputHelper output)
+  : UnitTestsBase
 {
   [Fact]
   public void ParseExpressionLambda_SingleRule()

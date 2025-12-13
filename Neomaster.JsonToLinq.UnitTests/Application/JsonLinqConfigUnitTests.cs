@@ -5,6 +5,7 @@ using static Neomaster.JsonToLinq.Consts;
 namespace Neomaster.JsonToLinq.UnitTests;
 
 public class JsonLinqConfigUnitTests
+  : UnitTestsBase
 {
   public JsonLinqConfigUnitTests()
   {
@@ -71,7 +72,5 @@ public class JsonLinqConfigUnitTests
     {
       Assert.NotEqual(prop.GetValue(prevDefaultOptions), prop.GetValue(Options.Default));
     }
-
-    JsonLinq.RestoreDefaultOptions();
   }
 }
