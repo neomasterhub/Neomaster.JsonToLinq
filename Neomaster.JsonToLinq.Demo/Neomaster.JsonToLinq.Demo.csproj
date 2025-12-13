@@ -20,4 +20,10 @@
     <ProjectReference Include="..\Neomaster.JsonToLinq.UnitTests\Neomaster.JsonToLinq.UnitTests.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

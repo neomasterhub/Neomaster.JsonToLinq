@@ -19,7 +19,7 @@ internal class Menu
   static Menu()
   {
     Console.CursorVisible = false;
-    Console.OutputEncoding = System.Text.Encoding.UTF8;
+    Console.OutputEncoding = Encoding.UTF8;
   }
 
   public Menu()
