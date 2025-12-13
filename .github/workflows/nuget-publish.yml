@@ -24,6 +24,11 @@ jobs:
       - name: Build project
         run: dotnet build Neomaster.JsonToLinq/Neomaster.JsonToLinq.csproj --configuration Release --no-restore
 
+      - name: Build and run unit tests
+        run: |
+          dotnet build Neomaster.JsonToLinq.UnitTests/Neomaster.JsonToLinq.UnitTests.csproj --configuration Release
+          dotnet test Neomaster.JsonToLinq.UnitTests/Neomaster.JsonToLinq.UnitTests.csproj --configuration Release --no-build
+
       - name: Pack NuGet package
         run: dotnet pack Neomaster.JsonToLinq/Neomaster.JsonToLinq.csproj --configuration Release --no-build --output ./nupkg
 
