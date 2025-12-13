@@ -113,6 +113,20 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
   }
 
   [Fact]
+  public void Last()
+  {
+    var expected = _users.Last(_filterFunc);
+
+    var actual1 = _users.Last(_filterJson);
+    var actual2 = _users.Last(_filterJsonDocument);
+
+    Assert.Equal(expected, actual1);
+    Assert.Equal(expected, actual2);
+
+    output.WriteLine($"{actual1.Balance}");
+  }
+
+  [Fact]
   public void Last_ArgumentExceptions()
   {
     TestArgumentNullException("elements", () => _usersNull.Last(_filterJson));
