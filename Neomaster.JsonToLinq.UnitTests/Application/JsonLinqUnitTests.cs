@@ -67,10 +67,83 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
   {
     TestArgumentNullException("elements", () => _usersNull.Where(_filterJson));
     TestArgumentNullException("elements", () => _usersNull.Where(_filterJsonDocument));
+
     TestArgumentNullException("filter", () => _users.Where((JsonDocument)null));
     TestArgumentNullException("filterJson", () => _users.Where((string)null));
     TestArgumentNullException("filterJson", () => _users.Where(string.Empty));
     TestArgumentNullException("filterJson", () => _users.Where(" "));
+  }
+
+  [Fact]
+  public void First_ArgumentExceptions()
+  {
+    TestArgumentNullException("elements", () => _usersNull.First(_filterJson));
+    TestArgumentNullException("elements", () => _usersNull.First(_filterJsonDocument));
+
+    TestArgumentNullException("filter", () => _users.First((JsonDocument)null));
+    TestArgumentNullException("filterJson", () => _users.First((string)null));
+    TestArgumentNullException("filterJson", () => _users.First(string.Empty));
+    TestArgumentNullException("filterJson", () => _users.First(" "));
+  }
+
+  [Fact]
+  public void FirstOrDefault_ArgumentExceptions()
+  {
+    TestArgumentNullException("elements", () => _usersNull.FirstOrDefault(_filterJson));
+    TestArgumentNullException("elements", () => _usersNull.FirstOrDefault(_filterJsonDocument));
+
+    TestArgumentNullException("filter", () => _users.FirstOrDefault((JsonDocument)null));
+    TestArgumentNullException("filterJson", () => _users.FirstOrDefault((string)null));
+    TestArgumentNullException("filterJson", () => _users.FirstOrDefault(string.Empty));
+    TestArgumentNullException("filterJson", () => _users.FirstOrDefault(" "));
+  }
+
+  [Fact]
+  public void Last_ArgumentExceptions()
+  {
+    TestArgumentNullException("elements", () => _usersNull.Last(_filterJson));
+    TestArgumentNullException("elements", () => _usersNull.Last(_filterJsonDocument));
+
+    TestArgumentNullException("filter", () => _users.Last((JsonDocument)null));
+    TestArgumentNullException("filterJson", () => _users.Last((string)null));
+    TestArgumentNullException("filterJson", () => _users.Last(string.Empty));
+    TestArgumentNullException("filterJson", () => _users.Last(" "));
+  }
+
+  [Fact]
+  public void LastOrDefault_ArgumentExceptions()
+  {
+    TestArgumentNullException("elements", () => _usersNull.LastOrDefault(_filterJson));
+    TestArgumentNullException("elements", () => _usersNull.LastOrDefault(_filterJsonDocument));
+
+    TestArgumentNullException("filter", () => _users.LastOrDefault((JsonDocument)null));
+    TestArgumentNullException("filterJson", () => _users.LastOrDefault((string)null));
+    TestArgumentNullException("filterJson", () => _users.LastOrDefault(string.Empty));
+    TestArgumentNullException("filterJson", () => _users.LastOrDefault(" "));
+  }
+
+  [Fact]
+  public void Any_ArgumentExceptions()
+  {
+    TestArgumentNullException("elements", () => _usersNull.Any(_filterJson));
+    TestArgumentNullException("elements", () => _usersNull.Any(_filterJsonDocument));
+
+    TestArgumentNullException("filter", () => _users.Any((JsonDocument)null));
+    TestArgumentNullException("filterJson", () => _users.Any((string)null));
+    TestArgumentNullException("filterJson", () => _users.Any(string.Empty));
+    TestArgumentNullException("filterJson", () => _users.Any(" "));
+  }
+
+  [Fact]
+  public void All_ArgumentExceptions()
+  {
+    TestArgumentNullException("elements", () => _usersNull.All(_filterJson));
+    TestArgumentNullException("elements", () => _usersNull.All(_filterJsonDocument));
+
+    TestArgumentNullException("filter", () => _users.All((JsonDocument)null));
+    TestArgumentNullException("filterJson", () => _users.All((string)null));
+    TestArgumentNullException("filterJson", () => _users.All(string.Empty));
+    TestArgumentNullException("filterJson", () => _users.All(" "));
   }
 
   private static void TestArgumentNullException(string expectedParamName, Action action)
