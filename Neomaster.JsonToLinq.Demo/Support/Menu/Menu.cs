@@ -29,7 +29,12 @@ internal class Menu
 
     _menuItems =
     [
-      new("📊 1. Prepare Data", PrepareData),
+      new(
+        "📊 Prepare Data",
+        PrepareData,
+        showSelectedMarker: false,
+        selectedColor: ConsoleColor.DarkGray,
+        selectedHoveredColor: ConsoleColor.DarkGreen),
     ];
 
     _curYMin = 5;
@@ -111,29 +116,37 @@ internal class Menu
       if (rowIsSelected)
       {
         runDemo = item.action;
-        selectedMarker = " 👀";
+
+        if (item.ShowSelectedMarker)
+        {
+          selectedMarker = " 👀";
+        }
+      }
+      else
+      {
+        selectedMarker = null;
       }
 
       if (rowY == _curY)
       {
         if (rowIsSelected)
         {
-          Console.ForegroundColor = ConsoleColor.Green;
+          Console.ForegroundColor = item.SelectedHoveredColor;
         }
         else
         {
-          Console.ForegroundColor = ConsoleColor.Gray;
+          Console.ForegroundColor = item.NormalHoveredColor;
         }
       }
       else
       {
         if (rowIsSelected)
         {
-          Console.ForegroundColor = ConsoleColor.DarkGreen;
+          Console.ForegroundColor = item.SelectedColor;
         }
         else
         {
-          Console.ForegroundColor = ConsoleColor.DarkGray;
+          Console.ForegroundColor = item.NormalColor;
         }
       }
 
