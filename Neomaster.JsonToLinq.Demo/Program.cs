@@ -9,6 +9,7 @@ var config = builder.Configuration;
 var cs = config.GetConnectionString("Demo");
 
 builder.Services.AddScoped<Menu>();
+builder.Services.AddScoped<DataService>();
 builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(cs));
 
 var app = builder.Build();
