@@ -75,6 +75,20 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
   }
 
   [Fact]
+  public void First()
+  {
+    var expected = _users.First(_filterFunc);
+
+    var actual1 = _users.First(_filterJson);
+    var actual2 = _users.First(_filterJsonDocument);
+
+    Assert.Equal(expected, actual1);
+    Assert.Equal(expected, actual2);
+
+    output.WriteLine($"{actual1.Balance}");
+  }
+
+  [Fact]
   public void First_ArgumentExceptions()
   {
     TestArgumentNullException("elements", () => _usersNull.First(_filterJson));
