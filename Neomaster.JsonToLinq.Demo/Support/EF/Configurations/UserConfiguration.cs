@@ -4,7 +4,7 @@ using Neomaster.JsonToLinq.UnitTests;
 
 namespace Neomaster.JsonToLinq.Demo;
 
-public class UserConfiguration : IEntityTypeConfiguration<User>
+internal class UserConfiguration : IEntityTypeConfiguration<User>
 {
   public void Configure(EntityTypeBuilder<User> builder)
   {

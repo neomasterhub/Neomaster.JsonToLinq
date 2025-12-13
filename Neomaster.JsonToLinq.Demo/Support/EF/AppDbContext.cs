@@ -3,7 +3,7 @@ using Neomaster.JsonToLinq.UnitTests;
 
 namespace Neomaster.JsonToLinq.Demo;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options)
+internal class AppDbContext(DbContextOptions<AppDbContext> options)
   : DbContext(options)
 {
   public DbSet<User> Users => Set<User>();

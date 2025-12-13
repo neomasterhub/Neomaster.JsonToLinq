@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Neomaster.JsonToLinq.Demo;
 
-public class DataService(AppDbContext dbContext)
+internal class DataService(AppDbContext dbContext)
 {
   public void Prepare()
   {
