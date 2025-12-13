@@ -3,8 +3,7 @@ using Xunit.Abstractions;
 
 namespace Neomaster.JsonToLinq.UnitTests;
 
-public class JsonLinqUnitTests(ITestOutputHelper output)
-  : UnitTestsBase
+public class JsonLinqUnitTests : UnitTestsBase
 {
   private const string _filterJson =
     """
@@ -25,14 +24,17 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
     }
     """;
 
-  private static readonly IReadOnlyList<User> _users;
-  private static readonly IReadOnlyList<User> _usersNull = null;
-  private static readonly IReadOnlyList<User> _usersEmpty = [];
-  private static readonly Func<User, bool> _filterFunc;
-  private static readonly JsonDocument _filterJsonDocument;
+  private readonly ITestOutputHelper _output;
+  private readonly IReadOnlyList<User> _users;
+  private readonly IReadOnlyList<User> _usersNull = null;
+  private readonly IReadOnlyList<User> _usersEmpty = [];
+  private readonly Func<User, bool> _filterFunc;
+  private readonly JsonDocument _filterJsonDocument;
 
-  static JsonLinqUnitTests()
+  public JsonLinqUnitTests(ITestOutputHelper output)
   {
+    _output = output;
+
     _users =
     [
       new() { Balance = 0 },
@@ -59,7 +61,7 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
 
     foreach (var a in actual1)
     {
-      output.WriteLine($"{a.Balance}");
+      _output.WriteLine($"{a.Balance}");
     }
   }
 
@@ -86,7 +88,7 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
     Assert.Equal(expected, actual1);
     Assert.Equal(expected, actual2);
 
-    output.WriteLine($"{actual1.Balance}");
+    _output.WriteLine($"{actual1.Balance}");
   }
 
   [Fact]
@@ -104,16 +106,13 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
   [Fact]
   public void FirstOrDefault()
   {
-    var users = _users
-      .Select(u =>
-      {
-        u.Balance += 1000;
-        return u;
-      })
-      .ToArray();
+    foreach (var user in _users)
+    {
+      user.Balance += 1000;
+    }
 
-    Assert.Null(users.FirstOrDefault(_filterJson));
-    Assert.Null(users.FirstOrDefault(_filterJsonDocument));
+    Assert.Null(_users.FirstOrDefault(_filterJson));
+    Assert.Null(_users.FirstOrDefault(_filterJsonDocument));
     Assert.Null(_usersEmpty.FirstOrDefault(_filterJson));
     Assert.Null(_usersEmpty.FirstOrDefault(_filterJsonDocument));
   }
@@ -141,7 +140,7 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
     Assert.Equal(expected, actual1);
     Assert.Equal(expected, actual2);
 
-    output.WriteLine($"{actual1.Balance}");
+    _output.WriteLine($"{actual1.Balance}");
   }
 
   [Fact]
@@ -159,16 +158,13 @@ public class JsonLinqUnitTests(ITestOutputHelper output)
   [Fact]
   public void LastOrDefault()
   {
-    var users = _users
-      .Select(u =>
-      {
-        u.Balance += 1000;
-        return u;
-      })
-      .ToArray();
+    foreach (var user in _users)
+    {
+      user.Balance += 1000;
+    }
 
-    Assert.Null(users.LastOrDefault(_filterJson));
-    Assert.Null(users.LastOrDefault(_filterJsonDocument));
+    Assert.Null(_users.LastOrDefault(_filterJson));
+    Assert.Null(_users.LastOrDefault(_filterJsonDocument));
     Assert.Null(_usersEmpty.LastOrDefault(_filterJson));
     Assert.Null(_usersEmpty.LastOrDefault(_filterJsonDocument));
   }
