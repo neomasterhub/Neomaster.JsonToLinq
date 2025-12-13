@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Neomaster.JsonToLinq.UnitTests;
 
-namespace Neomaster.JsonToLinq.UnitTests;
+namespace Neomaster.JsonToLinq.Demo;
 
 public class AppDbContext : DbContext
 {
