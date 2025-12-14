@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Neomaster.JsonToLinq.Demo;
 
-internal class EFLoggerProvider(EFLog logOutput)
+internal class EFLoggerProvider(Log logOutput)
   : ILoggerProvider
 {
   public ILogger CreateLogger(string categoryName = null)

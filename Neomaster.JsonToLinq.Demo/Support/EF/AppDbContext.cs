@@ -7,7 +7,7 @@ namespace Neomaster.JsonToLinq.Demo;
 internal class AppDbContext(DbContextOptions<AppDbContext> options)
   : DbContext(options)
 {
-  public EFLog Log { get; } = new();
+  public Log Log { get; } = new();
 
   public DbSet<User> Users => Set<User>();
 

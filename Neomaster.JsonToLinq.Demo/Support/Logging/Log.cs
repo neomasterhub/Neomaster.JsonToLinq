@@ -1,6 +1,6 @@
 namespace Neomaster.JsonToLinq.Demo;
 
-internal class EFLog
+internal class Log
 {
   private readonly List<LogEvent> _events = [];
 

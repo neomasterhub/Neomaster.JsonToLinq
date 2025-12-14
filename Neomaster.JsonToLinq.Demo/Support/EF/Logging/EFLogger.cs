@@ -2,7 +2,7 @@ using Microsoft.Extensions.Logging;
 
 namespace Neomaster.JsonToLinq.Demo;
 
-internal class EFLogger(EFLog output)
+internal class EFLogger(Log output)
   : ILogger
 {
   public IDisposable BeginScope<TState>(TState state)
