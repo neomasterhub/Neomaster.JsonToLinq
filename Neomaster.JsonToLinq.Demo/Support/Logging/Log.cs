@@ -1,3 +1,5 @@
+using Microsoft.Extensions.Logging;
+
 namespace Neomaster.JsonToLinq.Demo;
 
 internal class Log
@@ -14,6 +16,11 @@ internal class Log
   public void Add(LogEvent e)
   {
     _events.Add(e);
+  }
+
+  public void Add(string text, LogLevel logLevel = LogLevel.Information)
+  {
+    _events.Add(new LogEvent(logLevel, text));
   }
 
   public void AddRange(IEnumerable<LogEvent> events)
