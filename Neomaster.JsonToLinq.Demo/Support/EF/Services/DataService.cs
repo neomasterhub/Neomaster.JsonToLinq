@@ -17,6 +17,7 @@ internal class DataService(AppDbContext dbContext)
     Randomizer.Seed = new Random(1);
 
     dbContext.Users.AddRange(new Faker<User>()
+      .RuleFor(u => u.Email, f => f.Internet.Email())
       .RuleFor(u => u.Balance, f => f.Random.Decimal(-100, 10000))
       .RuleFor(u => u.LastVisitAt, f => f.IndexFaker % 100 == 0 ? null : f.Date.Between(dt1, dt2))
       .Generate(10_000));
