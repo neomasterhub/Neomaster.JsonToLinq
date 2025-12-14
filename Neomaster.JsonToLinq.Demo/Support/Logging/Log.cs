@@ -6,9 +6,24 @@ internal class Log
 
   public IReadOnlyList<LogEvent> Events => _events;
 
+  public void Clear()
+  {
+    _events.Clear();
+  }
+
   public void Add(LogEvent e)
   {
     _events.Add(e);
+  }
+
+  public void AddRange(IEnumerable<LogEvent> events)
+  {
+    _events.AddRange(events);
+  }
+
+  public void CopyTo(Log log)
+  {
+    log.AddRange(Events);
   }
 
   public void Print()

@@ -7,8 +7,8 @@ internal class Menu
 {
   private readonly int _curYMin;
   private readonly int _curYMax;
+  private readonly Log _log = new();
   private readonly MenuItem[] _menuItems;
-  private readonly StringBuilder _demoOutput = new();
 
   private readonly DataService _dataService;
 
@@ -29,12 +29,7 @@ internal class Menu
 
     _menuItems =
     [
-      new(
-        "📊 Prepare Data",
-        PrepareData,
-        showSelectedMarker: false,
-        selectedColor: ConsoleColor.DarkGray,
-        selectedHoveredColor: ConsoleColor.DarkGreen),
+      new("📊 Prepare Data", PrepareData),
     ];
 
     _curYMin = 5;
@@ -82,7 +77,7 @@ internal class Menu
 
         case ConsoleKey.Enter:
           _selectedY = _curY;
-          _demoOutput.Clear();
+          _log.Clear();
           _runDemo = true;
           break;
       }
@@ -161,13 +156,14 @@ internal class Menu
 
     Console.ResetColor();
     Console.WriteLine();
-    Console.WriteLine(_demoOutput);
+
+    _log.Print();
 
     Console.SetCursorPosition(0, _curY);
   }
 
   public void PrepareData()
   {
-    _dataService.Prepare();
+    _dataService.Prepare(_log);
   }
 }
