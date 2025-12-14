@@ -10,5 +10,8 @@ internal class DataService(AppDbContext dbContext)
     dbContext.Database.Migrate();
 
     // TODO: Fill tables
+
+    Console.WriteLine();
+    dbContext.Log.Print();
   }
 }

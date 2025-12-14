@@ -19,7 +19,7 @@ internal class EFLog
     {
       var e = _events[i];
 
-      Console.Write($"{i}. ");
+      Console.Write($"#{i + 1} ");
 
       switch (e.LogLevel)
       {
