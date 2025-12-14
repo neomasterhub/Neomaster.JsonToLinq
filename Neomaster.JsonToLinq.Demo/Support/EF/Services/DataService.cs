@@ -11,6 +11,6 @@ internal class DataService(AppDbContext dbContext)
 
     // TODO: Fill tables
 
-    dbContext.Log.CopyTo(log);
+    dbContext.Log.CutTo(log);
   }
 }

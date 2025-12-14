@@ -26,6 +26,12 @@ internal class Log
     log.AddRange(Events);
   }
 
+  public void CutTo(Log log)
+  {
+    CopyTo(log);
+    Clear();
+  }
+
   public void Print()
   {
     Console.ResetColor();
