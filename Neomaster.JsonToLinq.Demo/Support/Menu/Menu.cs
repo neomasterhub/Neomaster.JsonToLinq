@@ -32,7 +32,7 @@ internal class Menu
       new("📊 Prepare Data", PrepareData),
     ];
 
-    _curYMin = 7;
+    _curYMin = 8;
     _curYMax = _curYMin + _menuItems.Length - 1;
     _curY = _curYMin;
   }
@@ -80,6 +80,10 @@ internal class Menu
           _log.Clear();
           _runDemo = true;
           break;
+
+        case ConsoleKey.Spacebar:
+          _log.Clear();
+          break;
       }
 
       ShowCommands();
@@ -104,6 +108,7 @@ internal class Menu
 
       Esc   - Exit
       Enter - Select
+      Space - Clear
 
       """);
 
