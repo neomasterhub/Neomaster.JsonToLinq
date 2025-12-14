@@ -32,7 +32,7 @@ internal class Menu
       new("📊 Prepare Data", PrepareData),
     ];
 
-    _curYMin = 5;
+    _curYMin = 7;
     _curYMax = _curYMin + _menuItems.Length - 1;
     _curY = _curYMin;
   }
@@ -92,10 +92,16 @@ internal class Menu
   {
     Console.Clear();
     Console.ForegroundColor = ConsoleColor.Cyan;
-    Console.WriteLine("🔗 JsonToLinq Demos 🔗\n");
+    Console.WriteLine(
+      """
+      ░▀▀█░█▀▀░█▀█░█▀█░░░▀█▀░█▀█░░░█░░░▀█▀░█▀█░█▀█░
+      ░░░█░▀▀█░█░█░█░█░░░░█░░█░█░░░█░░░░█░░█░█░█░█░
+      ░▀▀░░▀▀▀░▀▀▀░▀░▀░░░░▀░░▀▀▀░░░▀▀▀░▀▀▀░▀░▀░▀▀█░
+      """);
     Console.ForegroundColor = ConsoleColor.DarkGray;
     Console.WriteLine(
       """
+
       Esc   - Exit
       Enter - Select
 
