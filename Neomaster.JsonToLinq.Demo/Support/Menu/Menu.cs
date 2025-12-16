@@ -11,6 +11,7 @@ internal class Menu
   private readonly MenuItem[] _menuItems;
 
   private readonly DataService _dataService;
+  private readonly UserDemoService _userDemoService;
 
   private int _curY;
   private int _selectedY;
@@ -23,13 +24,16 @@ internal class Menu
   }
 
   public Menu(
-    DataService dataService)
+    DataService dataService,
+    UserDemoService userDemoService)
   {
     _dataService = dataService;
+    _userDemoService = userDemoService;
 
     _menuItems =
     [
       new("📊 Prepare Data", PrepareData),
+      new("📊 1", UserDemo1),
     ];
 
     _curYMin = 8;
@@ -176,5 +180,10 @@ internal class Menu
   public void PrepareData()
   {
     _dataService.Prepare(_log);
+  }
+
+  public void UserDemo1()
+  {
+    _userDemoService.Demo1(_log);
   }
 }

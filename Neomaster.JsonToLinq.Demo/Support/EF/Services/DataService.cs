@@ -4,10 +4,12 @@ using Neomaster.JsonToLinq.UnitTests;
 
 namespace Neomaster.JsonToLinq.Demo;
 
-internal class DataService(AppDbContext dbContext)
+internal class DataService()
 {
   public void Prepare(Log log)
   {
+    using var dbContext = new AppDbContext();
+
     dbContext.Database.EnsureDeleted();
     dbContext.Database.Migrate();
 
