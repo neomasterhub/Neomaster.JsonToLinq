@@ -498,15 +498,43 @@ public static partial class JsonLinq
   /// Parses a JSON document into a LINQ expression filter for <typeparamref name="T"/>.
   /// </summary>
   /// <typeparam name="T">Type of objects to filter.</typeparam>
+  /// <param name="filterJson">JSON filter definition.</param>
+  /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
+  /// <param name="options">Optional parser settings. Uses defaults if null.</param>
+  /// <returns>An <see cref="Expression{Func}"/> representing the filter for <typeparamref name="T"/>.</returns>
+  /// <exception cref="ArgumentNullException">The JSON filter is null.</exception>
+  public static Expression<Func<T, bool>> ParseToFilterExpression<T>(
+    string filterJson,
+    ExpressionFieldMapper fieldMapper = null,
+    ExpressionParsingOptions options = null)
+  {
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    return ParseToFilterExpression<T>(JsonDocument.Parse(filterJson), fieldMapper, options);
+  }
+
+  /// <summary>
+  /// Parses a JSON document into a LINQ expression filter for <typeparamref name="T"/>.
+  /// </summary>
+  /// <typeparam name="T">Type of objects to filter.</typeparam>
   /// <param name="filter">JSON filter definition.</param>
   /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
   /// <param name="options">Optional parser settings. Uses defaults if null.</param>
   /// <returns>An <see cref="Expression{Func}"/> representing the filter for <typeparamref name="T"/>.</returns>
+  /// <exception cref="ArgumentNullException">The JSON filter is null.</exception>
   public static Expression<Func<T, bool>> ParseToFilterExpression<T>(
     JsonDocument filter,
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
+    if (filter == null)
+    {
+      throw new ArgumentNullException(nameof(filter));
+    }
+
     options ??= Consts.Options.Default;
     fieldMapper ??= ExpressionFieldMapper.OnDefault<T>();
 
