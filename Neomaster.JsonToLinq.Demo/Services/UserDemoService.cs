@@ -1,4 +1,4 @@
-using System.Text.Json;
+using Microsoft.Extensions.Logging;
 using Neomaster.JsonToLinq.UnitTests;
 using Xunit;
 
@@ -23,12 +23,20 @@ internal class UserDemoService
         ]
       }
       """;
-    var expectedCount = dbContext.Users.Count(u => u.LastVisitAt == null);
 
-    var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(JsonDocument.Parse(filterJson)));
+    try
+    {
+      var expectedCount = dbContext.Users.Count(u => u.LastVisitAt == null);
 
-    Assert.Equal(expectedCount, actualCount);
+      var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
 
-    log.Add(filterJson);
+      Assert.Equal(expectedCount, actualCount);
+
+      log.Add($"Count: {actualCount}");
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
   }
 }
