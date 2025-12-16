@@ -10,9 +10,6 @@ internal class Menu
   private readonly Log _log = new();
   private readonly MenuItem[] _menuItems;
 
-  private readonly DataService _dataService;
-  private readonly UserDemoService _userDemoService;
-
   private int _curY;
   private int _selectedY;
   private bool _runDemo;
@@ -27,13 +24,10 @@ internal class Menu
     DataService dataService,
     UserDemoService userDemoService)
   {
-    _dataService = dataService;
-    _userDemoService = userDemoService;
-
     _menuItems =
     [
-      new("📊 Prepare Data", PrepareData),
-      new("📊 1", UserDemo1),
+      new("📊 Prepare Data", () => dataService.Prepare(_log)),
+      new("🧪 LastVisitAt == null", () => userDemoService.Demo1(_log)),
     ];
 
     _curYMin = 8;
@@ -175,15 +169,5 @@ internal class Menu
     _log.Print();
 
     Console.SetCursorPosition(0, _curY);
-  }
-
-  public void PrepareData()
-  {
-    _dataService.Prepare(_log);
-  }
-
-  public void UserDemo1()
-  {
-    _userDemoService.Demo1(_log);
   }
 }
