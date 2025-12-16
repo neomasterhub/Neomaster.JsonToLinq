@@ -32,6 +32,8 @@ internal class UserDemoService
 
       Assert.Equal(expectedCount, actualCount);
 
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
       log.Add($"Count: {actualCount}");
     }
     catch (Exception ex)
