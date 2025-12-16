@@ -6,7 +6,7 @@ namespace Neomaster.JsonToLinq.Demo;
 
 internal class UserDemoService
 {
-  public void Demo1(Log log)
+  public void CountInactiveUsers(Log log)
   {
     using var dbContext = new AppDbContext();
 

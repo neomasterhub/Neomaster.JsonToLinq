@@ -26,8 +26,8 @@ internal class Menu
   {
     _menuItems =
     [
-      new("📊 Prepare Data", () => dataService.Prepare(_log)),
-      new("🧪 LastVisitAt == null", () => userDemoService.Demo1(_log)),
+      new("📊 Prepare data", () => dataService.Prepare(_log)),
+      new("🧪 LastVisitAt == null", () => userDemoService.CountInactiveUsers(_log)),
     ];
 
     _curYMin = 8;
