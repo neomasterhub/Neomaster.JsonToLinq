@@ -24,6 +24,9 @@ public static partial class JsonLinq
   /// <exception cref="ArgumentNullException">
   /// The source sequence or the JSON filter is null.
   /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   public static bool All<TElement>(
     this IEnumerable<TElement> elements,
     string filterJson,
@@ -35,9 +38,14 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(elements));
     }
 
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return elements.All(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -93,6 +101,9 @@ public static partial class JsonLinq
   /// <exception cref="ArgumentNullException">
   /// The source sequence or the JSON filter is null.
   /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   public static bool Any<TElement>(
     this IEnumerable<TElement> elements,
     string filterJson,
@@ -104,9 +115,14 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(elements));
     }
 
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return elements.Any(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -162,6 +178,9 @@ public static partial class JsonLinq
   /// <exception cref="ArgumentNullException">
   /// The source sequence or the JSON filter is null.
   /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   public static TElement LastOrDefault<TElement>(
     this IEnumerable<TElement> elements,
     string filterJson,
@@ -173,9 +192,14 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(elements));
     }
 
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return elements.LastOrDefault(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -228,6 +252,9 @@ public static partial class JsonLinq
   /// <exception cref="ArgumentNullException">
   /// The source sequence or the JSON filter is null.
   /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   /// <exception cref="InvalidOperationException">
   /// No element satisfies the JSON filter,
   /// or the source sequence is empty.
@@ -243,9 +270,14 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(elements));
     }
 
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return elements.Last(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -302,6 +334,9 @@ public static partial class JsonLinq
   /// <exception cref="ArgumentNullException">
   /// The source sequence or the JSON filter is null.
   /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   public static TElement FirstOrDefault<TElement>(
     this IEnumerable<TElement> elements,
     string filterJson,
@@ -313,9 +348,14 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(elements));
     }
 
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return elements.FirstOrDefault(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -368,6 +408,9 @@ public static partial class JsonLinq
   /// <exception cref="ArgumentNullException">
   /// The source sequence or the JSON filter is null.
   /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   /// <exception cref="InvalidOperationException">
   /// No element satisfies the JSON filter,
   /// or the source sequence is empty.
@@ -383,9 +426,14 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(elements));
     }
 
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return elements.First(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -441,6 +489,9 @@ public static partial class JsonLinq
   /// <exception cref="ArgumentNullException">
   /// The source sequence or the JSON filter is null.
   /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   public static IEnumerable<TElement> Where<TElement>(
     this IEnumerable<TElement> elements,
     string filterJson,
@@ -452,9 +503,14 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(elements));
     }
 
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return elements.Where(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -502,15 +558,25 @@ public static partial class JsonLinq
   /// <param name="fieldMapper">Maps JSON field names to <see cref="ExpressionField"/> definitions.</param>
   /// <param name="options">Optional parser settings. Uses defaults if null.</param>
   /// <returns>An <see cref="Expression{Func}"/> representing the filter for <typeparamref name="T"/>.</returns>
-  /// <exception cref="ArgumentNullException">The JSON filter is null.</exception>
+  /// <exception cref="ArgumentNullException">
+  /// The JSON filter is null.
+  /// </exception>
+  /// <exception cref="ArgumentException">
+  /// The JSON filter is empty or consists only of white-space characters.
+  /// </exception>
   public static Expression<Func<T, bool>> ParseToFilterExpression<T>(
     string filterJson,
     ExpressionFieldMapper fieldMapper = null,
     ExpressionParsingOptions options = null)
   {
-    if (string.IsNullOrWhiteSpace(filterJson))
+    if (filterJson == null)
     {
       throw new ArgumentNullException(nameof(filterJson));
+    }
+
+    if (string.IsNullOrWhiteSpace(filterJson))
+    {
+      throw new ArgumentException(nameof(filterJson));
     }
 
     return ParseToFilterExpression<T>(JsonDocument.Parse(filterJson), fieldMapper, options);
