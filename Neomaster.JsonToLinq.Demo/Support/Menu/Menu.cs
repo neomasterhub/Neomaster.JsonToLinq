@@ -27,7 +27,8 @@ internal class Menu
     _menuItems =
     [
       new("📊 Prepare data", () => dataService.Prepare(_log)),
-      new("🧪 LastVisitAt == null", () => userDemoService.CountInactiveUsers(_log)),
+      new("🧪 &&[r]", () => userDemoService.CountInactiveUsers(_log)),
+      new("🧪 &&[||[r1,r2]]", () => userDemoService.InnerOr(_log)),
     ];
 
     _curYMin = 8;
