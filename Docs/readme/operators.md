@@ -1,6 +1,10 @@
 ## 🛠️ Operators
 
-### 📌 Default Operator Mapping
+### 📌 Default Operators
+
+```csharp
+public IReadOnlyDictionary<TKey, TValue> ExpressionOperatorMapper.Pairs { get; }
+```
 
 | JSON   | LINQ Expression                 | Description           |
 |--------|---------------------------------|-----------------------|
@@ -14,3 +18,14 @@
 | `>=`   | `Expression.GreaterThanOrEqual` | Greater than or equal |
 | `<`    | `Expression.LessThan`           | Less than             |
 | `<=`   | `Expression.LessThanOrEqual`    | Less than or equal    |
+
+### 🌟 Add Custom Operators
+
+```csharp
+JsonLinq.Configure(options =>
+  {
+    options.OperatorMapper
+      .Add("lt", Expression.LessThan)
+      .Add("gt", Expression.GreaterThan);
+  });
+```

@@ -31,6 +31,7 @@ internal class Menu
       new("🧪 &&[r1,r2]", () => userDemoService.And_2_(_log)),
       new("🧪 &&[||[r1,r2]]", () => userDemoService.And_Or_2__(_log)),
       new("🧪 &&[r1,||[r2,r3]]", () => userDemoService.And_1Or_2__(_log)),
+      new("🧪 Custom operators: lt, gt", () => userDemoService.CustomOp(_log)),
     ];
 
     _curYMin = 8;

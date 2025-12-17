@@ -47,7 +47,9 @@ var users = source.Where(
   """);
 ```
 
-## 📌 Default Operator Mapping
+## 🛠️ Operators
+
+### 📌 Default Operator Mapping
 
 | JSON   | LINQ Expression                 | Description           |
 |--------|---------------------------------|-----------------------|

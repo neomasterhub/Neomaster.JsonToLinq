@@ -1,4 +1,5 @@
 #pragma warning disable CA1822, SA1611
+using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 using Neomaster.JsonToLinq.UnitTests;
 using Xunit;
@@ -198,6 +199,73 @@ internal class UserDemoService
     catch (Exception ex)
     {
       log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Custom operators:
+  /// <list type="number">
+  /// <item>
+  /// <term><c>lt</c></term>
+  /// <description><see cref="Expression.LessThan"/></description>
+  /// </item>
+  /// <item>
+  /// <term><c>gt</c></term>
+  /// <description><see cref="Expression.GreaterThan"/></description>
+  /// </item>
+  /// </list>
+  /// </summary>
+  public void CustomOp(Log log)
+  {
+    JsonLinq.Configure(options =>
+    {
+      options.OperatorMapper
+        .Add("lt", Expression.LessThan)
+        .Add("gt", Expression.GreaterThan);
+    });
+
+    using var dbContext = new AppDbContext();
+
+    var filterJson =
+      """
+      {
+        "Logic": "&&",
+        "Rules": [
+          {
+            "Field": "balance",
+            "Operator": "gt",
+            "Value": 100
+          },
+          {
+            "Field": "balance",
+            "Operator": "lt",
+            "Value": 10000
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expectedCount = dbContext.Users.Count(u =>
+        u.Balance > 100
+        && u.Balance < 10000);
+
+      var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
+
+      Assert.Equal(expectedCount, actualCount);
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+      log.Add($"Count: {actualCount}");
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+    finally
+    {
+      JsonLinq.RestoreDefaultOptions();
     }
   }
 }
