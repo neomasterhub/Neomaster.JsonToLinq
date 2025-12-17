@@ -3,7 +3,7 @@
 ### 📌 Default Operators
 
 ```csharp
-public IReadOnlyDictionary<TKey, TValue> ExpressionOperatorMapper.Pairs { get; }
+public IReadOnlyDictionary<string, ExpressionBind> ExpressionOperatorMapper.Pairs { get; }
 ```
 
 | JSON   | LINQ Expression                 | Description           |

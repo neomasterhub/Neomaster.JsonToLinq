@@ -64,7 +64,11 @@ var users = source.Where(
 
 ## 🛠️ Operators
 
-### 📌 Default Operator Mapping
+### 📌 Default Operators
+
+```csharp
+public IReadOnlyDictionary<string, ExpressionBind> ExpressionOperatorMapper.Pairs { get; }
+```
 
 | JSON   | LINQ Expression                 | Description           |
 |--------|---------------------------------|-----------------------|
@@ -78,6 +82,17 @@ var users = source.Where(
 | `>=`   | `Expression.GreaterThanOrEqual` | Greater than or equal |
 | `<`    | `Expression.LessThan`           | Less than             |
 | `<=`   | `Expression.LessThanOrEqual`    | Less than or equal    |
+
+### 🌟 Add Custom Operators
+
+```csharp
+JsonLinq.Configure(options =>
+  {
+    options.OperatorMapper
+      .Add("lt", Expression.LessThan)
+      .Add("gt", Expression.GreaterThan);
+  });
+```
 
 ## 🔬 Demos and Experiments
 
