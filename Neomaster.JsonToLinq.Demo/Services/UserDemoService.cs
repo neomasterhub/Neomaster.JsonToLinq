@@ -1,3 +1,4 @@
+#pragma warning disable CA1822, SA1611
 using Microsoft.Extensions.Logging;
 using Neomaster.JsonToLinq.UnitTests;
 using Xunit;
@@ -6,7 +7,10 @@ namespace Neomaster.JsonToLinq.Demo;
 
 internal class UserDemoService
 {
-  public void CountInactiveUsers(Log log)
+  /// <summary>
+  /// <![CDATA[&&[r]]]>
+  /// </summary>
+  public void And_1_(Log log)
   {
     using var dbContext = new AppDbContext();
 
@@ -42,7 +46,10 @@ internal class UserDemoService
     }
   }
 
-  public void InnerOr(Log log)
+  /// <summary>
+  /// <![CDATA[&&[||[r1,r2]]]]>
+  /// </summary>
+  public void And_Or_2__(Log log)
   {
     using var dbContext = new AppDbContext();
 
