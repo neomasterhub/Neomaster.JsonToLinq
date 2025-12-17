@@ -77,64 +77,33 @@ var users = source.Where(
 | `<`    | `Expression.LessThan`           | Less than             |
 | `<=`   | `Expression.LessThanOrEqual`    | Less than or equal    |
 
-## 🧪 Demos
-### Filtering Users
+## 🔬 Demos and Experiments
 
-```csharp
-// 1. Source data.
-var users = new List<User>
-{
-  new() { Id = 1, Balance = 0, LastVisitAt = null },
-  new() { Id = 2, Balance = 0, LastVisitAt = DateTime.UtcNow },
-  new() { Id = 3, Balance = 0, LastVisitAt = DateTime.UtcNow.AddYears(-10) },
-  new() { Id = 4, Balance = 100, LastVisitAt = null },
-  new() { Id = 5, Balance = 100, LastVisitAt = DateTime.UtcNow },
-  new() { Id = 6, Balance = 100, LastVisitAt = DateTime.UtcNow.AddYears(-10) },
-};
+This repository contains a project with **working examples**.
+You are welcome to submit a PR with your own examples, bug reports, or new features.
+**To describe a filter, use the following notation:**
 
-// 2. JSON filter definition (simulates front-end request).
-var filterJson = JsonDocument.Parse(
-  """
-  {
-    "Logic": "&&",
-    "Rules": [
-      {
-        "Field": "balance",
-        "Operator": "=",
-        "Value": 0
-      },
-      {
-        "Logic": "||",
-        "Rules": [
-          {
-            "Field": "lastVisitAt",
-            "Operator": "=",
-            "Value": null
-          },
-          {
-            "Field": "lastVisitAt",
-            "Operator": "<=",
-            "Value": "2025-01-01T00:00:00Z"
-          }
-        ]
-      }
-    ]
-  }
-  """);
+### 🔤 Filter Notation
 
-// 3. Parse JSON to LINQ expression and compile.
-var filterExpr = JsonLinq.ParseToFilterExpression<User>(filterJson);
-var filterLambda = filterExpr.Compile();
-
-// 4. Apply filter.
-var filteredUsers = users.Where(filterLambda);
-
-// 5. Output results.
-foreach (var fu in filteredUsers)
-{
-  Console.WriteLine($"Id: {fu.Id}");
-}
-
-// Id: 1
-// Id: 3
+**Syntax**
 ```
+expr = logic[expr(, expr)*]
+```
+- `expr` - a single rule or a combination of rules
+- `logic` - an operator used to combine multiple rules, e.g. `&&`, `&`, `||`, `|`, or a custom one
+
+**Examples**
+1. `&&[x = null]`
+1. `&&[a < 0, b > 0]`
+1. `&&[x = null, ||[a < 0, b > 0]]`
+
+### 💻 Demo Project
+
+This project provides examples of working with **EF Core** and a **PostgreSQL database**.
+
+🧪 A real database is used instead of in-memory storage, ensuring clean and realistic experiments.
+
+➕ You can add your own examples with other databases or ORMs via a PR.
+
+▶️ Before running the demos, select the first menu item, **Prepare Data**, to apply migrations and populate the tables with test data.
+
