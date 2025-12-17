@@ -45,7 +45,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return elements.All(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -122,7 +122,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return elements.Any(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -199,7 +199,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return elements.LastOrDefault(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -277,7 +277,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return elements.Last(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -355,7 +355,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return elements.FirstOrDefault(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -433,7 +433,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return elements.First(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -510,7 +510,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return elements.Where(JsonDocument.Parse(filterJson), fieldMapper, options);
@@ -576,7 +576,7 @@ public static partial class JsonLinq
 
     if (string.IsNullOrWhiteSpace(filterJson))
     {
-      throw new ArgumentException(nameof(filterJson));
+      throw new ArgumentException(null, nameof(filterJson));
     }
 
     return ParseToFilterExpression<T>(JsonDocument.Parse(filterJson), fieldMapper, options);
