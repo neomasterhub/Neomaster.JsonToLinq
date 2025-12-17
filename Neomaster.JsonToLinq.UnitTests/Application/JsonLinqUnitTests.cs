@@ -68,13 +68,14 @@ public class JsonLinqUnitTests : UnitTestsBase
   [Fact]
   public void Where_ArgumentExceptions()
   {
-    TestArgumentNullException("elements", () => _usersNull.Where(_filterJson));
-    TestArgumentNullException("elements", () => _usersNull.Where(_filterJsonDocument));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.Where(_filterJson));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.Where(_filterJsonDocument));
 
-    TestArgumentNullException("filter", () => _users.Where((JsonDocument)null));
-    TestArgumentNullException("filterJson", () => _users.Where((string)null));
-    TestArgumentNullException("filterJson", () => _users.Where(string.Empty));
-    TestArgumentNullException("filterJson", () => _users.Where(" "));
+    TestArgumentException<ArgumentNullException>("filter", () => _users.Where((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => _users.Where((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => _users.Where(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => _users.Where(" "));
   }
 
   [Fact]
@@ -94,13 +95,14 @@ public class JsonLinqUnitTests : UnitTestsBase
   [Fact]
   public void First_ArgumentExceptions()
   {
-    TestArgumentNullException("elements", () => _usersNull.First(_filterJson));
-    TestArgumentNullException("elements", () => _usersNull.First(_filterJsonDocument));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.First(_filterJson));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.First(_filterJsonDocument));
 
-    TestArgumentNullException("filter", () => _users.First((JsonDocument)null));
-    TestArgumentNullException("filterJson", () => _users.First((string)null));
-    TestArgumentNullException("filterJson", () => _users.First(string.Empty));
-    TestArgumentNullException("filterJson", () => _users.First(" "));
+    TestArgumentException<ArgumentNullException>("filter", () => _users.First((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => _users.First((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => _users.First(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => _users.First(" "));
   }
 
   [Fact]
@@ -120,13 +122,14 @@ public class JsonLinqUnitTests : UnitTestsBase
   [Fact]
   public void FirstOrDefault_ArgumentExceptions()
   {
-    TestArgumentNullException("elements", () => _usersNull.FirstOrDefault(_filterJson));
-    TestArgumentNullException("elements", () => _usersNull.FirstOrDefault(_filterJsonDocument));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.FirstOrDefault(_filterJson));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.FirstOrDefault(_filterJsonDocument));
 
-    TestArgumentNullException("filter", () => _users.FirstOrDefault((JsonDocument)null));
-    TestArgumentNullException("filterJson", () => _users.FirstOrDefault((string)null));
-    TestArgumentNullException("filterJson", () => _users.FirstOrDefault(string.Empty));
-    TestArgumentNullException("filterJson", () => _users.FirstOrDefault(" "));
+    TestArgumentException<ArgumentNullException>("filter", () => _users.FirstOrDefault((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => _users.FirstOrDefault((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => _users.FirstOrDefault(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => _users.FirstOrDefault(" "));
   }
 
   [Fact]
@@ -146,13 +149,14 @@ public class JsonLinqUnitTests : UnitTestsBase
   [Fact]
   public void Last_ArgumentExceptions()
   {
-    TestArgumentNullException("elements", () => _usersNull.Last(_filterJson));
-    TestArgumentNullException("elements", () => _usersNull.Last(_filterJsonDocument));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.Last(_filterJson));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.Last(_filterJsonDocument));
 
-    TestArgumentNullException("filter", () => _users.Last((JsonDocument)null));
-    TestArgumentNullException("filterJson", () => _users.Last((string)null));
-    TestArgumentNullException("filterJson", () => _users.Last(string.Empty));
-    TestArgumentNullException("filterJson", () => _users.Last(" "));
+    TestArgumentException<ArgumentNullException>("filter", () => _users.Last((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => _users.Last((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => _users.Last(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => _users.Last(" "));
   }
 
   [Fact]
@@ -172,42 +176,46 @@ public class JsonLinqUnitTests : UnitTestsBase
   [Fact]
   public void LastOrDefault_ArgumentExceptions()
   {
-    TestArgumentNullException("elements", () => _usersNull.LastOrDefault(_filterJson));
-    TestArgumentNullException("elements", () => _usersNull.LastOrDefault(_filterJsonDocument));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.LastOrDefault(_filterJson));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.LastOrDefault(_filterJsonDocument));
 
-    TestArgumentNullException("filter", () => _users.LastOrDefault((JsonDocument)null));
-    TestArgumentNullException("filterJson", () => _users.LastOrDefault((string)null));
-    TestArgumentNullException("filterJson", () => _users.LastOrDefault(string.Empty));
-    TestArgumentNullException("filterJson", () => _users.LastOrDefault(" "));
+    TestArgumentException<ArgumentNullException>("filter", () => _users.LastOrDefault((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => _users.LastOrDefault((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => _users.LastOrDefault(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => _users.LastOrDefault(" "));
   }
 
   [Fact]
   public void Any_ArgumentExceptions()
   {
-    TestArgumentNullException("elements", () => _usersNull.Any(_filterJson));
-    TestArgumentNullException("elements", () => _usersNull.Any(_filterJsonDocument));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.Any(_filterJson));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.Any(_filterJsonDocument));
 
-    TestArgumentNullException("filter", () => _users.Any((JsonDocument)null));
-    TestArgumentNullException("filterJson", () => _users.Any((string)null));
-    TestArgumentNullException("filterJson", () => _users.Any(string.Empty));
-    TestArgumentNullException("filterJson", () => _users.Any(" "));
+    TestArgumentException<ArgumentNullException>("filter", () => _users.Any((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => _users.Any((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => _users.Any(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => _users.Any(" "));
   }
 
   [Fact]
   public void All_ArgumentExceptions()
   {
-    TestArgumentNullException("elements", () => _usersNull.All(_filterJson));
-    TestArgumentNullException("elements", () => _usersNull.All(_filterJsonDocument));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.All(_filterJson));
+    TestArgumentException<ArgumentNullException>("elements", () => _usersNull.All(_filterJsonDocument));
 
-    TestArgumentNullException("filter", () => _users.All((JsonDocument)null));
-    TestArgumentNullException("filterJson", () => _users.All((string)null));
-    TestArgumentNullException("filterJson", () => _users.All(string.Empty));
-    TestArgumentNullException("filterJson", () => _users.All(" "));
+    TestArgumentException<ArgumentNullException>("filter", () => _users.All((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => _users.All((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => _users.All(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => _users.All(" "));
   }
 
-  private static void TestArgumentNullException(string expectedParamName, Action action)
+  private static void TestArgumentException<TArgumentException>(string expectedParamName, Action action)
+    where TArgumentException : ArgumentException
   {
-    var ex = Assert.Throws<ArgumentNullException>(() => action());
+    var ex = Assert.Throws<TArgumentException>(() => action());
     Assert.Equal(expectedParamName, ex.ParamName);
   }
 }
