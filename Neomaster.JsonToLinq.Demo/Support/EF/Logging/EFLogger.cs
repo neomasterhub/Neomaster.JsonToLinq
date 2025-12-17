@@ -23,6 +23,6 @@ internal class EFLogger(Log output)
     Exception exception,
     Func<TState, Exception, string> formatter)
   {
-    output.Add(new(logLevel, formatter(state, exception)));
+    output.Add(new(formatter(state, exception), logLevel));
   }
 }

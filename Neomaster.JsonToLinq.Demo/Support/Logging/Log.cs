@@ -18,9 +18,17 @@ internal class Log
     _events.Add(e);
   }
 
-  public void Add(string text, LogLevel logLevel = LogLevel.Information)
+  public void Add(
+    string text,
+    LogLevel logLevel = LogLevel.Information,
+    bool isIndexed = true)
   {
-    _events.Add(new LogEvent(logLevel, text));
+    _events.Add(new LogEvent(text, logLevel, isIndexed));
+  }
+
+  public void AddSep()
+  {
+    Add("────────────────────────────", LogLevel.None, false);
   }
 
   public void AddRange(IEnumerable<LogEvent> events)
@@ -43,36 +51,41 @@ internal class Log
   {
     Console.ResetColor();
 
-    for (var i = 0; i < _events.Count; i++)
+    var i = 1;
+    foreach (var e in _events)
     {
-      var e = _events[i];
-
-      Console.Write($"#{i + 1} ");
+      if (e.IsIndexed)
+      {
+        Console.Write($"#{i++} ");
+      }
 
       switch (e.LogLevel)
       {
-        case Microsoft.Extensions.Logging.LogLevel.Trace:
+        case LogLevel.Trace:
           break;
-        case Microsoft.Extensions.Logging.LogLevel.Debug:
+        case LogLevel.Debug:
           break;
-        case Microsoft.Extensions.Logging.LogLevel.Information:
+        case LogLevel.Information:
           Console.ForegroundColor = ConsoleColor.Cyan;
           break;
-        case Microsoft.Extensions.Logging.LogLevel.Warning:
+        case LogLevel.Warning:
           Console.ForegroundColor = ConsoleColor.Yellow;
           break;
-        case Microsoft.Extensions.Logging.LogLevel.Error:
+        case LogLevel.Error:
           Console.ForegroundColor = ConsoleColor.Red;
           break;
-        case Microsoft.Extensions.Logging.LogLevel.Critical:
+        case LogLevel.Critical:
           Console.ForegroundColor = ConsoleColor.Red;
           break;
-        case Microsoft.Extensions.Logging.LogLevel.None:
+        case LogLevel.None:
           break;
         default: throw new ArgumentOutOfRangeException(nameof(e.LogLevel));
       }
 
-      Console.Write($"[{e.LogLevel}] ");
+      if (e.LogLevel != LogLevel.None)
+      {
+        Console.Write($"[{e.LogLevel}] ");
+      }
 
       Console.ResetColor();
 
