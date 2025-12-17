@@ -212,6 +212,16 @@ public class JsonLinqUnitTests : UnitTestsBase
     TestArgumentException<ArgumentException>("filterJson", () => _users.All(" "));
   }
 
+  [Fact]
+  public void ParseToFilterExpression_ArgumentExceptions()
+  {
+    TestArgumentException<ArgumentNullException>("filter", () => JsonLinq.ParseToFilterExpression<User>((JsonDocument)null));
+    TestArgumentException<ArgumentNullException>("filterJson", () => JsonLinq.ParseToFilterExpression<User>((string)null));
+
+    TestArgumentException<ArgumentException>("filterJson", () => JsonLinq.ParseToFilterExpression<User>(string.Empty));
+    TestArgumentException<ArgumentException>("filterJson", () => JsonLinq.ParseToFilterExpression<User>(" "));
+  }
+
   private static void TestArgumentException<TArgumentException>(string expectedParamName, Action action)
     where TArgumentException : ArgumentException
   {
