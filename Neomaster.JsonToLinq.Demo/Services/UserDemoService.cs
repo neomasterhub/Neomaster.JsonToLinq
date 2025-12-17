@@ -47,6 +47,52 @@ internal class UserDemoService
   }
 
   /// <summary>
+  /// <![CDATA[&&[r1,r2]]]>
+  /// </summary>
+  public void And_2_(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    var filterJson =
+      """
+      {
+        "Logic": "&&",
+        "Rules": [
+          {
+            "Field": "balance",
+            "Operator": ">=",
+            "Value": 0
+          },
+          {
+            "Field": "lastVisitAt",
+            "Operator": "=",
+            "Value": null
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expectedCount = dbContext.Users.Count(u =>
+        u.Balance >= 0
+        && u.LastVisitAt == null);
+
+      var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
+
+      Assert.Equal(expectedCount, actualCount);
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+      log.Add($"Count: {actualCount}");
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
   /// <![CDATA[&&[||[r1,r2]]]]>
   /// </summary>
   public void And_Or_2__(Log log)

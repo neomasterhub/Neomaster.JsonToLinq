@@ -28,6 +28,7 @@ internal class Menu
     [
       new("📊 Prepare data", () => dataService.Prepare(_log)),
       new("🧪 &&[r]", () => userDemoService.And_1_(_log)),
+      new("🧪 &&[r1,r2]", () => userDemoService.And_2_(_log)),
       new("🧪 &&[||[r1,r2]]", () => userDemoService.And_Or_2__(_log)),
     ];
 
