@@ -21,12 +21,20 @@ public class ExpressionFieldMapperFactory
       mapper.Add(convertPropertyNameForJson(prop.Name), new ExpressionField
       {
         Name = prop.Name,
-        GetValue = je => Expression.Constant(
-          je?.Deserialize(prop.PropertyType),
-          prop.PropertyType),
+        GetValue = je => GetJsonElementValue(je, prop.PropertyType),
       });
     }
 
     return mapper;
+  }
+
+  private static ConstantExpression GetJsonElementValue(JsonElement? je, Type propType)
+  {
+    if (je?.ValueKind == JsonValueKind.Array)
+    {
+      propType = propType.MakeArrayType();
+    }
+
+    return Expression.Constant(je?.Deserialize(propType), propType);
   }
 }

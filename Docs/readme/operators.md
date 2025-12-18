@@ -1,7 +1,9 @@
 ## 🛠️ Operators
 
-Operators and their handling logic are encapsulated in class `ExpressionOperatorMapper`.
+👓 Operators and their handling logic are encapsulated in class `ExpressionOperatorMapper`.
 The default operator mapping can be accessed via property `Pairs`.
+
+🔠 String comparisons are case-sensitive, depending on the database collation, not on the operators.
 
 ### 📌 Default Operators
 
@@ -17,6 +19,7 @@ The default operator mapping can be accessed via property `Pairs`.
 | `>=`   | `Expression.GreaterThanOrEqual` | Greater than or equal |
 | `<`    | `Expression.LessThan`           | Less than             |
 | `<=`   | `Expression.LessThanOrEqual`    | Less than or equal    |
+| `in`   | `ExpressionOperators.In`        | In collection         |
 
 ### 🌟 Add Custom Operators
 

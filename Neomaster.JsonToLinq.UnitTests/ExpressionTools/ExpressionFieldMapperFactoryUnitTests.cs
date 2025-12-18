@@ -29,7 +29,7 @@ public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
   }
 
   [Fact]
-  public void CreateForPublicProperties_GettingValue()
+  public void CreateForPublicProperties_GettingValue_Element()
   {
     var obj = new PropertiesPublicGetSet();
     var propValues = _propertiesPublicGetSet
@@ -51,6 +51,33 @@ public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
       var expected = propValues[i];
       Assert.Equal(expected, actual);
       output.WriteLine(actual?.ToString() ?? "Null");
+    });
+  }
+
+  [Fact]
+  public void CreateForPublicProperties_GettingValue_Array()
+  {
+    var obj = new PropertiesPublicGetSet();
+    var propValues = _propertiesPublicGetSet
+      .GetProperties()
+      .Select(p => p.GetValue(obj))
+      .ToArray();
+    var jsonElements = propValues
+      .Select(v => JsonSerializer.SerializeToElement(new[] { v }))
+      .ToArray();
+
+    var mapperValues = ExpressionFieldMapperFactory
+      .CreateForPublicProperties<PropertiesPublicGetSet>().Pairs.Values
+      .Select((v, i) => v.GetValue(jsonElements[i]).Value)
+      .ToArray();
+
+    Assert.Equal(propValues.Length, mapperValues.Length);
+    Assert.All(mapperValues, (actual, i) =>
+    {
+      var propValue = propValues[i];
+      var expected = new[] { propValue };
+      Assert.Equal(expected, actual);
+      output.WriteLine($"[{propValue ?? "Null"}]");
     });
   }
 }
