@@ -36,4 +36,14 @@ public static class ExpressionOperators
         && m.GetParameters().Length == 2)
       .MakeGenericMethod(t));
   }
+
+  private static MethodInfo GetToLowerMethod(Type type)
+  {
+    return _containsMethodsCache.GetOrAdd(type, t => typeof(string)
+      .GetMethods()
+      .Single(m =>
+        m.Name == nameof(string.ToLower)
+        && m.GetParameters().Length == 2)
+      .MakeGenericMethod(t));
+  }
 }
