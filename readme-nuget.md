@@ -49,11 +49,10 @@ var users = source.Where(
 
 ## 🛠️ Operators
 
-### 📌 Default Operators
+Operators and their handling logic are encapsulated in class `ExpressionOperatorMapper`.
+The default operator mapping can be accessed via property `Pairs`.
 
-```csharp
-public IReadOnlyDictionary<string, ExpressionBind> ExpressionOperatorMapper.Pairs { get; }
-```
+### 📌 Default Operators
 
 | JSON   | LINQ Expression                 | Description           |
 |--------|---------------------------------|-----------------------|
