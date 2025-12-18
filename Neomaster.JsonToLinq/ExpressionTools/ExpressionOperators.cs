@@ -8,6 +8,11 @@ public static class ExpressionOperators
 {
   private static readonly ConcurrentDictionary<Type, MethodInfo> _containsMethodsCache = [];
 
+  public static Expression In(Expression element, Expression collection)
+  {
+    return Contains(collection, element);
+  }
+
   public static Expression Contains(Expression collection, Expression element)
   {
     var collectionElementType = collection.Type.IsArray
