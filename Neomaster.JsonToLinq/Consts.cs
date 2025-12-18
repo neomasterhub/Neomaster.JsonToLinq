@@ -29,7 +29,8 @@ public static class Consts
       .Add(">", Expression.GreaterThan)
       .Add(">=", Expression.GreaterThanOrEqual)
       .Add("<", Expression.LessThan)
-      .Add("<=", Expression.LessThanOrEqual);
+      .Add("<=", Expression.LessThanOrEqual)
+      .Add("in", ExpressionOperators.In);
   }
 
   public static class ExpressionBindBuilders
