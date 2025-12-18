@@ -5,7 +5,7 @@ namespace Neomaster.JsonToLinq.UnitTests;
 public class ExpressionOperatorsUnitTests
 {
   [Fact]
-  public void Contains()
+  public void Contains_Int()
   {
     var users = new User[]
     {
@@ -16,15 +16,23 @@ public class ExpressionOperatorsUnitTests
     };
     var collection = new int[] { -1, 1, 3 };
     var expected = users.Where(u => collection.Contains(u.Id));
-    var param = Expression.Parameter(typeof(User));
-    var left = Expression.Constant(collection);
-    var right = Expression.Property(param, nameof(User.Id));
-    var body = ExpressionOperators.Contains(left, right);
-    var lambda = Expression.Lambda<Func<User, bool>>(body, param);
-    var func = lambda.Compile();
 
-    var actual = users.Where(func).ToArray();
+    var actual = users.Where(CreateContainsFunc<User, int>(nameof(User.Id), collection)).ToArray();
 
     Assert.Equal(expected, actual);
+  }
+
+  private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
+    string propName,
+    IEnumerable<TProp> collection)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var left = Expression.Constant(collection);
+    var right = Expression.Property(par, propName);
+    var body = ExpressionOperators.Contains(left, right);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
   }
 }
