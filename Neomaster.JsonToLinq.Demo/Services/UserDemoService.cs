@@ -3,6 +3,7 @@ using System.Linq.Expressions;
 using Microsoft.Extensions.Logging;
 using Neomaster.JsonToLinq.UnitTests;
 using Xunit;
+using static Neomaster.JsonToLinq.Demo.DemoConsts;
 
 namespace Neomaster.JsonToLinq.Demo;
 
@@ -209,8 +210,36 @@ internal class UserDemoService
   {
     using var dbContext = new AppDbContext();
 
+    var filterDecimalValues = dbContext.Users
+      .Skip(100)
+      .Take(2)
+      .Select(u => u.Balance)
+      .ToArray();
+
+    var filterDates = dbContext.Users
+      .Where(u => u.LastVisitAt != null)
+      .Take(2)
+      .Select(u => u.LastVisitAt)
+      .ToArray();
+
+    var filterDateIsoValues = filterDates
+      .Select(d => d.Value.ToString(PgIsoFormat))
+      .ToArray();
+
+    var filterEmails = dbContext.Users
+      .Skip(200)
+      .Take(2)
+      .Select(u => u.Email)
+      .ToList();
+    filterEmails[1] = filterEmails[1].ToUpper();
+
+    int[] intCol = [-1, 1];
+    string[] strCol = ["1", .. filterEmails];
+    decimal[] decCol = [-1, .. filterDecimalValues];
+    DateTime?[] dtCol = [null, .. filterDates];
+
     var filterJson =
-      """
+      $$"""
       {
         "Logic": "||",
         "Rules": [
@@ -223,6 +252,21 @@ internal class UserDemoService
             "Field": "id",
             "Operator": "in",
             "Value": [-1, 1]
+          },
+          {
+            "Field": "balance",
+            "Operator": "in",
+            "Value": [-1, {{filterDecimalValues[0]}}, {{filterDecimalValues[1]}}]
+          },
+          {
+            "Field": "lastVisitAt",
+            "Operator": "in",
+            "Value": [null, "{{filterDateIsoValues[0]}}", "{{filterDateIsoValues[1]}}"]
+          },
+          {
+            "Field": "email",
+            "Operator": "in",
+            "Value": ["1", "{{filterEmails[0]}}", "{{filterEmails[1]}}"]
           }
         ]
       }
@@ -230,17 +274,43 @@ internal class UserDemoService
 
     try
     {
-      var expectedCount = dbContext.Users.Count(u =>
-        Array.Empty<int>().Contains(u.Id)
-        && new[] { -1, 1 }.Contains(u.Id));
+      var expected = dbContext.Users
+        .Where(u =>
+          intCol.Contains(u.Id)
+          || strCol.Contains(u.Email)
+          || decCol.Contains(u.Balance)
+          || dtCol.Contains(u.LastVisitAt))
+        .OrderBy(u => u.Id)
+        .ToArray();
 
-      var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .OrderBy(u => u.Id)
+        .ToArray();
 
-      Assert.Equal(expectedCount, actualCount);
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
 
       log.Add($"Filter:\n{filterJson}");
       log.AddSep();
-      log.Add($"Count: {actualCount}");
+      log.Add($"Count: {actual.Length}");
+
+      log.Add("With date:");
+      foreach (var u in actual.Where(u => u.LastVisitAt != null))
+      {
+        log.Add($"Id: {u.Id}, LastVisitAt: {u.LastVisitAt.Value.ToString(PgIsoFormat)}");
+      }
+
+      log.Add("With email:");
+      foreach (var u in actual.Where(u => filterEmails.Contains(u.Email, StringComparer.OrdinalIgnoreCase)))
+      {
+        log.Add($"Id: {u.Id}, Email: {u.Email}");
+      }
+
+      log.Add(
+        "String case sensitivity depends on the database collation, not on the \"in\" operator.",
+        textColor: ConsoleColor.DarkCyan);
     }
     catch (Exception ex)
     {

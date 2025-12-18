@@ -21,9 +21,10 @@ internal class Log
   public void Add(
     string text,
     LogLevel logLevel = LogLevel.Information,
-    bool isIndexed = true)
+    bool isIndexed = true,
+    ConsoleColor textColor = ConsoleColor.White)
   {
-    _events.Add(new LogEvent(text, logLevel, isIndexed));
+    _events.Add(new LogEvent(text, logLevel, isIndexed, textColor));
   }
 
   public void AddSep()
@@ -89,6 +90,7 @@ internal class Log
 
       Console.ResetColor();
 
+      Console.ForegroundColor = e.TextColor;
       Console.WriteLine(e.Text);
     }
 
