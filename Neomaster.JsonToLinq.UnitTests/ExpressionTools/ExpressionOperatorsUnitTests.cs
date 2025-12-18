@@ -1,8 +1,9 @@
 using System.Linq.Expressions;
+using Xunit.Abstractions;
 
 namespace Neomaster.JsonToLinq.UnitTests;
 
-public class ExpressionOperatorsUnitTests
+public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
 {
   [Fact]
   public void Contains_Int()
@@ -17,9 +18,11 @@ public class ExpressionOperatorsUnitTests
     var collection = new int[] { -1, 1, 3 };
     var expected = users.Where(u => collection.Contains(u.Id));
 
-    var actual = users.Where(CreateContainsFunc<User, int>(nameof(User.Id), collection)).ToArray();
+    var actual = users.Where(CreateContainsFunc<User, int>(nameof(User.Id), collection)).ToList();
 
     Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.Id.ToString()));
   }
 
   [Fact]
@@ -42,9 +45,11 @@ public class ExpressionOperatorsUnitTests
     var collection = new List<DateTime?> { now, null, dt[2] };
     var expected = users.Where(u => collection.Contains(u.LastVisitAt));
 
-    var actual = users.Where(CreateContainsFunc<User, DateTime?>(nameof(User.LastVisitAt), collection)).ToArray();
+    var actual = users.Where(CreateContainsFunc<User, DateTime?>(nameof(User.LastVisitAt), collection)).ToList();
 
     Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.LastVisitAt?.Year.ToString() ?? "null"));
   }
 
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
