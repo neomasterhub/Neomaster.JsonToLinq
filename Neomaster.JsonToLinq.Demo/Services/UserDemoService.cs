@@ -202,6 +202,9 @@ internal class UserDemoService
     }
   }
 
+  /// <summary>
+  /// Operator <c>in</c>.
+  /// </summary>
   public void In(Log log)
   {
     using var dbContext = new AppDbContext();
@@ -214,6 +217,11 @@ internal class UserDemoService
           {
             "Field": "id",
             "Operator": "in",
+            "Value": []
+          },
+          {
+            "Field": "id",
+            "Operator": "in",
             "Value": [-1, 1]
           }
         ]
@@ -222,7 +230,9 @@ internal class UserDemoService
 
     try
     {
-      var expectedCount = dbContext.Users.Count(u => new[] { -1, 1 }.Contains(u.Id));
+      var expectedCount = dbContext.Users.Count(u =>
+        Array.Empty<int>().Contains(u.Id)
+        && new[] { -1, 1 }.Contains(u.Id));
 
       var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
 
