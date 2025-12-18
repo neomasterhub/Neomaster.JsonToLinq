@@ -202,6 +202,42 @@ internal class UserDemoService
     }
   }
 
+  public void In(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    var filterJson =
+      """
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "id",
+            "Operator": "in",
+            "Value": [-1, 1]
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expectedCount = dbContext.Users.Count(u => new[] { -1, 1 }.Contains(u.Id));
+
+      var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
+
+      Assert.Equal(expectedCount, actualCount);
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+      log.Add($"Count: {actualCount}");
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
   /// <summary>
   /// Custom operators:
   /// <list type="number">
