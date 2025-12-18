@@ -22,6 +22,31 @@ public class ExpressionOperatorsUnitTests
     Assert.Equal(expected, actual);
   }
 
+  [Fact]
+  public void Contains_DateTime()
+  {
+    var now = DateTime.Now;
+    var dt = new DateTime[]
+    {
+      now.AddYears(1),
+      now.AddYears(2),
+      now.AddYears(3),
+    };
+    var users = new User[]
+    {
+      new() { LastVisitAt = null },
+      new() { LastVisitAt = dt[0] },
+      new() { LastVisitAt = dt[1] },
+      new() { LastVisitAt = dt[2] },
+    };
+    var collection = new List<DateTime?> { now, null, dt[2] };
+    var expected = users.Where(u => collection.Contains(u.LastVisitAt));
+
+    var actual = users.Where(CreateContainsFunc<User, DateTime?>(nameof(User.LastVisitAt), collection)).ToArray();
+
+    Assert.Equal(expected, actual);
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
