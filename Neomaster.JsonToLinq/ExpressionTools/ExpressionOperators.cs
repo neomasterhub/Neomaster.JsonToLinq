@@ -17,6 +17,15 @@ public static class ExpressionOperators
     _toUpper = typeof(string).GetMethod(nameof(string.ToUpper), [typeof(CultureInfo)]);
   }
 
+  public static Expression InStrings(
+    Expression element,
+    Expression collection,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    return ContainsString(collection, element, stringTransform, cultureInfo);
+  }
+
   public static Expression In(Expression element, Expression collection)
   {
     return Contains(collection, element);
@@ -28,13 +37,11 @@ public static class ExpressionOperators
     StringTransform stringTransform = StringTransform.None,
     CultureInfo cultureInfo = null)
   {
-    var ci = Expression.Constant(cultureInfo ?? CultureInfo.InvariantCulture);
-
     element = stringTransform switch
     {
       StringTransform.None => element,
-      StringTransform.Lower => Expression.Call(_toLower, element, ci),
-      StringTransform.Upper => Expression.Call(_toUpper, element, ci),
+      StringTransform.Lower => Expression.Call(_toLower, element, Expression.Constant(cultureInfo)),
+      StringTransform.Upper => Expression.Call(_toUpper, element, Expression.Constant(cultureInfo)),
       _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
     };
 
