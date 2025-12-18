@@ -66,6 +66,7 @@ The default operator mapping can be accessed via property `Pairs`.
 | `>=`   | `Expression.GreaterThanOrEqual` | Greater than or equal |
 | `<`    | `Expression.LessThan`           | Less than             |
 | `<=`   | `Expression.LessThanOrEqual`    | Less than or equal    |
+| `in`   | `ExpressionOperators.In`        | In collection         |
 
 ### 🌟 Add Custom Operators
 
