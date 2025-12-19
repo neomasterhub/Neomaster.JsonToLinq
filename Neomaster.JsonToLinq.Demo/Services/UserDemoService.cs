@@ -308,9 +308,7 @@ internal class UserDemoService
         log.Add($"Id: {u.Id}, Email: {u.Email}");
       }
 
-      log.Add(
-        "String case sensitivity depends on the database collation, not on the \"in\" operator.",
-        textColor: ConsoleColor.DarkCyan);
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
     }
     catch (Exception ex)
     {
