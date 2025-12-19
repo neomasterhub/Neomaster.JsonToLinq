@@ -137,10 +137,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   [InlineData("i", true, 0)]
   [InlineData("ı", false, 0)]
   [InlineData("ı", true, 1)]
-  public void ContainsString_AsLower_Culture(
-    string collectionItem,
-    bool withCi,
-    int found)
+  public void ContainsString_AsLower_Culture(string collectionItem, bool withCi, int found)
   {
     var collection = new string[] { collectionItem };
     var users = new User[] { new() { FirstName = "I" } };
@@ -160,10 +157,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   [InlineData("I", true, 0)]
   [InlineData("İ", false, 0)]
   [InlineData("İ", true, 1)]
-  public void ContainsString_AsUpper_Culture(
-    string collectionItem,
-    bool withCi,
-    int found)
+  public void ContainsString_AsUpper_Culture(string collectionItem, bool withCi, int found)
   {
     var collection = new string[] { collectionItem };
     var users = new User[] { new() { FirstName = "i" } };
@@ -249,16 +243,32 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   [InlineData("i", true, 0)]
   [InlineData("ı", false, 0)]
   [InlineData("ı", true, 1)]
-  public void StartsWith_AsLower_Culture(
-    string prefix,
-    bool withCi,
-    int found)
+  public void StartsWith_AsLower_Culture(string prefix, bool withCi, int found)
   {
-    var users = new User[] { new() { FirstName = "I" } };
+    var users = new User[] { new() { FirstName = "I-" } };
     var func = CreateStartsWithFunc<User, string>(
       nameof(User.FirstName),
       prefix,
       StringTransform.Lower,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  [Theory]
+  [InlineData("I", false, 1)]
+  [InlineData("I", true, 0)]
+  [InlineData("İ", false, 0)]
+  [InlineData("İ", true, 1)]
+  public void StartsWith_AsUpper_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "i-" } };
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Upper,
       withCi ? new CultureInfo("tr-TR") : null);
 
     var actual = users.Count(func);
