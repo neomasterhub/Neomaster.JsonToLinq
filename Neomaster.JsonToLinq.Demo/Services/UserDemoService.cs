@@ -296,13 +296,19 @@ internal class UserDemoService
       log.AddSep();
       log.Add($"Count: {actual.Length}");
 
-      log.Add("With date:");
+      log.Add("With dates:");
       foreach (var u in actual.Where(u => u.LastVisitAt != null))
       {
         log.Add($"Id: {u.Id}, LastVisitAt: {u.LastVisitAt.Value.ToString(PgIsoFormat)}");
       }
 
-      log.Add("With email:");
+      log.Add("With specified decimal values:");
+      foreach (var u in actual.Where(u => filterDecimalValues.Contains(u.Balance)))
+      {
+        log.Add($"Id: {u.Id}, Balance: {u.Balance}");
+      }
+
+      log.Add("With specified emails:");
       foreach (var u in actual.Where(u => filterEmails.Contains(u.Email, StringComparer.OrdinalIgnoreCase)))
       {
         log.Add($"Id: {u.Id}, Email: {u.Email}");
