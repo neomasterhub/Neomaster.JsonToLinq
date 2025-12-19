@@ -12,7 +12,6 @@ public static class ExpressionOperators
   private static readonly MethodInfo _toLowerCi;
   private static readonly MethodInfo _toUpperCi;
   private static readonly MethodInfo _startsWith;
-  private static readonly MethodInfo _startsWithCi;
   private static readonly ConcurrentDictionary<Type, MethodInfo> _containsMethodsCache = [];
 
   static ExpressionOperators()
@@ -21,8 +20,7 @@ public static class ExpressionOperators
     _toUpper = typeof(string).GetMethod(nameof(string.ToUpper), Type.EmptyTypes);
     _toLowerCi = typeof(string).GetMethod(nameof(string.ToLower), [typeof(CultureInfo)]);
     _toUpperCi = typeof(string).GetMethod(nameof(string.ToUpper), [typeof(CultureInfo)]);
-    _startsWith = typeof(string).GetMethod(nameof(string.StartsWith), Type.EmptyTypes);
-    _startsWithCi = typeof(string).GetMethod(nameof(string.StartsWith), [typeof(CultureInfo)]);
+    _startsWith = typeof(string).GetMethod(nameof(string.StartsWith), [typeof(string)]);
   }
 
   public static Expression InStrings(
@@ -45,21 +43,6 @@ public static class ExpressionOperators
     StringTransform stringTransform = StringTransform.None,
     CultureInfo cultureInfo = null)
   {
-    element = stringTransform switch
-    {
-      StringTransform.None => element,
-
-      StringTransform.Lower => cultureInfo == null
-        ? Expression.Call(element, _toLower)
-        : Expression.Call(element, _toLowerCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
-
-      StringTransform.Upper => cultureInfo == null
-        ? Expression.Call(element, _toUpper)
-        : Expression.Call(element, _toUpperCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
-
-      _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
-    };
-
     return Expression.Call(
       TransformStringCase(element, stringTransform, cultureInfo),
       _startsWith,
