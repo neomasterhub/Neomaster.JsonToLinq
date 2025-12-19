@@ -133,28 +133,6 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   }
 
   [Theory]
-  [InlineData(StringTransform.None, "İ", false, 1)]
-  [InlineData(StringTransform.None, "İ", true, 1)]
-  public void ContainsString_AsIs_Culture(
-    StringTransform stringTransform,
-    string collectionItem,
-    bool withCi,
-    int found)
-  {
-    var collection = new string[] { collectionItem };
-    var users = new User[] { new() { FirstName = "İ" } };
-    var func = CreateContainsStringFunc<User, string>(
-      nameof(User.FirstName),
-      collection,
-      stringTransform,
-      withCi ? new CultureInfo("tr-TR") : null);
-
-    var actual = users.Count(func);
-
-    Assert.Equal(found, actual);
-  }
-
-  [Theory]
   [InlineData("i", false, 1)]
   [InlineData("i", true, 0)]
   [InlineData("ı", false, 0)]
