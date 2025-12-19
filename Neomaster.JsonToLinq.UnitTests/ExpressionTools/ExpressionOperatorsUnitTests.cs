@@ -294,6 +294,24 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     return func;
   }
 
+  private static Func<TEntity, bool> CreateEndsWithFunc<TEntity, TProp>(
+    string propName,
+    string prefix,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var body = ExpressionOperators.EndsWith(
+      Expression.Property(par, propName),
+      Expression.Constant(prefix),
+      stringTransform,
+      cultureInfo);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
