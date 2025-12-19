@@ -276,6 +276,28 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  [Fact]
+  public void EndsWith_AsIs()
+  {
+    const string postfix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "-a" },
+      new() { FirstName = "-A" },
+    };
+    var expected = users.Where(u => u.FirstName.EndsWith(postfix));
+    var func = CreateEndsWithFunc<User, string>(
+      nameof(User.FirstName),
+      postfix,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
   private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
     string propName,
     string prefix,
