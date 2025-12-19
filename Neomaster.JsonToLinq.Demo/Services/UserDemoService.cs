@@ -319,6 +319,41 @@ internal class UserDemoService
   }
 
   /// <summary>
+  /// Operator <c>as lower in</c>.
+  /// </summary>
+  public void AsLowerIn(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    var emails = dbContext.Users
+      .Take(10)
+      .Select(u => u.Email)
+      .AsEnumerable()
+      .Select((e, i) => i < 5
+        ? e.ToLower()
+        : e.ToUpper())
+      .ToList();
+
+    var emailsString = string.Join(",\n        ", emails.Select(e => $"\"{e}\""));
+
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "email",
+            "Operator": "as lower in",
+            "Value": [
+              {{emailsString}}
+            ]
+          }
+        ]
+      }
+      """;
+  }
+
+  /// <summary>
   /// Custom operators:
   /// <list type="number">
   /// <item>
