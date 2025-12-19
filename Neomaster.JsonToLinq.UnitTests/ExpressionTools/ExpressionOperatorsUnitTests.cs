@@ -178,6 +178,24 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
+    string propName,
+    string prefix,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var body = ExpressionOperators.StartsWith(
+      Expression.Property(par, propName),
+      Expression.Constant(prefix),
+      stringTransform,
+      cultureInfo);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
