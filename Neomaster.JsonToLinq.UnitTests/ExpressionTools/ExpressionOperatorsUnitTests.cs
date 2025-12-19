@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq.Expressions;
 using Xunit.Abstractions;
 
@@ -52,6 +53,29 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.LastVisitAt?.Year.ToString() ?? "null"));
   }
 
+  [Fact]
+  public void ContainsString_AsIs()
+  {
+    var collection = new string[] { "x", "Aa" };
+    var users = new User[]
+    {
+      new() { FirstName = "aa" },
+      new() { FirstName = "AA" },
+      new() { FirstName = "Aa" },
+    };
+    var expected = users.Where(u => collection.Contains(u.FirstName));
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
@@ -60,6 +84,22 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     var left = Expression.Constant(collection);
     var right = Expression.Property(par, propName);
     var body = ExpressionOperators.Contains(left, right);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
+  private static Func<TEntity, bool> CreateContainsStringFunc<TEntity, TProp>(
+    string propName,
+    IEnumerable<TProp> collection,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var col = Expression.Constant(collection);
+    var element = Expression.Property(par, propName);
+    var body = ExpressionOperators.ContainsString(col, element, stringTransform, cultureInfo);
     var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
     var func = lambda.Compile();
 
