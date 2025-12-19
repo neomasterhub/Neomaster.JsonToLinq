@@ -553,6 +553,59 @@ internal class UserDemoService
   }
 
   /// <summary>
+  /// Operator <c>as upper starts with</c>.
+  /// </summary>
+  public void AsUpperStartsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string prefix = "JOSI";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "firstName",
+            "Operator": "as upper starts with",
+            "Value": "{{prefix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.FirstName.ToUpper().StartsWith(prefix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found first names:");
+      foreach (var u in actual.DistinctBy(u => u.FirstName))
+      {
+        log.Add(u.FirstName);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
   /// Custom operators:
   /// <list type="number">
   /// <item>
