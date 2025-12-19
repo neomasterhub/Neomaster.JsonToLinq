@@ -34,6 +34,7 @@ internal class Menu
       new("🧪 in", () => userDemoService.In(_log)),
       new("🧪 as lower in", () => userDemoService.AsLowerIn(_log)),
       new("🧪 as upper in", () => userDemoService.AsUpperIn(_log)),
+      new("🧪 starts with", () => userDemoService.StartsWith(_log)),
       new("🧪 Custom operators: lt, gt", () => userDemoService.CustomOp(_log)),
     ];
 
