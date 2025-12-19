@@ -222,6 +222,28 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.FirstName));
   }
 
+  [Fact]
+  public void StartsWith_AsUpper()
+  {
+    const string prefix = "A";
+    var users = new User[]
+    {
+      new() { FirstName = "a-" },
+      new() { FirstName = "A-" },
+    };
+    var expected = users.Where(u => u.FirstName.ToUpper().StartsWith(prefix));
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Upper);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
   private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
     string propName,
     string prefix,
