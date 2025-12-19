@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Linq.Expressions;
 using Xunit.Abstractions;
 
@@ -52,6 +53,131 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.LastVisitAt?.Year.ToString() ?? "null"));
   }
 
+  [Fact]
+  public void ContainsString_AsIs()
+  {
+    var collection = new string[] { "x", "Aa" };
+    var users = new User[]
+    {
+      new() { FirstName = "aa" },
+      new() { FirstName = "AA" },
+      new() { FirstName = "Aa" },
+    };
+    var expected = users.Where(u => collection.Contains(u.FirstName));
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void ContainsString_AsLower()
+  {
+    var collection = new string[] { "x", "aa" };
+    var users = new User[]
+    {
+      new() { FirstName = "aa" },
+      new() { FirstName = "AA" },
+      new() { FirstName = "Aa" },
+      new() { FirstName = "aA" },
+      new() { FirstName = "xx" },
+      new() { FirstName = "XX" },
+      new() { FirstName = "Xx" },
+      new() { FirstName = "xX" },
+    };
+    var expected = users.Where(u => collection.Contains(u.FirstName.ToLower()));
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.Lower);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void ContainsString_AsUpper()
+  {
+    var collection = new string[] { "x", "AA" };
+    var users = new User[]
+    {
+      new() { FirstName = "aa" },
+      new() { FirstName = "AA" },
+      new() { FirstName = "Aa" },
+      new() { FirstName = "aA" },
+      new() { FirstName = "xx" },
+      new() { FirstName = "XX" },
+      new() { FirstName = "Xx" },
+      new() { FirstName = "xX" },
+    };
+    var expected = users.Where(u => collection.Contains(u.FirstName.ToUpper()));
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.Upper);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Theory]
+  [InlineData("i", false, 1)]
+  [InlineData("i", true, 0)]
+  [InlineData("ı", false, 0)]
+  [InlineData("ı", true, 1)]
+  public void ContainsString_AsLower_Culture(
+    string collectionItem,
+    bool withCi,
+    int found)
+  {
+    var collection = new string[] { collectionItem };
+    var users = new User[] { new() { FirstName = "I" } };
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.Lower,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  [Theory]
+  [InlineData("I", false, 1)]
+  [InlineData("I", true, 0)]
+  [InlineData("İ", false, 0)]
+  [InlineData("İ", true, 1)]
+  public void ContainsString_AsUpper_Culture(
+    string collectionItem,
+    bool withCi,
+    int found)
+  {
+    var collection = new string[] { collectionItem };
+    var users = new User[] { new() { FirstName = "i" } };
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.Upper,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
@@ -60,6 +186,22 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     var left = Expression.Constant(collection);
     var right = Expression.Property(par, propName);
     var body = ExpressionOperators.Contains(left, right);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
+  private static Func<TEntity, bool> CreateContainsStringFunc<TEntity, TProp>(
+    string propName,
+    IEnumerable<TProp> collection,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var col = Expression.Constant(collection);
+    var element = Expression.Property(par, propName);
+    var body = ExpressionOperators.ContainsString(col, element, stringTransform, cultureInfo);
     var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
     var func = lambda.Compile();
 
