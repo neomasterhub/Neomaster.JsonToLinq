@@ -95,7 +95,35 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     var func = CreateContainsStringFunc<User, string>(
       nameof(User.FirstName),
       collection,
-      StringTransform.None);
+      StringTransform.Lower);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void ContainsString_AsUpper()
+  {
+    var collection = new string[] { "x", "AA" };
+    var users = new User[]
+    {
+      new() { FirstName = "aa" },
+      new() { FirstName = "AA" },
+      new() { FirstName = "Aa" },
+      new() { FirstName = "aA" },
+      new() { FirstName = "xx" },
+      new() { FirstName = "XX" },
+      new() { FirstName = "Xx" },
+      new() { FirstName = "xX" },
+    };
+    var expected = users.Where(u => collection.Contains(u.FirstName.ToUpper()));
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.Upper);
 
     var actual = users.Where(func).ToList();
 
