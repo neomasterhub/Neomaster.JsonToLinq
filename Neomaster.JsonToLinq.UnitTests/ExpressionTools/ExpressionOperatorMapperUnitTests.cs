@@ -1,5 +1,5 @@
 using System.Linq.Expressions;
-using static Neomaster.JsonToLinq.Consts;
+using static Neomaster.JsonToLinq.JsonLinqConsts;
 
 namespace Neomaster.JsonToLinq.UnitTests;
 

@@ -601,7 +601,7 @@ public static partial class JsonLinq
       throw new ArgumentNullException(nameof(filter));
     }
 
-    options ??= Consts.Options.Default;
+    options ??= JsonLinqConsts.Options.Default;
     fieldMapper ??= ExpressionFieldMapper.OnDefault<T>();
 
     return ExpressionHelper.ParseExpressionLambda<T>(
