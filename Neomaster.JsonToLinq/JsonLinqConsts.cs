@@ -2,7 +2,7 @@ using System.Linq.Expressions;
 
 namespace Neomaster.JsonToLinq;
 
-public static class Consts
+public static class JsonLinqConsts
 {
   public delegate Expression ExpressionBind(Expression left, Expression right);
 
