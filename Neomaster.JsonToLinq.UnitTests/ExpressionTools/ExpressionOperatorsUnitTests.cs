@@ -132,6 +132,37 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.FirstName));
   }
 
+  [Fact]
+  public void ContainsString_AsIs_WithoutCulture()
+  {
+    var collection = new string[] { "İstanbul" };
+    var users = new User[] { new() { FirstName = "İstanbul" } };
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.None);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(1, actual);
+  }
+
+  [Fact]
+  public void ContainsString_AsIs_WithCulture()
+  {
+    var collection = new string[] { "İstanbul" };
+    var users = new User[] { new() { FirstName = "İstanbul" } };
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.None,
+      new CultureInfo("tr-TR"));
+
+    var actual = users.Count(func);
+
+    Assert.Equal(1, actual);
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
