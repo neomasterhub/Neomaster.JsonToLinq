@@ -323,16 +323,16 @@ internal class UserDemoService
   {
     using var dbContext = new AppDbContext();
 
-    var emails = dbContext.Users
-      .Take(10)
-      .Select(u => u.Email)
+    var firstNames = dbContext.Users
+      .Take(4)
+      .Select(u => u.FirstName)
       .AsEnumerable()
-      .Select((e, i) => i < 5
+      .Select((e, i) => i < 2
         ? e.ToLower()
         : e.ToUpper())
       .ToList();
 
-    var emailsString = string.Join(",\n        ", emails.Select(e => $"\"{e}\""));
+    var firstNamesString = string.Join(",\n        ", firstNames.Select(e => $"\"{e}\""));
 
     var filterJson =
       $$"""
@@ -340,15 +340,45 @@ internal class UserDemoService
         "Logic": "||",
         "Rules": [
           {
-            "Field": "email",
+            "Field": "firstName",
             "Operator": "as lower in",
             "Value": [
-              {{emailsString}}
+              {{firstNamesString}}
             ]
           }
         ]
       }
       """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => firstNames.Contains(u.FirstName.ToLower()))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found first names:");
+      foreach (var u in actual.DistinctBy(u => u.FirstName))
+      {
+        log.Add(u.FirstName);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
   }
 
   /// <summary>
