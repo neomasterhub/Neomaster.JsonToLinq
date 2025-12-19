@@ -20,6 +20,9 @@ internal class DataService()
 
     dbContext.Users.AddRange(new Faker<User>()
       .RuleFor(u => u.Email, f => f.Internet.Email())
+      .RuleFor(u => u.FirstName, f => f.Name.FirstName())
+      .RuleFor(u => u.LastName, f => f.Name.LastName())
+      .RuleFor(u => u.MiddleName, f => f.Name.FirstName())
       .RuleFor(u => u.Balance, f => f.Random.Decimal(-100, 10000))
       .RuleFor(u => u.LastVisitAt, f => f.IndexFaker % 100 == 0 ? null : f.Date.Between(dt1, dt2))
       .Generate(10_000));
