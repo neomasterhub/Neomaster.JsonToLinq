@@ -32,6 +32,8 @@ internal class Menu
       new("🧪 &&[||[r1,r2]]", () => userDemoService.And_Or_2__(_log)),
       new("🧪 &&[r1,||[r2,r3]]", () => userDemoService.And_1Or_2__(_log)),
       new("🧪 in", () => userDemoService.In(_log)),
+      new("🧪 as lower in", () => userDemoService.AsLowerIn(_log)),
+      new("🧪 as upper in", () => userDemoService.AsUpperIn(_log)),
       new("🧪 Custom operators: lt, gt", () => userDemoService.CustomOp(_log)),
     ];
 

@@ -30,7 +30,9 @@ public static class Consts
       .Add(">=", Expression.GreaterThanOrEqual)
       .Add("<", Expression.LessThan)
       .Add("<=", Expression.LessThanOrEqual)
-      .Add("in", ExpressionOperators.In);
+      .Add("in", ExpressionOperators.In)
+      .Add("as lower in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Lower))
+      .Add("as upper in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Upper));
   }
 
   public static class ExpressionBindBuilders

@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using System.Globalization;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -6,10 +7,55 @@ namespace Neomaster.JsonToLinq;
 
 public static class ExpressionOperators
 {
+  private static readonly MethodInfo _toLower;
+  private static readonly MethodInfo _toUpper;
+  private static readonly MethodInfo _toLowerCi;
+  private static readonly MethodInfo _toUpperCi;
   private static readonly ConcurrentDictionary<Type, MethodInfo> _containsMethodsCache = [];
+
+  static ExpressionOperators()
+  {
+    _toLower = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes);
+    _toUpper = typeof(string).GetMethod(nameof(string.ToUpper), Type.EmptyTypes);
+    _toLowerCi = typeof(string).GetMethod(nameof(string.ToLower), [typeof(CultureInfo)]);
+    _toUpperCi = typeof(string).GetMethod(nameof(string.ToUpper), [typeof(CultureInfo)]);
+  }
+
+  public static Expression InStrings(
+    Expression element,
+    Expression collection,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    return ContainsString(collection, element, stringTransform, cultureInfo);
+  }
 
   public static Expression In(Expression element, Expression collection)
   {
+    return Contains(collection, element);
+  }
+
+  public static Expression ContainsString(
+    Expression collection,
+    Expression element,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    element = stringTransform switch
+    {
+      StringTransform.None => element,
+
+      StringTransform.Lower => cultureInfo == null
+        ? Expression.Call(element, _toLower)
+        : Expression.Call(element, _toLowerCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
+      StringTransform.Upper => cultureInfo == null
+        ? Expression.Call(element, _toUpper)
+        : Expression.Call(element, _toUpperCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
+      _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
+    };
+
     return Contains(collection, element);
   }
 
