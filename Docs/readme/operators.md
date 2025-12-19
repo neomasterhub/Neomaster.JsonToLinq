@@ -5,6 +5,9 @@ The default operator mapping can be accessed via property `Pairs`.
 
 🔠 String comparisons are case-sensitive, depending on the database collation, not on the operators.
 
+🤝 The case of string values specified in the filter is never changed automatically.
+Case normalization is the client’s responsibility.
+
 ### 📌 Default Operators
 
 | JSON                   | Base LINQ Expression             | Description                       |
