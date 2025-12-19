@@ -200,6 +200,28 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.FirstName));
   }
 
+  [Fact]
+  public void StartsWith_AsLower()
+  {
+    const string prefix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "a-" },
+      new() { FirstName = "A-" },
+    };
+    var expected = users.Where(u => u.FirstName.ToLower().StartsWith(prefix));
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Lower);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
   private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
     string propName,
     string prefix,
