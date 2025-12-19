@@ -178,6 +178,28 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  [Fact]
+  public void StartsWith_AsIs()
+  {
+    const string prefix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "a-" },
+      new() { FirstName = "A-" },
+    };
+    var expected = users.Where(u => u.FirstName.StartsWith(prefix));
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
   private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
     string propName,
     string prefix,
@@ -201,9 +223,9 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     IEnumerable<TProp> collection)
   {
     var par = Expression.Parameter(typeof(TEntity));
-    var left = Expression.Constant(collection);
-    var right = Expression.Property(par, propName);
-    var body = ExpressionOperators.Contains(left, right);
+    var body = ExpressionOperators.Contains(
+      Expression.Constant(collection),
+      Expression.Property(par, propName));
     var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
     var func = lambda.Compile();
 
@@ -217,9 +239,11 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     CultureInfo cultureInfo = null)
   {
     var par = Expression.Parameter(typeof(TEntity));
-    var col = Expression.Constant(collection);
-    var element = Expression.Property(par, propName);
-    var body = ExpressionOperators.ContainsString(col, element, stringTransform, cultureInfo);
+    var body = ExpressionOperators.ContainsString(
+      Expression.Constant(collection),
+      Expression.Property(par, propName),
+      stringTransform,
+      cultureInfo);
     var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
     var func = lambda.Compile();
 
