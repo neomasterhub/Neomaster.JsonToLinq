@@ -23,6 +23,7 @@ internal class DataService()
       .RuleFor(u => u.FirstName, f => f.Name.FirstName())
       .RuleFor(u => u.LastName, f => f.Name.LastName())
       .RuleFor(u => u.MiddleName, f => f.Name.FirstName())
+      .RuleFor(u => u.Country, f => f.Address.Country())
       .RuleFor(u => u.Balance, f => f.Random.Decimal(-100, 10000))
       .RuleFor(u => u.LastVisitAt, f => f.IndexFaker % 100 == 0 ? null : f.Date.Between(dt1, dt2))
       .Generate(10_000));
