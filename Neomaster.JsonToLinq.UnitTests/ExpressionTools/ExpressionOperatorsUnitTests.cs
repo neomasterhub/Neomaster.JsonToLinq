@@ -76,6 +76,34 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.FirstName));
   }
 
+  [Fact]
+  public void ContainsString_AsLower()
+  {
+    var collection = new string[] { "x", "aa" };
+    var users = new User[]
+    {
+      new() { FirstName = "aa" },
+      new() { FirstName = "AA" },
+      new() { FirstName = "Aa" },
+      new() { FirstName = "aA" },
+      new() { FirstName = "xx" },
+      new() { FirstName = "XX" },
+      new() { FirstName = "Xx" },
+      new() { FirstName = "xX" },
+    };
+    var expected = users.Where(u => collection.Contains(u.FirstName.ToLower()));
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
