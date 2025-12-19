@@ -154,6 +154,30 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  [Theory]
+  [InlineData(StringTransform.Lower, "i", false, 1)]
+  [InlineData(StringTransform.Lower, "i", true, 0)]
+  [InlineData(StringTransform.Lower, "ı", false, 0)]
+  [InlineData(StringTransform.Lower, "ı", true, 1)]
+  public void ContainsString_AsLower_Culture(
+    StringTransform stringTransform,
+    string collectionItem,
+    bool withCi,
+    int found)
+  {
+    var collection = new string[] { collectionItem };
+    var users = new User[] { new() { FirstName = "I" } };
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      stringTransform,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
