@@ -320,6 +320,28 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.FirstName));
   }
 
+  [Fact]
+  public void EndsWith_AsUpper()
+  {
+    const string postfix = "A";
+    var users = new User[]
+    {
+      new() { FirstName = "-a" },
+      new() { FirstName = "-A" },
+    };
+    var expected = users.Where(u => u.FirstName.ToUpper().EndsWith(postfix));
+    var func = CreateEndsWithFunc<User, string>(
+      nameof(User.FirstName),
+      postfix,
+      StringTransform.Upper);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
   private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
     string propName,
     string prefix,
