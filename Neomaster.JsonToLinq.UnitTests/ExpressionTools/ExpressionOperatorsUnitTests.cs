@@ -155,12 +155,11 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   }
 
   [Theory]
-  [InlineData(StringTransform.Lower, "i", false, 1)]
-  [InlineData(StringTransform.Lower, "i", true, 0)]
-  [InlineData(StringTransform.Lower, "ı", false, 0)]
-  [InlineData(StringTransform.Lower, "ı", true, 1)]
+  [InlineData("i", false, 1)]
+  [InlineData("i", true, 0)]
+  [InlineData("ı", false, 0)]
+  [InlineData("ı", true, 1)]
   public void ContainsString_AsLower_Culture(
-    StringTransform stringTransform,
     string collectionItem,
     bool withCi,
     int found)
@@ -170,7 +169,30 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     var func = CreateContainsStringFunc<User, string>(
       nameof(User.FirstName),
       collection,
-      stringTransform,
+      StringTransform.Lower,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  [Theory]
+  [InlineData("I", false, 1)]
+  [InlineData("I", true, 0)]
+  [InlineData("İ", false, 0)]
+  [InlineData("İ", true, 1)]
+  public void ContainsString_AsUpper_Culture(
+    string collectionItem,
+    bool withCi,
+    int found)
+  {
+    var collection = new string[] { collectionItem };
+    var users = new User[] { new() { FirstName = "i" } };
+    var func = CreateContainsStringFunc<User, string>(
+      nameof(User.FirstName),
+      collection,
+      StringTransform.Upper,
       withCi ? new CultureInfo("tr-TR") : null);
 
     var actual = users.Count(func);
