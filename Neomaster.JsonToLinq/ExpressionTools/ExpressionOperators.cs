@@ -11,6 +11,8 @@ public static class ExpressionOperators
   private static readonly MethodInfo _toUpper;
   private static readonly MethodInfo _toLowerCi;
   private static readonly MethodInfo _toUpperCi;
+  private static readonly MethodInfo _startsWith;
+  private static readonly MethodInfo _endsWith;
   private static readonly ConcurrentDictionary<Type, MethodInfo> _containsMethodsCache = [];
 
   static ExpressionOperators()
@@ -19,6 +21,8 @@ public static class ExpressionOperators
     _toUpper = typeof(string).GetMethod(nameof(string.ToUpper), Type.EmptyTypes);
     _toLowerCi = typeof(string).GetMethod(nameof(string.ToLower), [typeof(CultureInfo)]);
     _toUpperCi = typeof(string).GetMethod(nameof(string.ToUpper), [typeof(CultureInfo)]);
+    _startsWith = typeof(string).GetMethod(nameof(string.StartsWith), [typeof(string)]);
+    _endsWith = typeof(string).GetMethod(nameof(string.EndsWith), [typeof(string)]);
   }
 
   public static Expression InStrings(
@@ -35,28 +39,39 @@ public static class ExpressionOperators
     return Contains(collection, element);
   }
 
+  public static Expression StartsWith(
+    Expression element,
+    Expression prefix,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    return Expression.Call(
+      TransformStringCase(element, stringTransform, cultureInfo),
+      _startsWith,
+      prefix);
+  }
+
+  public static Expression EndsWith(
+    Expression element,
+    Expression postfix,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    return Expression.Call(
+      TransformStringCase(element, stringTransform, cultureInfo),
+      _endsWith,
+      postfix);
+  }
+
   public static Expression ContainsString(
     Expression collection,
     Expression element,
     StringTransform stringTransform = StringTransform.None,
     CultureInfo cultureInfo = null)
   {
-    element = stringTransform switch
-    {
-      StringTransform.None => element,
-
-      StringTransform.Lower => cultureInfo == null
-        ? Expression.Call(element, _toLower)
-        : Expression.Call(element, _toLowerCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
-
-      StringTransform.Upper => cultureInfo == null
-        ? Expression.Call(element, _toUpper)
-        : Expression.Call(element, _toUpperCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
-
-      _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
-    };
-
-    return Contains(collection, element);
+    return Contains(
+      collection,
+      TransformStringCase(element, stringTransform, cultureInfo));
   }
 
   public static Expression Contains(Expression collection, Expression element)
@@ -81,5 +96,26 @@ public static class ExpressionOperators
         m.Name == nameof(Enumerable.Contains)
         && m.GetParameters().Length == 2)
       .MakeGenericMethod(t));
+  }
+
+  private static Expression TransformStringCase(
+    Expression text,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    return stringTransform switch
+    {
+      StringTransform.None => text,
+
+      StringTransform.Lower => cultureInfo == null
+        ? Expression.Call(text, _toLower)
+        : Expression.Call(text, _toLowerCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
+      StringTransform.Upper => cultureInfo == null
+        ? Expression.Call(text, _toUpper)
+        : Expression.Call(text, _toUpperCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
+      _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
+    };
   }
 }

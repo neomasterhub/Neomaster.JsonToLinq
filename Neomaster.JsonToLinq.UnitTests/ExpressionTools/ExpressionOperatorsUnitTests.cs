@@ -137,10 +137,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   [InlineData("i", true, 0)]
   [InlineData("ı", false, 0)]
   [InlineData("ı", true, 1)]
-  public void ContainsString_AsLower_Culture(
-    string collectionItem,
-    bool withCi,
-    int found)
+  public void ContainsString_AsLower_Culture(string collectionItem, bool withCi, int found)
   {
     var collection = new string[] { collectionItem };
     var users = new User[] { new() { FirstName = "I" } };
@@ -160,10 +157,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   [InlineData("I", true, 0)]
   [InlineData("İ", false, 0)]
   [InlineData("İ", true, 1)]
-  public void ContainsString_AsUpper_Culture(
-    string collectionItem,
-    bool withCi,
-    int found)
+  public void ContainsString_AsUpper_Culture(string collectionItem, bool withCi, int found)
   {
     var collection = new string[] { collectionItem };
     var users = new User[] { new() { FirstName = "i" } };
@@ -178,14 +172,258 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  [Fact]
+  public void StartsWith_AsIs()
+  {
+    const string prefix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "a-" },
+      new() { FirstName = "A-" },
+    };
+    var expected = users.Where(u => u.FirstName.StartsWith(prefix));
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void StartsWith_AsLower()
+  {
+    const string prefix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "a-" },
+      new() { FirstName = "A-" },
+    };
+    var expected = users.Where(u => u.FirstName.ToLower().StartsWith(prefix));
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Lower);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void StartsWith_AsUpper()
+  {
+    const string prefix = "A";
+    var users = new User[]
+    {
+      new() { FirstName = "a-" },
+      new() { FirstName = "A-" },
+    };
+    var expected = users.Where(u => u.FirstName.ToUpper().StartsWith(prefix));
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Upper);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Theory]
+  [InlineData("i", false, 1)]
+  [InlineData("i", true, 0)]
+  [InlineData("ı", false, 0)]
+  [InlineData("ı", true, 1)]
+  public void StartsWith_AsLower_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "I-" } };
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Lower,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  [Theory]
+  [InlineData("I", false, 1)]
+  [InlineData("I", true, 0)]
+  [InlineData("İ", false, 0)]
+  [InlineData("İ", true, 1)]
+  public void StartsWith_AsUpper_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "i-" } };
+    var func = CreateStartsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Upper,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  [Fact]
+  public void EndsWith_AsIs()
+  {
+    const string postfix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "-a" },
+      new() { FirstName = "-A" },
+    };
+    var expected = users.Where(u => u.FirstName.EndsWith(postfix));
+    var func = CreateEndsWithFunc<User, string>(
+      nameof(User.FirstName),
+      postfix,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void EndsWith_AsLower()
+  {
+    const string postfix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "-a" },
+      new() { FirstName = "-A" },
+    };
+    var expected = users.Where(u => u.FirstName.ToLower().EndsWith(postfix));
+    var func = CreateEndsWithFunc<User, string>(
+      nameof(User.FirstName),
+      postfix,
+      StringTransform.Lower);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void EndsWith_AsUpper()
+  {
+    const string postfix = "A";
+    var users = new User[]
+    {
+      new() { FirstName = "-a" },
+      new() { FirstName = "-A" },
+    };
+    var expected = users.Where(u => u.FirstName.ToUpper().EndsWith(postfix));
+    var func = CreateEndsWithFunc<User, string>(
+      nameof(User.FirstName),
+      postfix,
+      StringTransform.Upper);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Theory]
+  [InlineData("i", false, 1)]
+  [InlineData("i", true, 0)]
+  [InlineData("ı", false, 0)]
+  [InlineData("ı", true, 1)]
+  public void EndsWith_AsLower_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "-I" } };
+    var func = CreateEndsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Lower,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  [Theory]
+  [InlineData("I", false, 1)]
+  [InlineData("I", true, 0)]
+  [InlineData("İ", false, 0)]
+  [InlineData("İ", true, 1)]
+  public void EndsWith_AsUpper_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "-i" } };
+    var func = CreateEndsWithFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Upper,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
+    string propName,
+    string prefix,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var body = ExpressionOperators.StartsWith(
+      Expression.Property(par, propName),
+      Expression.Constant(prefix),
+      stringTransform,
+      cultureInfo);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
+  private static Func<TEntity, bool> CreateEndsWithFunc<TEntity, TProp>(
+    string propName,
+    string prefix,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var body = ExpressionOperators.EndsWith(
+      Expression.Property(par, propName),
+      Expression.Constant(prefix),
+      stringTransform,
+      cultureInfo);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection)
   {
     var par = Expression.Parameter(typeof(TEntity));
-    var left = Expression.Constant(collection);
-    var right = Expression.Property(par, propName);
-    var body = ExpressionOperators.Contains(left, right);
+    var body = ExpressionOperators.Contains(
+      Expression.Constant(collection),
+      Expression.Property(par, propName));
     var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
     var func = lambda.Compile();
 
@@ -199,9 +437,11 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     CultureInfo cultureInfo = null)
   {
     var par = Expression.Parameter(typeof(TEntity));
-    var col = Expression.Constant(collection);
-    var element = Expression.Property(par, propName);
-    var body = ExpressionOperators.ContainsString(col, element, stringTransform, cultureInfo);
+    var body = ExpressionOperators.ContainsString(
+      Expression.Constant(collection),
+      Expression.Property(par, propName),
+      stringTransform,
+      cultureInfo);
     var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
     var func = lambda.Compile();
 

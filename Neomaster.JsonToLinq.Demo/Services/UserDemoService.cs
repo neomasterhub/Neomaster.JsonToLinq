@@ -296,13 +296,19 @@ internal class UserDemoService
       log.AddSep();
       log.Add($"Count: {actual.Length}");
 
-      log.Add("With date:");
+      log.Add("With dates:");
       foreach (var u in actual.Where(u => u.LastVisitAt != null))
       {
         log.Add($"Id: {u.Id}, LastVisitAt: {u.LastVisitAt.Value.ToString(PgIsoFormat)}");
       }
 
-      log.Add("With email:");
+      log.Add("With specified decimal values:");
+      foreach (var u in actual.Where(u => filterDecimalValues.Contains(u.Balance)))
+      {
+        log.Add($"Id: {u.Id}, Balance: {u.Balance}");
+      }
+
+      log.Add("With specified emails:");
       foreach (var u in actual.Where(u => filterEmails.Contains(u.Email, StringComparer.OrdinalIgnoreCase)))
       {
         log.Add($"Id: {u.Id}, Email: {u.Email}");
@@ -436,6 +442,324 @@ internal class UserDemoService
       foreach (var u in actual.DistinctBy(u => u.FirstName))
       {
         log.Add(u.FirstName);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>starts with</c>.
+  /// </summary>
+  public void StartsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string prefix = "Josi";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "firstName",
+            "Operator": "starts with",
+            "Value": "{{prefix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.FirstName.StartsWith(prefix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found first names:");
+      foreach (var u in actual.DistinctBy(u => u.FirstName))
+      {
+        log.Add(u.FirstName);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>as lower starts with</c>.
+  /// </summary>
+  public void AsLowerStartsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string prefix = "josi";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "firstName",
+            "Operator": "as lower starts with",
+            "Value": "{{prefix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.FirstName.ToLower().StartsWith(prefix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found first names:");
+      foreach (var u in actual.DistinctBy(u => u.FirstName))
+      {
+        log.Add(u.FirstName);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>as upper starts with</c>.
+  /// </summary>
+  public void AsUpperStartsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string prefix = "JOSI";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "firstName",
+            "Operator": "as upper starts with",
+            "Value": "{{prefix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.FirstName.ToUpper().StartsWith(prefix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found first names:");
+      foreach (var u in actual.DistinctBy(u => u.FirstName))
+      {
+        log.Add(u.FirstName);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>ends with</c>.
+  /// </summary>
+  public void EndsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string postfix = "Korea";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "country",
+            "Operator": "ends with",
+            "Value": "{{postfix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.Country.EndsWith(postfix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found countries:");
+      foreach (var u in actual.DistinctBy(u => u.Country))
+      {
+        log.Add(u.Country);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>as lower ends with</c>.
+  /// </summary>
+  public void AsLowerEndsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string postfix = "korea";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "country",
+            "Operator": "as lower ends with",
+            "Value": "{{postfix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.Country.ToLower().EndsWith(postfix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found countries:");
+      foreach (var u in actual.DistinctBy(u => u.Country))
+      {
+        log.Add(u.Country);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>as upper ends with</c>.
+  /// </summary>
+  public void AsUpperEndsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string postfix = "KOREA";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "country",
+            "Operator": "as upper ends with",
+            "Value": "{{postfix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.Country.ToUpper().EndsWith(postfix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found countries:");
+      foreach (var u in actual.DistinctBy(u => u.Country))
+      {
+        log.Add(u.Country);
       }
 
       log.Add(NoteString, textColor: ConsoleColor.DarkCyan);

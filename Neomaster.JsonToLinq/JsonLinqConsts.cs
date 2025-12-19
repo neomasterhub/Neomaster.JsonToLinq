@@ -32,7 +32,13 @@ public static class JsonLinqConsts
       .Add("<=", Expression.LessThanOrEqual)
       .Add("in", ExpressionOperators.In)
       .Add("as lower in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Lower))
-      .Add("as upper in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Upper));
+      .Add("as upper in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Upper))
+      .Add("starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix))
+      .Add("as lower starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Lower))
+      .Add("as upper starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Upper))
+      .Add("ends with", (element, prefix) => ExpressionOperators.EndsWith(element, prefix))
+      .Add("as lower ends with", (element, prefix) => ExpressionOperators.EndsWith(element, prefix, StringTransform.Lower))
+      .Add("as upper ends with", (element, prefix) => ExpressionOperators.EndsWith(element, prefix, StringTransform.Upper));
   }
 
   public static class ExpressionBindBuilders
