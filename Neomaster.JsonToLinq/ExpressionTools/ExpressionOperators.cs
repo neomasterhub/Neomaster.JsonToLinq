@@ -60,7 +60,10 @@ public static class ExpressionOperators
       _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
     };
 
-    return Expression.Call(element, _startsWith, prefix);
+    return Expression.Call(
+      TransformStringCase(element, stringTransform, cultureInfo),
+      _startsWith,
+      prefix);
   }
 
   public static Expression ContainsString(
@@ -69,22 +72,9 @@ public static class ExpressionOperators
     StringTransform stringTransform = StringTransform.None,
     CultureInfo cultureInfo = null)
   {
-    element = stringTransform switch
-    {
-      StringTransform.None => element,
-
-      StringTransform.Lower => cultureInfo == null
-        ? Expression.Call(element, _toLower)
-        : Expression.Call(element, _toLowerCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
-
-      StringTransform.Upper => cultureInfo == null
-        ? Expression.Call(element, _toUpper)
-        : Expression.Call(element, _toUpperCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
-
-      _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
-    };
-
-    return Contains(collection, element);
+    return Contains(
+      collection,
+      TransformStringCase(element, stringTransform, cultureInfo));
   }
 
   public static Expression Contains(Expression collection, Expression element)
@@ -109,5 +99,26 @@ public static class ExpressionOperators
         m.Name == nameof(Enumerable.Contains)
         && m.GetParameters().Length == 2)
       .MakeGenericMethod(t));
+  }
+
+  private static Expression TransformStringCase(
+    Expression text,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    return stringTransform switch
+    {
+      StringTransform.None => text,
+
+      StringTransform.Lower => cultureInfo == null
+        ? Expression.Call(text, _toLower)
+        : Expression.Call(text, _toLowerCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
+      StringTransform.Upper => cultureInfo == null
+        ? Expression.Call(text, _toUpper)
+        : Expression.Call(text, _toUpperCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
+      _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
+    };
   }
 }
