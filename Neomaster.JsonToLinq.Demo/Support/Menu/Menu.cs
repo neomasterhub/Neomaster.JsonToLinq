@@ -1,4 +1,3 @@
-#pragma warning disable SA1512
 using System.Text;
 
 namespace Neomaster.JsonToLinq.Demo;
@@ -39,6 +38,7 @@ internal class Menu
       new("🧪 as upper starts with", () => userDemoService.AsUpperStartsWith(_log)),
       new("🧪 ends with", () => userDemoService.EndsWith(_log)),
       new("🧪 as lower ends with", () => userDemoService.AsLowerEndsWith(_log)),
+      new("🧪 as upper ends with", () => userDemoService.AsUpperEndsWith(_log)),
       new("🧪 Custom operators: lt, gt", () => userDemoService.CustomOp(_log)),
     ];
 

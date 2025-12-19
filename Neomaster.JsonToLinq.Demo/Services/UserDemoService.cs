@@ -712,6 +712,59 @@ internal class UserDemoService
   }
 
   /// <summary>
+  /// Operator <c>as upper ends with</c>.
+  /// </summary>
+  public void AsUpperEndsWith(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string postfix = "KOREA";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "country",
+            "Operator": "as upper ends with",
+            "Value": "{{postfix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expected = dbContext.Users
+        .Where(u => u.Country.ToUpper().EndsWith(postfix))
+        .ToArray();
+
+      var actual = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .ToArray();
+
+      Assert.True(expected.Length > 0);
+      Assert.Equal(expected.Length, actual.Length);
+      Assert.Equal(expected.Select(u => u.Id), actual.Select(u => u.Id));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+
+      log.Add("Found countries:");
+      foreach (var u in actual.DistinctBy(u => u.Country))
+      {
+        log.Add(u.Country);
+      }
+
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
   /// Custom operators:
   /// <list type="number">
   /// <item>
