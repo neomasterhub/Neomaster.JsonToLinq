@@ -7,14 +7,18 @@ namespace Neomaster.JsonToLinq;
 
 public static class ExpressionOperators
 {
-  private static readonly ConcurrentDictionary<Type, MethodInfo> _containsMethodsCache = [];
   private static readonly MethodInfo _toLower;
   private static readonly MethodInfo _toUpper;
+  private static readonly MethodInfo _toLowerCi;
+  private static readonly MethodInfo _toUpperCi;
+  private static readonly ConcurrentDictionary<Type, MethodInfo> _containsMethodsCache = [];
 
   static ExpressionOperators()
   {
-    _toLower = typeof(string).GetMethod(nameof(string.ToLower), [typeof(CultureInfo)]);
-    _toUpper = typeof(string).GetMethod(nameof(string.ToUpper), [typeof(CultureInfo)]);
+    _toLower = typeof(string).GetMethod(nameof(string.ToLower), Type.EmptyTypes);
+    _toUpper = typeof(string).GetMethod(nameof(string.ToUpper), Type.EmptyTypes);
+    _toLowerCi = typeof(string).GetMethod(nameof(string.ToLower), [typeof(CultureInfo)]);
+    _toUpperCi = typeof(string).GetMethod(nameof(string.ToUpper), [typeof(CultureInfo)]);
   }
 
   public static Expression InStrings(
@@ -40,8 +44,15 @@ public static class ExpressionOperators
     element = stringTransform switch
     {
       StringTransform.None => element,
-      StringTransform.Lower => Expression.Call(_toLower, element, Expression.Constant(cultureInfo)),
-      StringTransform.Upper => Expression.Call(_toUpper, element, Expression.Constant(cultureInfo)),
+
+      StringTransform.Lower => cultureInfo == null
+        ? Expression.Call(element, _toLower)
+        : Expression.Call(element, _toLowerCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
+      StringTransform.Upper => cultureInfo == null
+        ? Expression.Call(element, _toUpper)
+        : Expression.Call(element, _toUpperCi, Expression.Constant(cultureInfo, typeof(CultureInfo))),
+
       _ => throw new ArgumentOutOfRangeException(nameof(stringTransform)),
     };
 
