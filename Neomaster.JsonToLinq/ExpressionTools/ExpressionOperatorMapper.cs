@@ -72,7 +72,8 @@ public class ExpressionOperatorMapper
   public ExpressionOperatorMapper WithNot(string notOpKey = null)
   {
     var lastKey = Pairs.Last().Key;
+    notOpKey ??= (lastKey.Contains(" ") ? "! " : "!") + lastKey;
 
-    return AddNot(notOpKey ?? (lastKey.Contains(" ") ? "! " : "!"), lastKey);
+    return AddNot(notOpKey, lastKey);
   }
 }

@@ -121,4 +121,17 @@ public class ExpressionOperatorMapperUnitTests
     Assert.Single(mapper.Pairs, kv => kv.Value == Expression.NotEqual);
     Assert.Single(mapper.Pairs, kv => kv.Value == Expression.And);
   }
+
+  [Fact]
+  public void WithNot_AutoPrefix()
+  {
+    var mapper = new ExpressionOperatorMapper()
+      .Add("a", null)
+      .WithNot()
+      .Add("b c", null)
+      .WithNot();
+
+    Assert.Contains("!a", mapper.Pairs.Keys);
+    Assert.Contains("! b c", mapper.Pairs.Keys);
+  }
 }
