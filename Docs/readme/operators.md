@@ -1,10 +1,8 @@
 ## 🛠️ Operators
-
 👓 Operators and their handling logic are encapsulated in class `ExpressionOperatorMapper`.
 The default operator mapping can be accessed via property `Pairs`.
 
 ### 📌 Default Operators
-
 | Operator               | Base LINQ Expression             | Description                            |
 |------------------------|----------------------------------|----------------------------------------|
 | `&`                    | `Expression.And`                 | Bitwise AND                            |
@@ -31,12 +29,10 @@ The default operator mapping can be accessed via property `Pairs`.
 | `as upper contains`    | `ExpressionOperators.Contains`   | Element upper-cased contains substring |
 
 ### 🔁 LINQ Translation
-
 All default operators are designed to be translatable by LINQ providers
 (e.g. Entity Framework Core) and do not rely on client-side evaluation.
 
 ### 🔠 Case Sensitivity and Normalization
-
 1. String comparisons are case-sensitive, depending on the database collation, not on the operators.
 1. The case of string values specified in the filter is never changed automatically.
 1. Case normalization is the client’s responsibility.
@@ -44,8 +40,14 @@ All default operators are designed to be translatable by LINQ providers
    to the expression being evaluated, not to the filter value.
    The filter value is used exactly as provided.
 
-### 🌟 Add Custom Operators
+### 📦 Filter Collections
+1. A filter collection can be empty, but it is never `null`.
+1. A filter collection and its elements are never automatically changed.
+1. Operators with `as lower` / `as upper` apply string transformations
+   to each element in the source collection before evaluation,
+   leaving the filter collection elements unchanged.
 
+### 🌟 Add Custom Operators
 ```csharp
 JsonLinq.Configure(options =>
   {
