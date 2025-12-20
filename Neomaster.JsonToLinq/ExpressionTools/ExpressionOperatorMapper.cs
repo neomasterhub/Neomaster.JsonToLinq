@@ -50,4 +50,16 @@ public class ExpressionOperatorMapper
   {
     return Add(alias, this[key]);
   }
+
+  public ExpressionOperatorMapper WithAliases(params string[] aliases)
+  {
+    var last = Pairs.Last();
+
+    foreach (var alias in aliases)
+    {
+      Add(alias, last.Value);
+    }
+
+    return this;
+  }
 }
