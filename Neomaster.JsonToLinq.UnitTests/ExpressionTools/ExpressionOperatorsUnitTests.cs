@@ -54,7 +54,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   }
 
   [Fact]
-  public void ContainsString_AsIs()
+  public void StringsContains_AsIs()
   {
     var collection = new string[] { "x", "Aa" };
     var users = new User[]
@@ -64,7 +64,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
       new() { FirstName = "Aa" },
     };
     var expected = users.Where(u => collection.Contains(u.FirstName));
-    var func = CreateContainsStringFunc<User, string>(
+    var func = CreateStringsContainsFunc<User, string>(
       nameof(User.FirstName),
       collection,
       StringTransform.None);
@@ -77,7 +77,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   }
 
   [Fact]
-  public void ContainsString_AsLower()
+  public void StringsContains_AsLower()
   {
     var collection = new string[] { "x", "aa" };
     var users = new User[]
@@ -92,7 +92,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
       new() { FirstName = "xX" },
     };
     var expected = users.Where(u => collection.Contains(u.FirstName.ToLower()));
-    var func = CreateContainsStringFunc<User, string>(
+    var func = CreateStringsContainsFunc<User, string>(
       nameof(User.FirstName),
       collection,
       StringTransform.Lower);
@@ -105,7 +105,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   }
 
   [Fact]
-  public void ContainsString_AsUpper()
+  public void StringsContains_AsUpper()
   {
     var collection = new string[] { "x", "AA" };
     var users = new User[]
@@ -120,7 +120,7 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
       new() { FirstName = "xX" },
     };
     var expected = users.Where(u => collection.Contains(u.FirstName.ToUpper()));
-    var func = CreateContainsStringFunc<User, string>(
+    var func = CreateStringsContainsFunc<User, string>(
       nameof(User.FirstName),
       collection,
       StringTransform.Upper);
@@ -137,11 +137,11 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   [InlineData("i", true, 0)]
   [InlineData("ı", false, 0)]
   [InlineData("ı", true, 1)]
-  public void ContainsString_AsLower_Culture(string collectionItem, bool withCi, int found)
+  public void StringsContains_AsLower_Culture(string collectionItem, bool withCi, int found)
   {
     var collection = new string[] { collectionItem };
     var users = new User[] { new() { FirstName = "I" } };
-    var func = CreateContainsStringFunc<User, string>(
+    var func = CreateStringsContainsFunc<User, string>(
       nameof(User.FirstName),
       collection,
       StringTransform.Lower,
@@ -157,11 +157,11 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
   [InlineData("I", true, 0)]
   [InlineData("İ", false, 0)]
   [InlineData("İ", true, 1)]
-  public void ContainsString_AsUpper_Culture(string collectionItem, bool withCi, int found)
+  public void StringsContains_AsUpper_Culture(string collectionItem, bool withCi, int found)
   {
     var collection = new string[] { collectionItem };
     var users = new User[] { new() { FirstName = "i" } };
-    var func = CreateContainsStringFunc<User, string>(
+    var func = CreateStringsContainsFunc<User, string>(
       nameof(User.FirstName),
       collection,
       StringTransform.Upper,
@@ -380,6 +380,128 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  [Fact]
+  public void Contains_AsIs()
+  {
+    const string infix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "-a-" },
+      new() { FirstName = "-A-" },
+    };
+    var expected = users.Where(u => u.FirstName.Contains(infix));
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      infix,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void Contains_AsLower()
+  {
+    const string infix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "-a-" },
+      new() { FirstName = "-A-" },
+    };
+    var expected = users.Where(u => u.FirstName.ToLower().Contains(infix));
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      infix,
+      StringTransform.Lower);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Fact]
+  public void Contains_AsUpper()
+  {
+    const string infix = "A";
+    var users = new User[]
+    {
+      new() { FirstName = "-a-" },
+      new() { FirstName = "-A-" },
+    };
+    var expected = users.Where(u => u.FirstName.ToUpper().Contains(infix));
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      infix,
+      StringTransform.Upper);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  [Theory]
+  [InlineData("i", false, 1)]
+  [InlineData("i", true, 0)]
+  [InlineData("ı", false, 0)]
+  [InlineData("ı", true, 1)]
+  public void Contains_AsLower_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "-I-" } };
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Lower,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  [Theory]
+  [InlineData("I", false, 1)]
+  [InlineData("I", true, 0)]
+  [InlineData("İ", false, 0)]
+  [InlineData("İ", true, 1)]
+  public void Contains_AsUpper_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "-i-" } };
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Upper,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
+  private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
+    string propName,
+    string prefix,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var body = ExpressionOperators.Contains(
+      Expression.Property(par, propName),
+      Expression.Constant(prefix),
+      stringTransform,
+      cultureInfo);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
   private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
     string propName,
     string prefix,
@@ -430,14 +552,14 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     return func;
   }
 
-  private static Func<TEntity, bool> CreateContainsStringFunc<TEntity, TProp>(
+  private static Func<TEntity, bool> CreateStringsContainsFunc<TEntity, TProp>(
     string propName,
     IEnumerable<TProp> collection,
     StringTransform stringTransform,
     CultureInfo cultureInfo = null)
   {
     var par = Expression.Parameter(typeof(TEntity));
-    var body = ExpressionOperators.ContainsString(
+    var body = ExpressionOperators.StringsContains(
       Expression.Constant(collection),
       Expression.Property(par, propName),
       stringTransform,

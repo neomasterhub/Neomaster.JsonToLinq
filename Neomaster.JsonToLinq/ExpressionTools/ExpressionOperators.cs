@@ -13,6 +13,7 @@ public static class ExpressionOperators
   private static readonly MethodInfo _toUpperCi;
   private static readonly MethodInfo _startsWith;
   private static readonly MethodInfo _endsWith;
+  private static readonly MethodInfo _contains;
   private static readonly ConcurrentDictionary<Type, MethodInfo> _containsMethodsCache = [];
 
   static ExpressionOperators()
@@ -23,6 +24,7 @@ public static class ExpressionOperators
     _toUpperCi = typeof(string).GetMethod(nameof(string.ToUpper), [typeof(CultureInfo)]);
     _startsWith = typeof(string).GetMethod(nameof(string.StartsWith), [typeof(string)]);
     _endsWith = typeof(string).GetMethod(nameof(string.EndsWith), [typeof(string)]);
+    _contains = typeof(string).GetMethod(nameof(string.Contains), [typeof(string)]);
   }
 
   public static Expression InStrings(
@@ -31,7 +33,7 @@ public static class ExpressionOperators
     StringTransform stringTransform = StringTransform.None,
     CultureInfo cultureInfo = null)
   {
-    return ContainsString(collection, element, stringTransform, cultureInfo);
+    return StringsContains(collection, element, stringTransform, cultureInfo);
   }
 
   public static Expression In(Expression element, Expression collection)
@@ -63,7 +65,19 @@ public static class ExpressionOperators
       postfix);
   }
 
-  public static Expression ContainsString(
+  public static Expression Contains(
+    Expression element,
+    Expression infix,
+    StringTransform stringTransform = StringTransform.None,
+    CultureInfo cultureInfo = null)
+  {
+    return Expression.Call(
+      TransformStringCase(element, stringTransform, cultureInfo),
+      _contains,
+      infix);
+  }
+
+  public static Expression StringsContains(
     Expression collection,
     Expression element,
     StringTransform stringTransform = StringTransform.None,
