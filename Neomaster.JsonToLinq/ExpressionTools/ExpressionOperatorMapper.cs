@@ -45,4 +45,21 @@ public class ExpressionOperatorMapper
 
     return clone;
   }
+
+  public ExpressionOperatorMapper AddAlias(string alias, string key)
+  {
+    return Add(alias, this[key]);
+  }
+
+  public ExpressionOperatorMapper WithAliases(params string[] aliases)
+  {
+    var last = Pairs.Last();
+
+    foreach (var alias in aliases)
+    {
+      Add(alias, last.Value);
+    }
+
+    return this;
+  }
 }
