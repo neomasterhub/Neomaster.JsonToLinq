@@ -91,8 +91,9 @@ All default operators are designed to be translatable by LINQ providers
 JsonLinq.Configure(options =>
   {
     options.OperatorMapper
-      .Add("lt", Expression.LessThan)
-      .Add("gt", Expression.GreaterThan);
+      .Add("lt", Expression.LessThan).WithAliases("LT")
+      .Add("gt", Expression.GreaterThan).WithAliases("GT")
+      .AddAlias("eq", "=").WithAliases("EQ", "==");
   });
 ```
 
