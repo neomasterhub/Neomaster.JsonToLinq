@@ -59,16 +59,15 @@ public class ExpressionOperatorMapperUnitTests
   [Fact]
   public void AddAlias()
   {
-    var mapper = ExpressionOperatorMapper.OnDefault()
-      .AddAlias("1", "=")
-      .AddAlias("2", "=");
+    var mapper = new ExpressionOperatorMapper()
+      .Add("=", Expression.Equal)
+      .AddAlias("eq", "=")
+      .AddAlias("EQ", "=");
 
-    var bind = mapper["="];
-    var bind1 = mapper["1"];
-    var bind2 = mapper["2"];
-
-    Assert.Equal(bind, bind1);
-    Assert.Equal(bind, bind2);
+    Assert.Contains("eq", mapper.Pairs.Keys);
+    Assert.Contains("EQ", mapper.Pairs.Keys);
+    Assert.Equal(mapper["="], mapper["eq"]);
+    Assert.Equal(mapper["="], mapper["EQ"]);
   }
 
   [Fact]
@@ -79,12 +78,47 @@ public class ExpressionOperatorMapperUnitTests
       .WithAliases("eq", "EQ")
       .Add("!=", Expression.NotEqual);
 
-    var bind = mapper["="];
-    var bind1 = mapper["eq"];
-    var bind2 = mapper["EQ"];
-
-    Assert.Equal(bind, bind1);
-    Assert.Equal(bind, bind2);
+    Assert.Contains("eq", mapper.Pairs.Keys);
+    Assert.Contains("EQ", mapper.Pairs.Keys);
+    Assert.Equal(mapper["="], mapper["eq"]);
+    Assert.Equal(mapper["="], mapper["EQ"]);
     Assert.Single(mapper.Pairs, kv => kv.Value == Expression.NotEqual);
+  }
+
+  [Fact]
+  public void AddNot()
+  {
+    var mapper = new ExpressionOperatorMapper()
+      .Add("!=", Expression.NotEqual)
+      .AddNot("=", "!=");
+    var par = Expression.Parameter(typeof(int));
+    var func = Expression.Lambda<Func<int, bool>>(
+      mapper["="](par, Expression.Constant(1)),
+      par)
+      .Compile();
+
+    Assert.Contains("=", mapper.Pairs.Keys);
+    Assert.NotEqual(mapper["!="], mapper["="]);
+    Assert.True(func(1));
+  }
+
+  [Fact]
+  public void WithNot()
+  {
+    var mapper = new ExpressionOperatorMapper()
+      .Add("!=", Expression.NotEqual)
+      .WithNot("=")
+      .Add("&", Expression.And);
+    var par = Expression.Parameter(typeof(int));
+    var func = Expression.Lambda<Func<int, bool>>(
+      mapper["="](par, Expression.Constant(1)),
+      par)
+      .Compile();
+
+    Assert.Contains("=", mapper.Pairs.Keys);
+    Assert.NotEqual(mapper["!="], mapper["="]);
+    Assert.True(func(1));
+    Assert.Single(mapper.Pairs, kv => kv.Value == Expression.NotEqual);
+    Assert.Single(mapper.Pairs, kv => kv.Value == Expression.And);
   }
 }
