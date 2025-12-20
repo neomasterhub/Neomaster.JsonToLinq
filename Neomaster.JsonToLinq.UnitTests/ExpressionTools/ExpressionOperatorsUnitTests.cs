@@ -465,6 +465,25 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  [Theory]
+  [InlineData("I", false, 1)]
+  [InlineData("I", true, 0)]
+  [InlineData("İ", false, 0)]
+  [InlineData("İ", true, 1)]
+  public void Contains_AsUpper_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "-i-" } };
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Upper,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     string prefix,
