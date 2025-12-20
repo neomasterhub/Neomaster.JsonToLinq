@@ -36,9 +36,12 @@ public static class JsonLinqConsts
       .Add("starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix))
       .Add("as lower starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Lower))
       .Add("as upper starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Upper))
-      .Add("ends with", (element, prefix) => ExpressionOperators.EndsWith(element, prefix))
-      .Add("as lower ends with", (element, prefix) => ExpressionOperators.EndsWith(element, prefix, StringTransform.Lower))
-      .Add("as upper ends with", (element, prefix) => ExpressionOperators.EndsWith(element, prefix, StringTransform.Upper));
+      .Add("ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix))
+      .Add("as lower ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix, StringTransform.Lower))
+      .Add("as upper ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix, StringTransform.Upper))
+      .Add("contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.None))
+      .Add("as lower contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.Lower))
+      .Add("as upper contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.Upper));
   }
 
   public static class ExpressionBindBuilders
