@@ -59,16 +59,15 @@ public class ExpressionOperatorMapperUnitTests
   [Fact]
   public void AddAlias()
   {
-    var mapper = ExpressionOperatorMapper.OnDefault()
-      .AddAlias("1", "=")
-      .AddAlias("2", "=");
+    var mapper = new ExpressionOperatorMapper()
+      .Add("=", Expression.Equal)
+      .AddAlias("eq", "=")
+      .AddAlias("EQ", "=");
 
-    var bind = mapper["="];
-    var bind1 = mapper["1"];
-    var bind2 = mapper["2"];
-
-    Assert.Equal(bind, bind1);
-    Assert.Equal(bind, bind2);
+    Assert.Contains("eq", mapper.Pairs.Keys);
+    Assert.Contains("EQ", mapper.Pairs.Keys);
+    Assert.Equal(mapper["="], mapper["eq"]);
+    Assert.Equal(mapper["="], mapper["EQ"]);
   }
 
   [Fact]
