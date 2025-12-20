@@ -45,4 +45,9 @@ public class ExpressionOperatorMapper
 
     return clone;
   }
+
+  public ExpressionOperatorMapper AddAlias(string alias, string key)
+  {
+    return Add(alias, this[key]);
+  }
 }
