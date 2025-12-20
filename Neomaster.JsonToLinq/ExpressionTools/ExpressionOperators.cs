@@ -33,7 +33,7 @@ public static class ExpressionOperators
     StringTransform stringTransform = StringTransform.None,
     CultureInfo cultureInfo = null)
   {
-    return ContainsString(collection, element, stringTransform, cultureInfo);
+    return StringsContains(collection, element, stringTransform, cultureInfo);
   }
 
   public static Expression In(Expression element, Expression collection)
@@ -77,7 +77,7 @@ public static class ExpressionOperators
       infix);
   }
 
-  public static Expression ContainsString(
+  public static Expression StringsContains(
     Expression collection,
     Expression element,
     StringTransform stringTransform = StringTransform.None,
