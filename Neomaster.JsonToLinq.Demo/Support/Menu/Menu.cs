@@ -39,6 +39,7 @@ internal class Menu
       new("🧪 ends with", () => userDemoService.EndsWith(_log)),
       new("🧪 as lower ends with", () => userDemoService.AsLowerEndsWith(_log)),
       new("🧪 as upper ends with", () => userDemoService.AsUpperEndsWith(_log)),
+      new("🧪 contains", () => userDemoService.Contains(_log)),
       new("🧪 Custom operators: lt, gt", () => userDemoService.CustomOp(_log)),
     ];
 
