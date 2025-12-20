@@ -70,4 +70,21 @@ public class ExpressionOperatorMapperUnitTests
     Assert.Equal(bind, bind1);
     Assert.Equal(bind, bind2);
   }
+
+  [Fact]
+  public void WithAliases()
+  {
+    var mapper = new ExpressionOperatorMapper()
+      .Add("=", Expression.Equal)
+      .WithAliases("eq", "EQ")
+      .Add("!=", Expression.NotEqual);
+
+    var bind = mapper["="];
+    var bind1 = mapper["eq"];
+    var bind2 = mapper["EQ"];
+
+    Assert.Equal(bind, bind1);
+    Assert.Equal(bind, bind2);
+    Assert.Single(mapper.Pairs, kv => kv.Value == Expression.NotEqual);
+  }
 }
