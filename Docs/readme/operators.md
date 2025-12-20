@@ -30,6 +30,11 @@ The default operator mapping can be accessed via property `Pairs`.
 | `as lower contains`    | `ExpressionOperators.Contains`   | Element lower-cased contains substring |
 | `as upper contains`    | `ExpressionOperators.Contains`   | Element upper-cased contains substring |
 
+### 🔁 LINQ Translation
+
+All default operators are designed to be translatable by LINQ providers
+(e.g. Entity Framework Core) and do not rely on client-side evaluation.
+
 ### 🔠 Case Sensitivity and Normalization
 
 1. String comparisons are case-sensitive, depending on the database collation, not on the operators.
