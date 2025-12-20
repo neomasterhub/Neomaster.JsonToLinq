@@ -78,12 +78,10 @@ public class ExpressionOperatorMapperUnitTests
       .WithAliases("eq", "EQ")
       .Add("!=", Expression.NotEqual);
 
-    var bind = mapper["="];
-    var bind1 = mapper["eq"];
-    var bind2 = mapper["EQ"];
-
-    Assert.Equal(bind, bind1);
-    Assert.Equal(bind, bind2);
+    Assert.Contains("eq", mapper.Pairs.Keys);
+    Assert.Contains("EQ", mapper.Pairs.Keys);
+    Assert.Equal(mapper["="], mapper["eq"]);
+    Assert.Equal(mapper["="], mapper["EQ"]);
     Assert.Single(mapper.Pairs, kv => kv.Value == Expression.NotEqual);
   }
 }
