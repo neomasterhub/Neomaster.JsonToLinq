@@ -3,11 +3,6 @@
 👓 Operators and their handling logic are encapsulated in class `ExpressionOperatorMapper`.
 The default operator mapping can be accessed via property `Pairs`.
 
-🔠 String comparisons are case-sensitive, depending on the database collation, not on the operators.
-
-🤝 The case of string values specified in the filter is never changed automatically.
-Case normalization is the client’s responsibility.
-
 ### 📌 Default Operators
 
 | Operator               | Base LINQ Expression             | Description                            |
@@ -34,6 +29,15 @@ Case normalization is the client’s responsibility.
 | `contains`             | `ExpressionOperators.Contains`   | Contains substring                     |
 | `as lower contains`    | `ExpressionOperators.Contains`   | Element lower-cased contains substring |
 | `as upper contains`    | `ExpressionOperators.Contains`   | Element upper-cased contains substring |
+
+### 🔠 Case Sensitivity and Normalization
+
+1. String comparisons are case-sensitive, depending on the database collation, not on the operators.
+1. The case of string values specified in the filter is never changed automatically.
+1. Case normalization is the client’s responsibility.
+1. Operators with `as lower` / `as upper` apply case transformation
+   to the expression being evaluated, not to the filter value.
+   The filter value is used exactly as provided.
 
 ### 🌟 Add Custom Operators
 
