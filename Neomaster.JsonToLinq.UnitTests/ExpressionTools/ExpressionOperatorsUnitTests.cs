@@ -446,6 +446,25 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     actual.ForEach(u => output.WriteLine(u.FirstName));
   }
 
+  [Theory]
+  [InlineData("i", false, 1)]
+  [InlineData("i", true, 0)]
+  [InlineData("ı", false, 0)]
+  [InlineData("ı", true, 1)]
+  public void Contains_AsLower_Culture(string prefix, bool withCi, int found)
+  {
+    var users = new User[] { new() { FirstName = "-I-" } };
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      prefix,
+      StringTransform.Lower,
+      withCi ? new CultureInfo("tr-TR") : null);
+
+    var actual = users.Count(func);
+
+    Assert.Equal(found, actual);
+  }
+
   private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
     string propName,
     string prefix,
