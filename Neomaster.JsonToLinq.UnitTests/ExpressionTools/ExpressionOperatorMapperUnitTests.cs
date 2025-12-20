@@ -55,4 +55,19 @@ public class ExpressionOperatorMapperUnitTests
     var ex = Assert.Throws<InvalidOperationException>(() => mapper.Add(key, default));
     Assert.Equal(expectedExMessage, ex.Message);
   }
+
+  [Fact]
+  public void AddAlias()
+  {
+    var mapper = ExpressionOperatorMapper.OnDefault()
+      .AddAlias("1", "=")
+      .AddAlias("2", "=");
+
+    var bind = mapper["="];
+    var bind1 = mapper["1"];
+    var bind2 = mapper["2"];
+
+    Assert.Equal(bind, bind1);
+    Assert.Equal(bind, bind2);
+  }
 }
