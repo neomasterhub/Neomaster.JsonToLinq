@@ -101,4 +101,24 @@ public class ExpressionOperatorMapperUnitTests
     Assert.NotEqual(mapper["!="], mapper["="]);
     Assert.True(func(1));
   }
+
+  [Fact]
+  public void WithNot()
+  {
+    var mapper = new ExpressionOperatorMapper()
+      .Add("!=", Expression.NotEqual)
+      .WithNot("=")
+      .Add("&", Expression.And);
+    var par = Expression.Parameter(typeof(int));
+    var func = Expression.Lambda<Func<int, bool>>(
+      mapper["="](par, Expression.Constant(1)),
+      par)
+      .Compile();
+
+    Assert.Contains("=", mapper.Pairs.Keys);
+    Assert.NotEqual(mapper["!="], mapper["="]);
+    Assert.True(func(1));
+    Assert.Single(mapper.Pairs, kv => kv.Value == Expression.NotEqual);
+    Assert.Single(mapper.Pairs, kv => kv.Value == Expression.And);
+  }
 }
