@@ -6,14 +6,14 @@ You are welcome to submit a PR with your own examples, bug reports, or new featu
 
 ### 🔤 Filter Notation
 
-**Syntax**
+#### Syntax
 ```
 expr = logic[expr(, expr)*]
 ```
 - `expr` - a single rule or a combination of rules
 - `logic` - an operator used to combine multiple rules, e.g. `&&`, `&`, `||`, `|`, or a custom one
 
-**Examples**
+#### Examples
 1. `&&[x = null]`
 1. `&&[a < 0, b > 0]`
 1. `&&[x = null, ||[a < 0, b > 0]]`
