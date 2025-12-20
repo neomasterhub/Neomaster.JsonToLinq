@@ -380,6 +380,46 @@ public class ExpressionOperatorsUnitTests(ITestOutputHelper output)
     Assert.Equal(found, actual);
   }
 
+  [Fact]
+  public void Contains_AsIs()
+  {
+    const string infix = "a";
+    var users = new User[]
+    {
+      new() { FirstName = "-a-" },
+      new() { FirstName = "-A-" },
+    };
+    var expected = users.Where(u => u.FirstName.Contains(infix));
+    var func = CreateContainsFunc<User, string>(
+      nameof(User.FirstName),
+      infix,
+      StringTransform.None);
+
+    var actual = users.Where(func).ToList();
+
+    Assert.Equal(expected, actual);
+
+    actual.ForEach(u => output.WriteLine(u.FirstName));
+  }
+
+  private static Func<TEntity, bool> CreateContainsFunc<TEntity, TProp>(
+    string propName,
+    string prefix,
+    StringTransform stringTransform,
+    CultureInfo cultureInfo = null)
+  {
+    var par = Expression.Parameter(typeof(TEntity));
+    var body = ExpressionOperators.Contains(
+      Expression.Property(par, propName),
+      Expression.Constant(prefix),
+      stringTransform,
+      cultureInfo);
+    var lambda = Expression.Lambda<Func<TEntity, bool>>(body, par);
+    var func = lambda.Compile();
+
+    return func;
+  }
+
   private static Func<TEntity, bool> CreateStartsWithFunc<TEntity, TProp>(
     string propName,
     string prefix,
