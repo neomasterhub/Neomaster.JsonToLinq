@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using static Neomaster.JsonToLinq.JsonLinqConsts;
 
 namespace Neomaster.JsonToLinq;
@@ -61,5 +62,10 @@ public class ExpressionOperatorMapper
     }
 
     return this;
+  }
+
+  public ExpressionOperatorMapper AddNot(string notOpKey, string key)
+  {
+    return Add(notOpKey, (left, right) => Expression.Not(this[key](left, right)));
   }
 }
