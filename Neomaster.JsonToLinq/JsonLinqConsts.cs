@@ -30,18 +30,18 @@ public static class JsonLinqConsts
       .Add(">=", Expression.GreaterThanOrEqual)
       .Add("<", Expression.LessThan)
       .Add("<=", Expression.LessThanOrEqual)
-      .Add("in", ExpressionOperators.In)
-      .Add("as lower in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Lower))
-      .Add("as upper in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Upper))
-      .Add("starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix))
-      .Add("as lower starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Lower))
-      .Add("as upper starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Upper))
-      .Add("ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix))
-      .Add("as lower ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix, StringTransform.Lower))
-      .Add("as upper ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix, StringTransform.Upper))
-      .Add("contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.None))
-      .Add("as lower contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.Lower))
-      .Add("as upper contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.Upper));
+      .Add("in", ExpressionOperators.In).WithNot()
+      .Add("as lower in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Lower)).WithNot()
+      .Add("as upper in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Upper)).WithNot()
+      .Add("starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix)).WithNot()
+      .Add("as lower starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Lower)).WithNot()
+      .Add("as upper starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix, StringTransform.Upper)).WithNot()
+      .Add("ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix)).WithNot()
+      .Add("as lower ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix, StringTransform.Lower)).WithNot()
+      .Add("as upper ends with", (element, postfix) => ExpressionOperators.EndsWith(element, postfix, StringTransform.Upper)).WithNot()
+      .Add("contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.None)).WithNot()
+      .Add("as lower contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.Lower)).WithNot()
+      .Add("as upper contains", (element, infix) => ExpressionOperators.Contains(element, infix, StringTransform.Upper)).WithNot();
   }
 
   public static class ExpressionBindBuilders
