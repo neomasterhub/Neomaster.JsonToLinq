@@ -930,6 +930,92 @@ internal class UserDemoService
   }
 
   /// <summary>
+  /// Operator <c>!in</c>.
+  /// </summary>
+  public void NotIn(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    var filterJson =
+      """
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "id",
+            "Operator": "!in",
+            "Value": [1, 2, 3]
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var query = dbContext.Users
+        .Where(JsonLinq.ParseToFilterExpression<User>(filterJson))
+        .OrderBy(u => u.Id);
+
+      var total = dbContext.Users.Count();
+      var found = query.Count();
+      var firstId = query.First().Id;
+
+      Assert.Equal(total - 3, found);
+      Assert.Equal(4, firstId);
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+      log.Add($"Total: {total}");
+      log.Add($"Found: {found}");
+      log.Add($"First found id: {firstId}");
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>!contains</c>.
+  /// </summary>
+  public void NotContains(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    const string infix = "Islands";
+    var filterJson =
+      $$"""
+      {
+        "Logic": "||",
+        "Rules": [
+          {
+            "Field": "country",
+            "Operator": "!contains",
+            "Value": "{{infix}}"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var total = dbContext.Users.Count();
+      var expected = dbContext.Users.Count(u => !u.Country.Contains(infix));
+      var actual = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+      log.Add($"Total: {total}");
+      log.Add($"Found: {actual}");
+      log.Add(NoteString, textColor: ConsoleColor.DarkCyan);
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
+
+  /// <summary>
   /// Custom operators:
   /// <list type="number">
   /// <item>
@@ -942,7 +1028,7 @@ internal class UserDemoService
   /// </item>
   /// </list>
   /// </summary>
-  public void CustomOp(Log log)
+  public void CustomOps(Log log)
   {
     JsonLinq.Configure(options =>
     {

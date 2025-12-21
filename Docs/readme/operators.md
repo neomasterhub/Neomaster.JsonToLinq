@@ -94,7 +94,7 @@ JsonLinq.Configure(options =>
 });
 ```
 
-#### Negate Operators
+#### Negated Operators
 
 Negated operators can be created without explicitly providing a key.
 In this case, the key is automatically generated using the `NegateKeyProvider`.
