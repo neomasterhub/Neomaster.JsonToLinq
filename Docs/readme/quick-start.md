@@ -12,8 +12,8 @@ var users = source.Where(
     "Logic": "&&",
     "Rules": [
       { "Field": "balance", "Operator": "=", "Value": 0 },
+      { "Field": "status", "Operator": "in", "Value": [ 1, 3 ] },
       { "Field": "country", "Operator": "as lower contains", "Value": "islands" },
-      { "Field": "email", "Operator": "!in", "Value": [ "admin@org.com", "su@org.com" ] },
       {
         "Logic": "||",
         "Rules": [
