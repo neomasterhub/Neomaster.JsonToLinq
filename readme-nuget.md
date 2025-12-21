@@ -59,30 +59,30 @@ The default operator mapping can be accessed via property `Pairs`.
 | `in`                   | In collection                          |
 | `as lower in`          | Element lower-cased in collection      |
 | `as upper in`          | Element upper-cased in collection      |
+| `contains`             | Contains substring                     |
+| `as lower contains`    | Element lower-cased contains substring |
+| `as upper contains`    | Element upper-cased contains substring |
 | `starts with`          | Starts with                            |
 | `as lower starts with` | Element lower-cased starts with        |
 | `as upper starts with` | Element upper-cased starts with        |
 | `ends with`            | Ends with                              |
 | `as lower ends with`   | Element lower-cased ends with          |
 | `as upper ends with`   | Element upper-cased ends with          |
-| `contains`             | Contains substring                     |
-| `as lower contains`    | Element lower-cased contains substring |
-| `as upper contains`    | Element upper-cased contains substring |
 
 #### Negated Operators
 
 - `!in`                   
 - `! as lower in`         
 - `! as upper in`         
+- `!contains`            
+- `! as lower contains`   
+- `! as upper contains`   
 - `! starts with`         
 - `! as lower starts with`
 - `! as upper starts with`
 - `! ends with`           
 - `! as lower ends with`  
 - `! as upper ends with`  
-- `! contains`            
-- `! as lower contains`   
-- `! as upper contains`   
 
 ### 🔁 LINQ Translation
 
@@ -133,21 +133,23 @@ JsonLinq.Configure(options =>
 });
 ```
 
-#### Negate Operators
+#### Negated Operators
 
 Negated operators can be created without explicitly providing a key.
 In this case, the key is automatically generated using the `NegateKeyProvider`.
 This provider can be set via `SetNegateKeyProvider()`.
 
 ```csharp
+new ExpressionOperatorMapper()
+
 // Default negate key provider
-.Add("a", null).WithNot()   // "!a"
-.Add("b c", null).WithNot() // "! b c"
+.Add("a", ...).WithNot()   // "!a"
+.Add("b c", ...).WithNot() // "! b c"
 
 // Custom negate key provider
 .SetNegateKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
-.Add("x", null).WithNot()   // "~x"
-.Add("y z", null).WithNot() // "~ y z"
+.Add("x", ...).WithNot()   // "~x"
+.Add("y z", ...).WithNot() // "~ y z"
 ```
 
 ## 🔬 Demos and Experiments

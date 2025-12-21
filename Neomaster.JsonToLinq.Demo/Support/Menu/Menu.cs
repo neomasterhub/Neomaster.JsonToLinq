@@ -42,7 +42,9 @@ internal class Menu
       new("🧪 contains", () => userDemoService.Contains(_log)),
       new("🧪 as lower contains", () => userDemoService.AsLowerContains(_log)),
       new("🧪 as upper contains", () => userDemoService.AsUpperContains(_log)),
-      new("🧪 Custom operators: lt, gt", () => userDemoService.CustomOp(_log)),
+      new("🧪 !in", () => userDemoService.NotIn(_log)),
+      new("🧪 !contains", () => userDemoService.NotContains(_log)),
+      new("🧪 Custom operators lt, gt", () => userDemoService.CustomOps(_log)),
     ];
 
     _curYMin = 8;
