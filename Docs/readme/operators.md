@@ -30,6 +30,20 @@ The default operator mapping can be accessed via property `Pairs`.
 | `as lower contains`    | Element lower-cased contains substring |
 | `as upper contains`    | Element upper-cased contains substring |
 
+#### Negated Operators
+- `!in`                   
+- `! as lower in`         
+- `! as upper in`         
+- `! starts with`         
+- `! as lower starts with`
+- `! as upper starts with`
+- `! ends with`           
+- `! as lower ends with`  
+- `! as upper ends with`  
+- `! contains`            
+- `! as lower contains`   
+- `! as upper contains`   
+
 ### 🔁 LINQ Translation
 
 All default operators are designed to be translatable by LINQ providers
