@@ -103,6 +103,19 @@ public class ExpressionOperatorMapperUnitTests
   }
 
   [Fact]
+  public void AddNot_AutoPrefix()
+  {
+    var mapper = new ExpressionOperatorMapper()
+      .Add("a", null)
+      .Add("b c", null)
+      .AddNot("a")
+      .AddNot("b c");
+
+    Assert.Contains("!a", mapper.Pairs.Keys);
+    Assert.Contains("! b c", mapper.Pairs.Keys);
+  }
+
+  [Fact]
   public void WithNot()
   {
     var mapper = new ExpressionOperatorMapper()
