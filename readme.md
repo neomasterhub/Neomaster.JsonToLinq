@@ -155,14 +155,16 @@ In this case, the key is automatically generated using the `NegateKeyProvider`.
 This provider can be set via `SetNegateKeyProvider()`.
 
 ```csharp
+new ExpressionOperatorMapper()
+
 // Default negate key provider
-.Add("a", null).WithNot()   // "!a"
-.Add("b c", null).WithNot() // "! b c"
+.Add("a", ...).WithNot()   // "!a"
+.Add("b c", ...).WithNot() // "! b c"
 
 // Custom negate key provider
 .SetNegateKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
-.Add("x", null).WithNot()   // "~x"
-.Add("y z", null).WithNot() // "~ y z"
+.Add("x", ...).WithNot()   // "~x"
+.Add("y z", ...).WithNot() // "~ y z"
 ```
 
 ## 🔬 Demos and Experiments
