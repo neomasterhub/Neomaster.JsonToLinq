@@ -29,7 +29,8 @@
 
 ## 🚀 Quick Start
 
-🗄️ With **EF**, create predicates using `JsonLinq.ParseFilterExpression(json)`.
+🗄️ With **Entity Framework**, you can create LINQ predicates 
+directly from JSON using `JsonLinq.ParseFilterExpression()`.
 
 ```csharp
 using Neomaster.JsonToLinq;
@@ -40,6 +41,8 @@ var users = source.Where(
     "Logic": "&&",
     "Rules": [
       { "Field": "balance", "Operator": "=", "Value": 0 },
+      { "Field": "country", "Operator": "as lower contains", "Value": "islands" },
+      { "Field": "email", "Operator": "!in", "Value": [ "admin@org.com", "su@org.com" ] },
       {
         "Logic": "||",
         "Rules": [
