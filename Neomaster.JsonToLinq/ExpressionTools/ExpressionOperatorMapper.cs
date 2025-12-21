@@ -23,6 +23,8 @@ public class ExpressionOperatorMapper
   {
   }
 
+  public static Func<string, string> NegateKey { get; set; } = key => (key.Contains(" ") ? "! " : "!") + key;
+
   public static ExpressionOperatorMapper OnDefault()
   {
     return new ExpressionOperatorMapper(ExpressionOperatorMappers.Default);
@@ -71,14 +73,13 @@ public class ExpressionOperatorMapper
 
   public ExpressionOperatorMapper AddNot(string key)
   {
-    return AddNot((key.Contains(" ") ? "! " : "!") + key, key);
+    return AddNot(NegateKey(key), key);
   }
 
   public ExpressionOperatorMapper WithNot(string notOpKey = null)
   {
     var lastKey = Pairs.Last().Key;
-    notOpKey ??= (lastKey.Contains(" ") ? "! " : "!") + lastKey;
 
-    return AddNot(notOpKey, lastKey);
+    return AddNot(notOpKey ?? NegateKey(lastKey), lastKey);
   }
 }
