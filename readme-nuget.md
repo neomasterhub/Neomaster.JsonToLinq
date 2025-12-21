@@ -44,30 +44,45 @@ The default operator mapping can be accessed via property `Pairs`.
 
 ### 📌 Default Operators
 
-| Operator               | Base LINQ Expression             | Description                            |
-|------------------------|----------------------------------|----------------------------------------|
-| `&`                    | `Expression.And`                 | Bitwise AND                            |
-| `&&`                   | `Expression.AndAlso`             | Logical AND                            |
-| `|`                   | `Expression.Or`                  | Bitwise OR                             |
-| `||`                 | `Expression.OrElse`              | Logical OR                             |
-| `=`                    | `Expression.Equal`               | Equal                                  |
-| `!=`                   | `Expression.NotEqual`            | Not equal                              |
-| `>`                    | `Expression.GreaterThan`         | Greater than                           |
-| `>=`                   | `Expression.GreaterThanOrEqual`  | Greater than or equal                  |
-| `<`                    | `Expression.LessThan`            | Less than                              |
-| `<=`                   | `Expression.LessThanOrEqual`     | Less than or equal                     |
-| `in`                   | `ExpressionOperators.In`         | In collection                          |
-| `as lower in`          | `ExpressionOperators.InStrings`  | Element lower-cased in collection      |
-| `as upper in`          | `ExpressionOperators.InStrings`  | Element upper-cased in collection      |
-| `starts with`          | `ExpressionOperators.StartsWith` | Starts with                            |
-| `as lower starts with` | `ExpressionOperators.StartsWith` | Element lower-cased starts with        |
-| `as upper starts with` | `ExpressionOperators.StartsWith` | Element upper-cased starts with        |
-| `ends with`            | `ExpressionOperators.EndsWith`   | Ends with                              |
-| `as lower ends with`   | `ExpressionOperators.EndsWith`   | Element lower-cased ends with          |
-| `as upper ends with`   | `ExpressionOperators.EndsWith`   | Element upper-cased ends with          |
-| `contains`             | `ExpressionOperators.Contains`   | Contains substring                     |
-| `as lower contains`    | `ExpressionOperators.Contains`   | Element lower-cased contains substring |
-| `as upper contains`    | `ExpressionOperators.Contains`   | Element upper-cased contains substring |
+| Operator               | Description                            |
+|------------------------|----------------------------------------|
+| `&`                    | Bitwise AND                            |
+| `&&`                   | Logical AND                            |
+| `|`                   | Bitwise OR                             |
+| `||`                 | Logical OR                             |
+| `=`                    | Equal                                  |
+| `!=`                   | Not equal                              |
+| `>`                    | Greater than                           |
+| `>=`                   | Greater than or equal                  |
+| `<`                    | Less than                              |
+| `<=`                   | Less than or equal                     |
+| `in`                   | In collection                          |
+| `as lower in`          | Element lower-cased in collection      |
+| `as upper in`          | Element upper-cased in collection      |
+| `starts with`          | Starts with                            |
+| `as lower starts with` | Element lower-cased starts with        |
+| `as upper starts with` | Element upper-cased starts with        |
+| `ends with`            | Ends with                              |
+| `as lower ends with`   | Element lower-cased ends with          |
+| `as upper ends with`   | Element upper-cased ends with          |
+| `contains`             | Contains substring                     |
+| `as lower contains`    | Element lower-cased contains substring |
+| `as upper contains`    | Element upper-cased contains substring |
+
+#### Negated Operators
+
+- `!in`                   
+- `! as lower in`         
+- `! as upper in`         
+- `! starts with`         
+- `! as lower starts with`
+- `! as upper starts with`
+- `! ends with`           
+- `! as lower ends with`  
+- `! as upper ends with`  
+- `! contains`            
+- `! as lower contains`   
+- `! as upper contains`   
 
 ### 🔁 LINQ Translation
 
@@ -94,6 +109,7 @@ All default operators are designed to be translatable by LINQ providers
 ### 🌟 Add Custom Operators
 
 #### Fully Custom Operators
+
 ```csharp
 JsonLinq.Configure(options =>
 {
@@ -108,12 +124,30 @@ JsonLinq.Configure(options =>
 ```
 
 #### Extend Default Operators
+
 ```csharp
 JsonLinq.Configure(options =>
 {
   options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
     .Add(...
 });
+```
+
+#### Negate Operators
+
+Negated operators can be created without explicitly providing a key.
+In this case, the key is automatically generated using the `NegateKeyProvider`.
+This provider can be set via `SetNegateKeyProvider()`.
+
+```csharp
+// Default negate key provider
+.Add("a", null).WithNot()   // "!a"
+.Add("b c", null).WithNot() // "! b c"
+
+// Custom negate key provider
+.SetNegateKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
+.Add("x", null).WithNot()   // "~x"
+.Add("y z", null).WithNot() // "~ y z"
 ```
 
 ## 🔬 Demos and Experiments

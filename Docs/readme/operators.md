@@ -31,6 +31,7 @@ The default operator mapping can be accessed via property `Pairs`.
 | `as upper contains`    | Element upper-cased contains substring |
 
 #### Negated Operators
+
 - `!in`                   
 - `! as lower in`         
 - `! as upper in`         
@@ -69,6 +70,7 @@ All default operators are designed to be translatable by LINQ providers
 ### 🌟 Add Custom Operators
 
 #### Fully Custom Operators
+
 ```csharp
 JsonLinq.Configure(options =>
 {
@@ -83,10 +85,28 @@ JsonLinq.Configure(options =>
 ```
 
 #### Extend Default Operators
+
 ```csharp
 JsonLinq.Configure(options =>
 {
   options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
     .Add(...
 });
+```
+
+#### Negate Operators
+
+Negated operators can be created without explicitly providing a key.
+In this case, the key is automatically generated using the `NegateKeyProvider`.
+This provider can be set via `SetNegateKeyProvider()`.
+
+```csharp
+// Default negate key provider
+.Add("a", null).WithNot()   // "!a"
+.Add("b c", null).WithNot() // "! b c"
+
+// Custom negate key provider
+.SetNegateKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
+.Add("x", null).WithNot()   // "~x"
+.Add("y z", null).WithNot() // "~ y z"
 ```
