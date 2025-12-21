@@ -147,4 +147,24 @@ public class ExpressionOperatorMapperUnitTests
     Assert.Contains("!a", mapper.Pairs.Keys);
     Assert.Contains("! b c", mapper.Pairs.Keys);
   }
+
+  [Fact]
+  public void SetNegateKeyProvider()
+  {
+    var mapper = new ExpressionOperatorMapper()
+      .SetNegateKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
+      .Add("a", null)
+      .WithNot()
+      .Add("b c", null)
+      .WithNot()
+      .Add("x", null)
+      .Add("y z", null)
+      .AddNot("x")
+      .AddNot("y z");
+
+    Assert.Contains("~a", mapper.Pairs.Keys);
+    Assert.Contains("~ b c", mapper.Pairs.Keys);
+    Assert.Contains("~x", mapper.Pairs.Keys);
+    Assert.Contains("~ y z", mapper.Pairs.Keys);
+  }
 }
