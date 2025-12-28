@@ -12,7 +12,7 @@
     <Version>1.0.0-rc917</Version>
     <Authors>Neomaster</Authors>
     <Company>Neomaster</Company>
-    <Copyright>Copyright © 2025 Neomaster</Copyright>
+    <Copyright>Copyright © 2026 Neomaster</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/neomasterhub/Neomaster.JsonToLinq</RepositoryUrl>
