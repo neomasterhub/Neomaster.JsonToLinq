@@ -152,7 +152,7 @@ public class ExpressionOperatorMapperUnitTests
   public void SetNegateKeyProvider()
   {
     var mapper = new ExpressionOperatorMapper()
-      .SetNegateKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
+      .SetNegatedKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
       .Add("a", null)
       .WithNot()
       .Add("b c", null)
