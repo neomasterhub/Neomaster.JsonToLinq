@@ -89,6 +89,18 @@ var users = source.Where(
   """);
 ```
 
+Аналогичный запрос на LINQ:
+
+```csharp
+var users = source.Where(u =>
+  (u.Balance == 0
+  && new[] { 1, 3 }.Contains(u.Status)
+  && u.Country.ToLower().Contains("islands"))
+  &&
+  (u.LastVisitAt == null
+  || u.LastVisitAt <= JsonSerializer.Deserialize<DateTime?>("\"2026-01-01T00:00:00Z\"")));
+```
+
 ## Операторы
 
 Встроенные операторы и логика их обработки инкапсулированы в классе `ExpressionOperatorMapper`.
