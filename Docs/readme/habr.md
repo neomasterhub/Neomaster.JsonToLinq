@@ -171,6 +171,7 @@ var users = source.Where(u =>
 ### Добавить свои операторы
 
 #### Только свои
+
 ```csharp
 JsonLinq.Configure(options =>
 {
@@ -185,6 +186,7 @@ JsonLinq.Configure(options =>
 ```
 
 #### Расширить набор встроенных
+
 ```csharp
 JsonLinq.Configure(options =>
 {
@@ -210,6 +212,15 @@ new ExpressionOperatorMapper()
 .SetNegatedKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
 .Add("x", ...).WithNot()   // "~x"
 .Add("y z", ...).WithNot() // "~ y z"
+```
+
+#### SQL-операторы
+
+Библиотека реализована на `netstandard2.1` и не зависит от **EF** или других ORM.
+Для сравнения строк без учета регистра используйте встроенные операторы с `as lower` / `as upper`.
+Они отличаются только предпочтительным регистром значений в фильтре.
+
+```csharp
 ```
 
 ## Демонстрации и эксперименты
