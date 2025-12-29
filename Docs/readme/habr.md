@@ -244,10 +244,8 @@ expr = logic[expr(, expr)*]
    ```json
    {
      "Rules": [
-       {
-         { "Field": "✅ department_id", "Operator": "=", "Value": 123 },
-         { "Field": "❌ department.id", "Operator": "=", "Value": 123 }
-       }
+       { "Field": "✅ department_id", "Operator": "=", "Value": 123 },
+       { "Field": "❌ department.id", "Operator": "=", "Value": 123 }
      ]
    }
    ```
