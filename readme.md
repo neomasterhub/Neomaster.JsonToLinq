@@ -154,18 +154,18 @@ JsonLinq.Configure(options =>
 #### Negated Operators
 
 Negated operators can be created without explicitly providing a key.
-In this case, the key is automatically generated using the `NegateKeyProvider`.
-This provider can be set via `SetNegateKeyProvider()`.
+In this case, the key is automatically generated using the `NegatedKeyProvider`.
+This provider can be set via `SetNegatedKeyProvider()`.
 
 ```csharp
 new ExpressionOperatorMapper()
 
-// Default negate key provider
+// Default provider
 .Add("a", ...).WithNot()   // "!a"
 .Add("b c", ...).WithNot() // "! b c"
 
-// Custom negate key provider
-.SetNegateKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
+// Custom provider
+.SetNegatedKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
 .Add("x", ...).WithNot()   // "~x"
 .Add("y z", ...).WithNot() // "~ y z"
 ```

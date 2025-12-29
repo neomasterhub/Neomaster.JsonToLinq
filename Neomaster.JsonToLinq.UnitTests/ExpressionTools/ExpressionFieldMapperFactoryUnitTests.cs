@@ -6,12 +6,10 @@ namespace Neomaster.JsonToLinq.UnitTests;
 public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
   : UnitTestsBase
 {
-  private static readonly Type _propertiesPublicGetSet = typeof(PropertiesPublicGetSet);
-
   [Fact]
   public void CreateForPublicProperties_Mapping()
   {
-    var props = _propertiesPublicGetSet
+    var props = typeof(PropertiesPublicGetSet)
       .GetProperties()
       .ToArray();
 
@@ -32,7 +30,7 @@ public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
   public void CreateForPublicProperties_GettingValue_Element()
   {
     var obj = new PropertiesPublicGetSet();
-    var propValues = _propertiesPublicGetSet
+    var propValues = typeof(PropertiesPublicGetSet)
       .GetProperties()
       .Select(p => p.GetValue(obj))
       .ToArray();
@@ -58,7 +56,7 @@ public class ExpressionFieldMapperFactoryUnitTests(ITestOutputHelper output)
   public void CreateForPublicProperties_GettingValue_Array()
   {
     var obj = new PropertiesPublicGetSet();
-    var propValues = _propertiesPublicGetSet
+    var propValues = typeof(PropertiesPublicGetSet)
       .GetProperties()
       .Select(p => p.GetValue(obj))
       .ToArray();
