@@ -245,8 +245,8 @@ expr = logic[expr(, expr)*]
    {
      "Rules": [
        {
-           ✅ { "Field": "department_id", "Operator": "=", "Value": 123 },
-           ❌ { "Field": "department.id", "Operator": "=", "Value": 123 },
+         { "Field": "✅ department_id", "Operator": "=", "Value": 123 },
+         { "Field": "❌ department.id", "Operator": "=", "Value": 123 }
        }
      ]
    }
