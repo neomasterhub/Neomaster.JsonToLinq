@@ -1,7 +1,10 @@
 # JsonToLinq – автоматическая конвертация фильтров из JSON в LINQ Expression деревья
 
-**Содержание**
-1. [TL;DR](#tldr)
+## TL;DR
+
+Используй JSON для создания LINQ-выражений!
+
+## Содержание
 1. [Решаемая проблема](#problem)
 1. [Почему не GraphQL](#why-not-graphql)
 1. [Решение проблемы – JsonToLinq](#solution)
@@ -14,10 +17,6 @@
 1. [Ограничения JsonToLinq](#limitations)
 1. [Потенциал JsonToLinq](#potential)
 1. [Поддержать проект](#support)
-
-## TL;DR<a name="tldr"/>
-
-Используй JSON для создания LINQ-выражений!
 
 ## Решаемая проблема<a name="problem"/>
 
