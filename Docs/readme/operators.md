@@ -8,8 +8,8 @@ The default operator mapping can be accessed via property `Pairs`.
 | Operator               | Description                            |
 |------------------------|----------------------------------------|
 | `&`                    | Bitwise AND                            |
-| `&&`                   | Logical AND                            |
 | `\|`                   | Bitwise OR                             |
+| `&&`                   | Logical AND                            |
 | `\|\|`                 | Logical OR                             |
 | `=`                    | Equal                                  |
 | `!=`                   | Not equal                              |
