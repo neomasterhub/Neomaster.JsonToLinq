@@ -163,7 +163,7 @@ var users = source.Where(u =>
 
 #### Слово `not`
 
-Слово `not` - синоним `!`.
+Слово `not` – синоним `!`.
 
 Он облегчает читаемость, но подходит **не для всех операторов**:
 
@@ -174,8 +174,8 @@ var users = source.Where(u =>
 
 ### Унарные операторы
 
-В первой версии библиотеки нет встроенных унарных операторов
-(`!`, `!&&`, `is null`, `is not empty` и пр.)
+Встроенных унарных операторов
+(`!`, `!&&`, `is null`, `is not empty` и пр.) пока нет.
 При необходимости их можно добавить самостоятельно.
 Возможно, они появятся в будущих версиях.
 
@@ -189,7 +189,7 @@ var users = source.Where(u =>
 
 1. Сравнение строк чувствительно к регистру и зависит от **collation** в БД, а не от операторов.
 1. Регистр строковых значений в фильтре никогда не меняется автоматически.
-1. Нормализация строк - ответственность клиента.
+1. Нормализация строк – ответственность клиента.
 1. Операторы с `as lower` / `as upper` изменяют регистр проверяемого элемента перед вычислением, не трогая значения в фильтре. Значения в фильтре всегда используются так, как указаны в JSON.
 
 ### Коллекции в фильтре
@@ -385,6 +385,15 @@ expr = logic[expr(, expr)*]
 1. Семантический поиск и NLP
 1. Новый стандарт обмена данными между сервисами
 
+## Поддержать проект
+
+Вы можете поддержать развитие проекта одним из способов:
+
+1. ⭐ Поставить звезду на [GitHub][json-to-linq]
+1. [Сообщить о багах или предложить улучшения][json-to-linq-issues]
+1. Сделать PR в [JsonToLinq.Demo][json-to-linq-demos] с демонстрацией примера, бага или новой фичи
+1. Поделиться статьей с коллегами и друзьями
+
 ---
 
 #JsonToLinq #LINQ #Expression #EF #Neomaster
@@ -392,6 +401,7 @@ expr = logic[expr(, expr)*]
 [json-to-linq]: https://github.com/neomasterhub/Neomaster.JsonToLinq
 [json-to-linq-package]: https://www.nuget.org/packages/JsonToLinq
 [json-to-linq-demos]: https://github.com/neomasterhub/Neomaster.JsonToLinq/tree/master/Neomaster.JsonToLinq.Demo
+[json-to-linq-issues]: https://github.com/neomasterhub/Neomaster.JsonToLinq/issues
 [telerik-mvc]: https://demos.telerik.com/aspnet-core/grid
 [telerik-angular]: https://www.telerik.com/kendo-angular-ui/components/grid
 [material-design]: https://material.angular.dev/components/table/examples
