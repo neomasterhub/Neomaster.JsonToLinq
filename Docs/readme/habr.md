@@ -221,6 +221,26 @@ new ExpressionOperatorMapper()
 Они отличаются только предпочтительным регистром значений в фильтре.
 
 ```csharp
+JsonLinq.Configure(options =>
+{
+  options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
+    .Add("like", (element, pattern) =>
+      Expression.Call(
+        typeof(DbFunctionsExtensions).GetMethod(
+          nameof(DbFunctionsExtensions.Like),
+          [typeof(DbFunctions), typeof(string), typeof(string)]),
+        Expression.Constant(EF.Functions),
+        element,
+        pattern))
+    .Add("ilike", (element, pattern) =>
+      Expression.Call(
+        typeof(NpgsqlDbFunctionsExtensions).GetMethod(
+          nameof(NpgsqlDbFunctionsExtensions.ILike),
+          [typeof(DbFunctions), typeof(string), typeof(string)]),
+        Expression.Constant(EF.Functions),
+        element,
+        pattern));
+});
 ```
 
 ## Демонстрации и эксперименты
