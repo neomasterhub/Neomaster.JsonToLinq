@@ -254,6 +254,33 @@ JsonLinq.Configure(options =>
 });
 ```
 
+## Конфигурация JsonToLinq
+
+Вы можете задавать свои настройки, используя метод `JsonLinq.Configure()`.
+Для восстановления исходных настроек нужен метод `JsonLinq.ResetConfiguration()`, он нужен в тестах.
+
+```csharp
+JsonLinq.Configure(options =>
+{
+  // Имена свойств в JSON-фильтре
+  options.LogicOperatorPropertyName = "boolBind";
+  options.RulesPropertyName = "condition";
+  options.OperatorPropertyName = "op";
+  options.FieldPropertyName = "field";
+  options.ValuePropertyName = "value";
+
+  // Определения и синонимы операторов
+  options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
+    .AddAlias("does not contain", "!contains");
+
+  // Логика обработки выражений с null
+  options.BindBuilder = ExpressionBindBuilders.NullAsFalse;
+  
+  // Как имена свойств C# будут выглядеть в JSON
+  options.ConvertPropertyNameForJson = JsonNamingPolicy.SnakeCaseUpper.ConvertName;
+});
+```
+
 ## Демонстрации и эксперименты
 
 [Репозиторий][json-to-linq] содержит проект с **рабочими примерами**.
