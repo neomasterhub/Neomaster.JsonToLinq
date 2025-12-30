@@ -136,7 +136,7 @@ var users = source.Where(u =>
 
 ### Отрицательные операторы
 
-- `!in`                   
+- `!in` / `not in`                  
 - `! as lower in`         
 - `! as upper in`         
 - `!contains`            

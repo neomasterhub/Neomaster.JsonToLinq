@@ -32,7 +32,7 @@ The default operator mapping can be accessed via property `Pairs`.
 
 #### Negated Operators
 
-- `!in`                   
+- `!in` / `not in`                   
 - `! as lower in`         
 - `! as upper in`         
 - `!contains`            
