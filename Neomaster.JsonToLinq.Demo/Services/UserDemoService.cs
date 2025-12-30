@@ -944,7 +944,7 @@ internal class UserDemoService
         "Rules": [
           {
             "Field": "id",
-            "Operator": "!in",
+            "Operator": "not in",
             "Value": [1, 2, 3]
           }
         ]

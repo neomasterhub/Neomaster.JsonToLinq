@@ -30,7 +30,7 @@ public static class JsonLinqConsts
       .Add(">=", Expression.GreaterThanOrEqual).WithAliases("gte")
       .Add("<", Expression.LessThan).WithAliases("lt")
       .Add("<=", Expression.LessThanOrEqual).WithAliases("lte")
-      .Add("in", ExpressionOperators.In).WithNot()
+      .Add("in", ExpressionOperators.In).WithNot().WithAliases("not in")
       .Add("as lower in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Lower)).WithNot()
       .Add("as upper in", (element, collection) => ExpressionOperators.InStrings(element, collection, StringTransform.Upper)).WithNot()
       .Add("starts with", (element, prefix) => ExpressionOperators.StartsWith(element, prefix)).WithNot()
