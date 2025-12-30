@@ -283,11 +283,11 @@ JsonLinq.Configure(options =>
 JsonLinq.Configure(options =>
 {
   // Имена свойств в JSON-фильтре
-  options.LogicOperatorPropertyName = "boolBind";
-  options.RulesPropertyName = "condition";
-  options.OperatorPropertyName = "op";
-  options.FieldPropertyName = "field";
-  options.ValuePropertyName = "value";
+  options.LogicOperatorPropertyName = "🔗";
+  options.RulesPropertyName = "⚖️";
+  options.OperatorPropertyName = "⚡";
+  options.FieldPropertyName = "🍁";
+  options.ValuePropertyName = "🍬";
 
   // Определения и синонимы операторов
   options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
