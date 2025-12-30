@@ -15,7 +15,7 @@
 1. [Потенциал JsonToLinq](#potential)
 1. [Поддержать проект](#support)
 
-## TL;DR<a name="tldr"></a>
+## TL;DR<a name="tldr"/>
 
 Используй JSON для создания LINQ-выражений!
 
