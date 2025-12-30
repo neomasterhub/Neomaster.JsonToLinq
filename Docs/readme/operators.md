@@ -9,14 +9,14 @@ The default operator mapping can be accessed via property `Pairs`.
 |------------------------|----------------------------------------|
 | `&`                    | Bitwise AND                            |
 | `\|`                   | Bitwise OR                             |
-| `&&`                   | Logical AND                            |
-| `\|\|`                 | Logical OR                             |
-| `=`                    | Equal                                  |
-| `!=`                   | Not equal                              |
-| `>`                    | Greater than                           |
-| `>=`                   | Greater than or equal                  |
-| `<`                    | Less than                              |
-| `<=`                   | Less than or equal                     |
+| `&&` / `and`           | Logical AND                            |
+| `\|\|` / `or`          | Logical OR                             |
+| `=` / `eq`             | Equal                                  |
+| `!=` / `neq`           | Not equal                              |
+| `>` / `gt`             | Greater than                           |
+| `>=` / `gte`           | Greater than or equal                  |
+| `<` / `lt`             | Less than                              |
+| `<=` / `lte`           | Less than or equal                     |
 | `in`                   | In collection                          |
 | `as lower in`          | Element lower-cased in collection      |
 | `as upper in`          | Element upper-cased in collection      |
