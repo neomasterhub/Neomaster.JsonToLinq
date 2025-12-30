@@ -301,6 +301,12 @@ JsonLinq.Configure(options =>
 });
 ```
 
+Актуальными кажутся настройки структуры JSON-фильтра.
+Например, добавлять сахар:
+`"Logic": "&&", "Rules": [...]` -> `"&&": [...]`.
+Или фиксировать порядок свойств для использования [TONL][tonl]-фильтров.
+Возможно, это будет реализовано в будущих версиях.
+
 ## Тестирование JsonToLinq
 
 [Репозиторий][json-to-linq] содержит проект с **юнит-тестами**, которые покрывают:
@@ -407,3 +413,4 @@ expr = logic[expr(, expr)*]
 [material-design]: https://material.angular.dev/components/table/examples
 [dynamic-linq]: https://dynamic-linq.net/advanced-parse-lambda
 [hot-chocolate]: https://chillicream.com/docs/hotchocolate/v15/fetching-data/filtering
+[tonl]: https://tonl.dev
