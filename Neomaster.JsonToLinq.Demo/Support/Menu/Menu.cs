@@ -62,6 +62,8 @@ internal class Menu
 
     while (key != ConsoleKey.Escape)
     {
+      JsonLinq.RestoreDefaultOptions();
+
       switch (key)
       {
         case ConsoleKey.UpArrow:
