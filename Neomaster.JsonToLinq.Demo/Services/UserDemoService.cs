@@ -1169,4 +1169,52 @@ internal class UserDemoService
       JsonLinq.RestoreDefaultOptions();
     }
   }
+
+  /// <summary>
+  /// Emoji fields.
+  /// </summary>
+  public void EmojiFields(Log log)
+  {
+    using var dbContext = new AppDbContext();
+
+    JsonLinq.Configure(options =>
+    {
+      options.LogicOperatorPropertyName = "🔗";
+      options.RulesPropertyName = "⚖️";
+      options.OperatorPropertyName = "⚡";
+      options.FieldPropertyName = "🍁";
+      options.ValuePropertyName = "🍬";
+    });
+
+    var filterJson =
+      """
+      {
+        "🔗": "&&",
+        "⚖️": [
+          {
+            "🍁": "lastVisitAt",
+            "⚡": "=",
+            "🍬": null
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expectedCount = dbContext.Users.Count(u => u.LastVisitAt == null);
+
+      var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
+
+      Assert.Equal(expectedCount, actualCount);
+
+      log.Add($"Filter:\n{filterJson}");
+      log.AddSep();
+      log.Add($"Count: {actualCount}");
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+  }
 }

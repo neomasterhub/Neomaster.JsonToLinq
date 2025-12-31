@@ -46,6 +46,7 @@ internal class Menu
       new("🧪 !contains", () => userDemoService.NotContains(_log)),
       new("🧪 like", () => userDemoService.Like(_log)),
       new("🧪 ilike", () => userDemoService.ILike(_log)),
+      new("🧪 emoji fields", () => userDemoService.EmojiFields(_log)),
     ];
 
     _curYMin = 8;
