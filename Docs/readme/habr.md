@@ -365,6 +365,8 @@ expr = logic[expr(, expr)*]
 1. Вы можете добавить свои примеры с другими БД и ORM через PR.
 1. Перед запуском примеров нужно выбрать пункт меню **Prepare Data**, чтобы выполнить миграции и заполнить таблицы.
 
+![Демонстрационный проект](https://github.com/neomasterhub/Neomaster.JsonToLinq/blob/master/Docs/img/demo-project.png?raw=true "Демонстрационный проект")
+
 ## Ограничения JsonToLinq<a name="limitations"/>
 
 1. **IDE не подсвечивает синтаксис аргумента с JSON-фильтром в методах LINQ**
