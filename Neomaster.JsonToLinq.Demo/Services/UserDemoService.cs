@@ -1,5 +1,6 @@
 #pragma warning disable CA1822, SA1611
 using System.Linq.Expressions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Neomaster.JsonToLinq.UnitTests;
 using Xunit;
@@ -943,7 +944,7 @@ internal class UserDemoService
         "Rules": [
           {
             "Field": "id",
-            "Operator": "!in",
+            "Operator": "not in",
             "Value": [1, 2, 3]
           }
         ]
@@ -1016,43 +1017,47 @@ internal class UserDemoService
   }
 
   /// <summary>
-  /// Custom operators:
-  /// <list type="number">
-  /// <item>
-  /// <term><c>lt</c></term>
-  /// <description><see cref="Expression.LessThan"/></description>
-  /// </item>
-  /// <item>
-  /// <term><c>gt</c></term>
-  /// <description><see cref="Expression.GreaterThan"/></description>
-  /// </item>
-  /// </list>
+  /// Operator <c>like</c> - <see cref="DbFunctionsExtensions.Like"/>.
   /// </summary>
-  public void CustomOps(Log log)
+  public void Like(Log log)
   {
     JsonLinq.Configure(options =>
     {
-      options.OperatorMapper
-        .Add("lt", Expression.LessThan)
-        .Add("gt", Expression.GreaterThan);
+      options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
+        .Add("like", (element, pattern) =>
+          Expression.Call(
+            typeof(DbFunctionsExtensions).GetMethod(
+              nameof(DbFunctionsExtensions.Like),
+              [typeof(DbFunctions), typeof(string), typeof(string)]),
+            Expression.Constant(EF.Functions),
+            element,
+            pattern));
     });
 
     using var dbContext = new AppDbContext();
 
-    var filterJson =
+    var filterJson1 =
       """
       {
         "Logic": "&&",
         "Rules": [
           {
-            "Field": "balance",
-            "Operator": "gt",
-            "Value": 100
-          },
+            "Field": "email",
+            "Operator": "like",
+            "Value": "%.com"
+          }
+        ]
+      }
+      """;
+    var filterJson2 =
+      """
+      {
+        "Logic": "&&",
+        "Rules": [
           {
-            "Field": "balance",
-            "Operator": "lt",
-            "Value": 10000
+            "Field": "email",
+            "Operator": "like",
+            "Value": "%.COM"
           }
         ]
       }
@@ -1060,17 +1065,100 @@ internal class UserDemoService
 
     try
     {
-      var expectedCount = dbContext.Users.Count(u =>
-        u.Balance > 100
-        && u.Balance < 10000);
+      var expectedCount1 = dbContext.Users.Count(u => EF.Functions.Like(u.Email, "%.com"));
+      var expectedCount2 = dbContext.Users.Count(u => EF.Functions.Like(u.Email, "%.COM"));
 
-      var actualCount = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson));
+      var actualCount1 = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson1));
+      var actualCount2 = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson2));
 
-      Assert.Equal(expectedCount, actualCount);
+      Assert.Equal(expectedCount1, actualCount1);
+      Assert.Equal(expectedCount2, actualCount2);
 
-      log.Add($"Filter:\n{filterJson}");
+      log.Add($"Filter 1:\n{filterJson1}");
+      log.Add($"Filter 2:\n{filterJson2}");
+
       log.AddSep();
-      log.Add($"Count: {actualCount}");
+
+      log.Add("Count:");
+      log.Add($"\"%.com\": {actualCount1}");
+      log.Add($"\"%.COM\": {actualCount2}");
+    }
+    catch (Exception ex)
+    {
+      log.Add(ex.Message, LogLevel.Error);
+    }
+    finally
+    {
+      JsonLinq.RestoreDefaultOptions();
+    }
+  }
+
+  /// <summary>
+  /// Operator <c>ilike</c> - <see cref="NpgsqlDbFunctionsExtensions.ILike"/>.
+  /// </summary>
+  public void ILike(Log log)
+  {
+    JsonLinq.Configure(options =>
+    {
+      options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
+        .Add("ilike", (element, pattern) =>
+          Expression.Call(
+            typeof(NpgsqlDbFunctionsExtensions).GetMethod(
+              nameof(NpgsqlDbFunctionsExtensions.ILike),
+              [typeof(DbFunctions), typeof(string), typeof(string)]),
+            Expression.Constant(EF.Functions),
+            element,
+            pattern));
+    });
+
+    using var dbContext = new AppDbContext();
+
+    var filterJson1 =
+      """
+      {
+        "Logic": "&&",
+        "Rules": [
+          {
+            "Field": "email",
+            "Operator": "ilike",
+            "Value": "%.com"
+          }
+        ]
+      }
+      """;
+    var filterJson2 =
+      """
+      {
+        "Logic": "&&",
+        "Rules": [
+          {
+            "Field": "email",
+            "Operator": "ilike",
+            "Value": "%.COM"
+          }
+        ]
+      }
+      """;
+
+    try
+    {
+      var expectedCount1 = dbContext.Users.Count(u => EF.Functions.ILike(u.Email, "%.com"));
+      var expectedCount2 = dbContext.Users.Count(u => EF.Functions.ILike(u.Email, "%.COM"));
+
+      var actualCount1 = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson1));
+      var actualCount2 = dbContext.Users.Count(JsonLinq.ParseToFilterExpression<User>(filterJson2));
+
+      Assert.Equal(expectedCount1, actualCount1);
+      Assert.Equal(expectedCount2, actualCount2);
+
+      log.Add($"Filter 1:\n{filterJson1}");
+      log.Add($"Filter 2:\n{filterJson2}");
+
+      log.AddSep();
+
+      log.Add("Count:");
+      log.Add($"\"%.com\": {actualCount1}");
+      log.Add($"\"%.COM\": {actualCount2}");
     }
     catch (Exception ex)
     {

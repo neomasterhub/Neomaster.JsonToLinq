@@ -44,7 +44,8 @@ internal class Menu
       new("🧪 as upper contains", () => userDemoService.AsUpperContains(_log)),
       new("🧪 !in", () => userDemoService.NotIn(_log)),
       new("🧪 !contains", () => userDemoService.NotContains(_log)),
-      new("🧪 Custom operators lt, gt", () => userDemoService.CustomOps(_log)),
+      new("🧪 like", () => userDemoService.Like(_log)),
+      new("🧪 ilike", () => userDemoService.ILike(_log)),
     ];
 
     _curYMin = 8;
