@@ -6,18 +6,7 @@
 
 Use JSON to build LINQ expressions!
 
-## Table of Content
-
-1. [Advantages](#advantages)
-1. [Quick Start](#quick-start)
-1. [Operators](#operators)
-1. [Configuration](#configuration)
-1. [Testing](#testing)
-1. [Demos and Experiments](#demos)
-1. [Limitations](#limitations)
-1. [Potential](#potential)
-
-## 🤩 Advantages<a name="advantages"/>
+## 🤩 Advantages
 
 1. **Friendliness**
 
@@ -53,7 +42,7 @@ Use JSON to build LINQ expressions!
 
 [hot-chocolate]: https://chillicream.com/docs/hotchocolate
 
-## 🚀 Quick Start<a name="quick-start"/>
+## 🚀 Quick Start
 
 1. Install the [NuGet package][package].
 1. Pass JSON filter into `Where()` or other filtering methods.
@@ -96,7 +85,7 @@ var users = source.Where(u =>
 
 [package]: https://www.nuget.org/packages/JsonToLinq
 
-## 🛠️ Operators<a name="operators"/>
+## 🛠️ Operators
 
 1. Built-in operators and their handling logic
    are encapsulated in the `ExpressionOperatorMapper` class.
@@ -255,7 +244,7 @@ JsonLinq.Configure(options =>
 });
 ```
 
-## 🎛 Configuration<a name="configuration"/>
+## 🎛 Configuration
 
 You can define your own settings via `JsonLinq.Configure()`.
 To reset the configuration, call `JsonLinq.ResetConfiguration()`.
@@ -291,7 +280,7 @@ The JSON filter structure settings are relevant.
 
 [tonl]: https://tonl.dev
 
-## 🧪 Testing<a name="testing"/>
+## 🧪 Testing
 
 Unit tests cover:
 
@@ -302,7 +291,7 @@ Unit tests cover:
 
 Full unit test coverage will be relevant after the library has been used in real projects.
 
-## 🔬 Demos and Experiments<a name="demos"/>
+## 🔬 Demos and Experiments
 
 This repository includes the [JsonToLinq.Demo][demo-project] project with **working examples**.
 You are welcome to submit a PR with your own examples, bug reports, or new features.
@@ -336,7 +325,7 @@ This project provides examples of working with **EF Core** and a **PostgreSQL da
 
 ![Demo project](https://github.com/neomasterhub/Neomaster.JsonToLinq/blob/master/Docs/img/demo-project.png?raw=true "Demo project")
 
-## 🚧 Limitations<a name="limitations"/>
+## 🚧 Limitations
 
 1. **No IDE syntax highlighting for JSON filter arguments in LINQ methods**
 
@@ -363,7 +352,7 @@ This project provides examples of working with **EF Core** and a **PostgreSQL da
 
    These features may be implemented in future versions.
 
-## 🔮 Potential<a name="potential"/>
+## 🔮 Potential
 
 Filtering is just the first stage in the development of **JSON-LINQ infrastructure**.
 Possible future directions include:

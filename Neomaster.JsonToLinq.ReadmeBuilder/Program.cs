@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using Neomaster.JsonToLinq.ReadmeBuilder;
 
 var readmeTemplateFolder = Path.Combine(
@@ -24,7 +25,6 @@ var readme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template.md"))
 var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-nuget.md"))
   .InsertReadmeTemplate("title")
   .InsertReadmeTemplate("tldr")
-  .InsertReadmeTemplate("table-of-content")
   .InsertReadmeTemplate("advantages")
   .InsertReadmeTemplate("quick-start")
   .InsertReadmeTemplate("operators")
@@ -36,6 +36,8 @@ var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-
   .Replace(@"`\|`", "`|`")
   .Replace(@"`\|\|`", "`||`")
   ;
+
+nugetReadme = Regex.Replace(nugetReadme, @"<a name.*$", string.Empty, RegexOptions.Multiline);
 
 File.WriteAllText(SolutionInfo.ReadmePath, readme);
 File.WriteAllText(SolutionInfo.NugetReadmePath, nugetReadme);

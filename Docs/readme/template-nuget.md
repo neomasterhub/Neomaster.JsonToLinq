@@ -1,6 +1,5 @@
 {title}
 {tldr}
-{table-of-content}
 {advantages}
 {quick-start}
 {operators}
