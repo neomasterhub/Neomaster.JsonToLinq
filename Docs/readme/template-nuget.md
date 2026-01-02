@@ -1,5 +1,10 @@
 {title}
-{use-cases}
+{tldr}
+{advantages}
 {quick-start}
 {operators}
+{configuration}
+{testing}
 {demos}
+{limitations}
+{potential}
