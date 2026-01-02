@@ -21,6 +21,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{2C6AA85D-CFF1-4563-AEA4-3780275EAAD9}"
 	ProjectSection(SolutionItems) = preProject
 		Docs\readme\advantages.md = Docs\readme\advantages.md
+		Docs\readme\configuration.md = Docs\readme\configuration.md
 		Docs\readme\demos.md = Docs\readme\demos.md
 		Docs\readme\habr.md = Docs\readme\habr.md
 		Docs\readme\logo.md = Docs\readme\logo.md
