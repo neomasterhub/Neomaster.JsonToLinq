@@ -1,10 +1,10 @@
 {title}
 {tldr}
+{table-of-content}
 {advantages}
 {quick-start}
 {operators}
 {configuration}
 {testing}
-{demos}
 {limitations}
 {potential}

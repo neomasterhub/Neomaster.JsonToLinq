@@ -1,7 +1,9 @@
-## 🛠️ Operators
+## 🛠️ Operators<a name="operators"/>
 
-1. Built-in operators and their handling logic are encapsulated in the `ExpressionOperatorMapper` class.
-1. The mapping between operators and their processing methods is available via the `ExpressionOperatorMapper.Pairs` property.
+1. Built-in operators and their handling logic
+   are encapsulated in the `ExpressionOperatorMapper` class.
+1. The mapping between operators and their processing methods
+   is available via the `ExpressionOperatorMapper.Pairs` property.
 1. Operator keys are case-sensitive.
 
 ### 📌 Built-in Operators
@@ -48,7 +50,7 @@
 
 #### The word `not`
 
-The word `not` is a synonym for `!`.
+The word `not` is alias for `!`.
 
 It improves readability but is not suitable for all operators:
 
@@ -125,7 +127,7 @@ new ExpressionOperatorMapper()
 .Add("y z", ...).WithNot() // "~ y z"
 ```
 
-#### SQL operators
+#### SQL Operators
 
 The library is built on `netstandard2.1` and **does not depend on EF** or any other ORM.
 To perform case-insensitive string comparisons, 

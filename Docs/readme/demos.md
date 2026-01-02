@@ -1,4 +1,4 @@
-## 🔬 Demos and Experiments
+## 🔬 Demos and Experiments<a name="demos"/>
 
 This repository includes the [JsonToLinq.Demo][demo-project] project with **working examples**.
 You are welcome to submit a PR with your own examples, bug reports, or new features.

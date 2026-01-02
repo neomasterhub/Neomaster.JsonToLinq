@@ -1,7 +1,8 @@
-## 🎛 Configuration
+## 🎛 Configuration<a name="configuration"/>
 
 You can define your own settings via `JsonLinq.Configure()`.
-To reset the configuration - necessary for testing - call `JsonLinq.ResetConfiguration()`.
+To reset the configuration, call `JsonLinq.ResetConfiguration()`.
+This is necessary for testing.
 
 ```csharp
 JsonLinq.Configure(options =>
@@ -13,7 +14,7 @@ JsonLinq.Configure(options =>
   options.FieldPropertyName = "🍁";
   options.ValuePropertyName = "🍬";
 
-  // Operator definitions and synonyms
+  // Operator definitions and aliases
   options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
     .AddAlias("does not contain", "!contains");
 
@@ -25,11 +26,10 @@ JsonLinq.Configure(options =>
 });
 ```
 
-The JSON filter structure settings seem interesting.
+The JSON filter structure settings are relevant.
 <br>For example, adding syntactic sugar:
-<br>`"Logic": "&&", "Rules": [...]` -> `"&&": [...]`
-<br>Or fixing the property order to support [TONL][tonl] filters.
-
-This may be implemented in future versions.
+<br>`"Logic": "&&", "Rules": [...]` → `"&&": [...]`
+<br>Or specifying the property order to support [TONL][tonl] filters.
+<br>This may be implemented in future versions.
 
 [tonl]: https://tonl.dev

@@ -6,7 +6,18 @@
 
 Use JSON to build LINQ expressions!
 
-## 🤩 Advantages
+## Table of Content
+
+1. [Advantages](#advantages)
+1. [Quick Start](#quick-start)
+1. [Operators](#operators)
+1. [Configuration](#configuration)
+1. [Testing](#testing)
+1. [Demos and Experiments](#demos)
+1. [Limitations](#limitations)
+1. [Potential](#potential)
+
+## 🤩 Advantages<a name="advantages"/>
 
 1. **Friendliness**
 
@@ -14,7 +25,7 @@ Use JSON to build LINQ expressions!
 
 1. **Broad applicability**
 
-   JSON-based filters can be used in tests, described in specifications, test plans, and other technical documentation, lowering the entry barrier for readers.
+   JSON-based filters can be used in tests, specifications, test plans, and other technical documentation, lowering the entry barrier for readers.
 
 1. **Universality**
 
@@ -30,22 +41,22 @@ Use JSON to build LINQ expressions!
 
 1. **Simplicity**
 
-   Install the NuGet package and pass JSON filters into `Where()` and other LINQ methods. This enables not a minimal subset, but the full filtering functionality.
+   Install the NuGet package and pass JSON filters into `Where()` and other filtering methods. This enables not a minimal subset, but the full functionality.
 
    **No need to:**
    
-   - Register anything in `Program.cs`
-   - Create schemas, separate DTOs, filters, resolvers, etc.
-   - Generate a schema for the client
+   - Register anything in `Program.cs`.
+   - Create schemas, framework-specific DTOs, filters, resolvers, etc.
+   - Generate a schema for the client.
    
    Everything required for filtering is already contained in the DTOs.
 
 [hot-chocolate]: https://chillicream.com/docs/hotchocolate
 
-## 🚀 Quick Start
+## 🚀 Quick Start<a name="quick-start"/>
 
 1. Install the [NuGet package][package].
-1. Pass JSON text into `Where()` or other filtering methods.
+1. Pass JSON filter into `Where()` or other filtering methods.
 1. To use with `IQueryable`, first create a predicate via `JsonLinq.ParseFilterExpression()`.
 
 ```csharp
@@ -85,10 +96,12 @@ var users = source.Where(u =>
 
 [package]: https://www.nuget.org/packages/JsonToLinq
 
-## 🛠️ Operators
+## 🛠️ Operators<a name="operators"/>
 
-1. Built-in operators and their handling logic are encapsulated in the `ExpressionOperatorMapper` class.
-1. The mapping between operators and their processing methods is available via the `ExpressionOperatorMapper.Pairs` property.
+1. Built-in operators and their handling logic
+   are encapsulated in the `ExpressionOperatorMapper` class.
+1. The mapping between operators and their processing methods
+   is available via the `ExpressionOperatorMapper.Pairs` property.
 1. Operator keys are case-sensitive.
 
 ### 📌 Built-in Operators
@@ -135,12 +148,12 @@ var users = source.Where(u =>
 
 #### The word `not`
 
-The word `not` is a synonym for `!`.
+The word `not` is alias for `!`.
 
 It improves readability but is not suitable for all operators:
 
 1. Operators expressed as words become even longer.
-1. Using not is not always grammatically correct.
+1. Using `not` is not always grammatically correct.
    - ❌ *not contains*
    - ✅ *does not contain*
 
@@ -212,7 +225,7 @@ new ExpressionOperatorMapper()
 .Add("y z", ...).WithNot() // "~ y z"
 ```
 
-#### SQL operators
+#### SQL Operators
 
 The library is built on `netstandard2.1` and **does not depend on EF** or any other ORM.
 To perform case-insensitive string comparisons, 
@@ -242,10 +255,11 @@ JsonLinq.Configure(options =>
 });
 ```
 
-## 🎛 Configuration
+## 🎛 Configuration<a name="configuration"/>
 
 You can define your own settings via `JsonLinq.Configure()`.
-To reset the configuration - necessary for testing - call `JsonLinq.ResetConfiguration()`.
+To reset the configuration, call `JsonLinq.ResetConfiguration()`.
+This is necessary for testing.
 
 ```csharp
 JsonLinq.Configure(options =>
@@ -257,7 +271,7 @@ JsonLinq.Configure(options =>
   options.FieldPropertyName = "🍁";
   options.ValuePropertyName = "🍬";
 
-  // Operator definitions and synonyms
+  // Operator definitions and aliases
   options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
     .AddAlias("does not contain", "!contains");
 
@@ -269,66 +283,32 @@ JsonLinq.Configure(options =>
 });
 ```
 
-The JSON filter structure settings seem interesting.
+The JSON filter structure settings are relevant.
 <br>For example, adding syntactic sugar:
-<br>`"Logic": "&&", "Rules": [...]` -> `"&&": [...]`
-<br>Or fixing the property order to support [TONL][tonl] filters.
-
-This may be implemented in future versions.
+<br>`"Logic": "&&", "Rules": [...]` → `"&&": [...]`
+<br>Or specifying the property order to support [TONL][tonl] filters.
+<br>This may be implemented in future versions.
 
 [tonl]: https://tonl.dev
 
-## 🧪 Testing
+## 🧪 Testing<a name="testing"/>
 
 Unit tests cover:
 
-1. Everything involved in parsing JSON filters
-1. Operators with custom expressions (`in`, `contains`, etc.)
-1. Configuration methods
-1. `IEnumerable` extension methods
+1. Everything involved in parsing JSON filters.
+1. Operators with custom expressions (`in`, `contains`, etc.).
+1. Configuration methods.
+1. `IEnumerable` extension methods.
 
 Full unit test coverage will be relevant after the library has been used in real projects.
 
-## 🔬 Demos and Experiments
-
-This repository includes the [JsonToLinq.Demo][demo-project] project with **working examples**.
-You are welcome to submit a PR with your own examples, bug reports, or new features.
-**To describe a filter, use the following notation:**
-
-### 🔤 Filter Notation
-
-#### Syntax
-```
-expr = logic[expr(, expr)*]
-```
-- `expr` - a single rule or a combination of rules
-- `logic` - an operator used to combine multiple rules, e.g. `&&`, `&`, `||`, `|`, or a custom one
-
-#### Examples
-1. `&&[x = null]`
-1. `&&[a < 0, b > 0]`
-1. `&&[x = null, ||[a < 0, b > 0]]`
-
-### 💻 Demo Project
-
-This project provides examples of working with **EF Core** and a **PostgreSQL database**.
-
-🧪 A real database is used instead of in-memory storage, ensuring clean and realistic experiments.
-
-➕ You can add your own examples with other databases or ORMs via a PR.
-
-▶️ Before running the demos, select the first menu item, **Prepare Data**, to apply migrations and populate the tables with test data.
-
-[demo-project]: https://github.com/neomasterhub/Neomaster.JsonToLinq/tree/master/Neomaster.JsonToLinq.Demo
-
-![Demo project](https://github.com/neomasterhub/Neomaster.JsonToLinq/blob/master/Docs/img/demo-project.png?raw=true "Demo project")
-
-## 🚧 Limitations
+## 🚧 Limitations<a name="limitations"/>
 
 1. **No IDE syntax highlighting for JSON filter arguments in LINQ methods**
 
    The library targets `netstandard2.1`, which does not support `StringSyntaxAttribute`.
-   Care is needed when writing filters manually. In practice, this is not critical, as filters typically come from client applications.
+   Care is needed when writing filters manually.
+   In practice, this is not critical, as filters typically come from client applications.
 
 1. **No IntelliSense for JSON filters**
    
@@ -336,29 +316,30 @@ This project provides examples of working with **EF Core** and a **PostgreSQL da
 
 1. **Aggregate fields are not supported**
 
-   For now, it is recommended to use **flat DTOs** or **database views**.
+   For now, it is recommended to use **flat DTOs** and **database views**.
 
    ```json
    {
      "Rules": [
-       { "Field": "✅ department_id", "Operator": "=", "Value": 123 },
-       { "Field": "❌ department.id", "Operator": "=", "Value": 123 }
+       { "Field": "✅ user_id", "Operator": "=", "Value": 123 },
+       { "Field": "❌ user.id", "Operator": "=", "Value": 123 }
      ]
    }
    ```
 
-   These features may be implemented in future versions...
+   These features may be implemented in future versions.
 
-## 🔮 Potential
+## 🔮 Potential<a name="potential"/>
 
-Filtering is just the first stage in the development of JSON-LINQ infrastructure.
+Filtering is just the first stage in the development of **JSON-LINQ infrastructure**.
 Possible future directions include:
 
-1. Data selection - JSON for `Select()`
+1. Data selecting - JSON for `Select()`
 1. Data grouping - JSON for `GroupBy()`
 1. GraphQL engine using standard JSON (as opposed to HotChocolate)
 1. Server-side equivalents of RxJS/NgRx for reactive data processing
-1. Interactive query-building studios - visual builders with *canvas*, *drag-and-drop*, *flowcharts*, *node-based UI*, *etc.*
+1. Interactive query-building studios - visual builders with
+   *canvas*, *drag-and-drop*, *flowcharts*, *node-based UI*, *etc.*
 1. Semantic search and NLP
 1. A new standard for data exchange between services
 

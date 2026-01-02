@@ -1,7 +1,7 @@
-## 🚀 Quick Start
+## 🚀 Quick Start<a name="quick-start"/>
 
 1. Install the [NuGet package][package].
-1. Pass JSON text into `Where()` or other filtering methods.
+1. Pass JSON filter into `Where()` or other filtering methods.
 1. To use with `IQueryable`, first create a predicate via `JsonLinq.ParseFilterExpression()`.
 
 ```csharp

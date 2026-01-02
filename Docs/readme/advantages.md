@@ -1,4 +1,4 @@
-## 🤩 Advantages
+## 🤩 Advantages<a name="advantages"/>
 
 1. **Friendliness**
 
@@ -6,7 +6,7 @@
 
 1. **Broad applicability**
 
-   JSON-based filters can be used in tests, described in specifications, test plans, and other technical documentation, lowering the entry barrier for readers.
+   JSON-based filters can be used in tests, specifications, test plans, and other technical documentation, lowering the entry barrier for readers.
 
 1. **Universality**
 
@@ -22,13 +22,13 @@
 
 1. **Simplicity**
 
-   Install the NuGet package and pass JSON filters into `Where()` and other LINQ methods. This enables not a minimal subset, but the full filtering functionality.
+   Install the NuGet package and pass JSON filters into `Where()` and other filtering methods. This enables not a minimal subset, but the full functionality.
 
    **No need to:**
    
-   - Register anything in `Program.cs`
-   - Create schemas, separate DTOs, filters, resolvers, etc.
-   - Generate a schema for the client
+   - Register anything in `Program.cs`.
+   - Create schemas, framework-specific DTOs, filters, resolvers, etc.
+   - Generate a schema for the client.
    
    Everything required for filtering is already contained in the DTOs.
 
