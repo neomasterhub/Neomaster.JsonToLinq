@@ -30,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{2C6AA8
 		Docs\readme\shields.md = Docs\readme\shields.md
 		Docs\readme\template-nuget.md = Docs\readme\template-nuget.md
 		Docs\readme\template.md = Docs\readme\template.md
+		Docs\readme\testing.md = Docs\readme\testing.md
 		Docs\readme\title.md = Docs\readme\title.md
 		Docs\readme\tldr.md = Docs\readme\tldr.md
 		Docs\readme\use-cases.md = Docs\readme\use-cases.md
