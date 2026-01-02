@@ -155,7 +155,7 @@ The word `not` is a synonym for `!`.
 It improves readability but is not suitable for all operators:
 
 1. Operators expressed as words become even longer.
-1. Using not is not always grammatically correct.
+1. Using `not` is not always grammatically correct.
    - ❌ *not contains*
    - ✅ *does not contain*
 
