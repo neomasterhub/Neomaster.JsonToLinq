@@ -20,6 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neomaster.JsonToLinq.Readme
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{2C6AA85D-CFF1-4563-AEA4-3780275EAAD9}"
 	ProjectSection(SolutionItems) = preProject
+		Docs\readme\advantages.md = Docs\readme\advantages.md
 		Docs\readme\demos.md = Docs\readme\demos.md
 		Docs\readme\habr.md = Docs\readme\habr.md
 		Docs\readme\logo.md = Docs\readme\logo.md
@@ -29,6 +30,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "readme", "readme", "{2C6AA8
 		Docs\readme\template-nuget.md = Docs\readme\template-nuget.md
 		Docs\readme\template.md = Docs\readme\template.md
 		Docs\readme\title.md = Docs\readme\title.md
+		Docs\readme\tldr.md = Docs\readme\tldr.md
 		Docs\readme\use-cases.md = Docs\readme\use-cases.md
 	EndProjectSection
 EndProject

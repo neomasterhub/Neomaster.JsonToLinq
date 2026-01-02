@@ -10,20 +10,18 @@ var readme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template.md"))
   .InsertReadmeTemplate("shields")
   .InsertReadmeTemplate("title")
   .InsertReadmeTemplate("tldr")
-  .InsertReadmeTemplate("quick-start")
-  .InsertReadmeTemplate("use-cases")
-  .InsertReadmeTemplate("operators")
-  .InsertReadmeTemplate("demos");
+  .InsertReadmeTemplate("advantages")
+  ;
 
 var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-nuget.md"))
   .InsertReadmeTemplate("title")
   .InsertReadmeTemplate("tldr")
+  .InsertReadmeTemplate("advantages")
   .InsertReadmeTemplate("quick-start")
-  .InsertReadmeTemplate("use-cases")
   .InsertReadmeTemplate("operators")
-  .InsertReadmeTemplate("demos")
   .Replace(@"`\|`", "`|`")
-  .Replace(@"`\|\|`", "`||`");
+  .Replace(@"`\|\|`", "`||`")
+  ;
 
 File.WriteAllText(SolutionInfo.ReadmePath, readme);
 File.WriteAllText(SolutionInfo.NugetReadmePath, nugetReadme);
