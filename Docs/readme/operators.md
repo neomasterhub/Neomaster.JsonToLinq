@@ -1,9 +1,10 @@
 ## 🛠️ Operators
 
-👓 Operators and their handling logic are encapsulated in class `ExpressionOperatorMapper`.
-The default operator mapping can be accessed via property `Pairs`.
+1. Built-in operators and their handling logic are encapsulated in the `ExpressionOperatorMapper` class.
+1. The mapping between operators and their processing methods is available via the `ExpressionOperatorMapper.Pairs` property.
+1. Operator keys are case-sensitive.
 
-### 📌 Default Operators
+### 📌 Built-in Operators
 
 | Operator               | Description                            |
 |------------------------|----------------------------------------|
@@ -45,9 +46,20 @@ The default operator mapping can be accessed via property `Pairs`.
 - `! as lower ends with`  
 - `! as upper ends with`  
 
-### 🔁 LINQ Translation
+#### The word `not`
 
-All default operators are designed to be translatable by LINQ providers
+The word `not` is a synonym for `!`.
+
+It improves readability but is not suitable for all operators:
+
+1. Operators expressed as words become even longer.
+1. Using not is not always grammatically correct.
+   - ❌ *not contains*
+   - ✅ *does not contain*
+
+### 🔁 SQL Translation
+
+All built-in operators are designed to be translatable by LINQ providers
 (e.g. Entity Framework Core) and do not rely on client-side evaluation.
 
 ### 🔠 Case Sensitivity and Normalization
@@ -96,7 +108,7 @@ JsonLinq.Configure(options =>
 
 #### Negated Operators
 
-Negated operators can be created without explicitly providing a key.
+Negated operators can be defined without explicitly providing a key.
 In this case, the key is automatically generated using the `NegatedKeyProvider`.
 This provider can be set via `SetNegatedKeyProvider()`.
 
@@ -111,4 +123,34 @@ new ExpressionOperatorMapper()
 .SetNegatedKeyProvider(key => (key.Contains(' ') ? "~ " : "~") + key)
 .Add("x", ...).WithNot()   // "~x"
 .Add("y z", ...).WithNot() // "~ y z"
+```
+
+#### SQL operators
+
+The library is built on `netstandard2.1` and **does not depend on EF** or any other ORM.
+To perform case-insensitive string comparisons, 
+use the built-in operators with `as lower` or `as upper`.
+They differ only in the preferred case for filter values.
+
+```csharp
+JsonLinq.Configure(options =>
+{
+  options.OperatorMapper = ExpressionOperatorMapper.OnDefault()
+    .Add("like", (element, pattern) =>
+      Expression.Call(
+        typeof(DbFunctionsExtensions).GetMethod(
+          nameof(DbFunctionsExtensions.Like),
+          [typeof(DbFunctions), typeof(string), typeof(string)]),
+        Expression.Constant(EF.Functions),
+        element,
+        pattern))
+    .Add("ilike", (element, pattern) =>
+      Expression.Call(
+        typeof(NpgsqlDbFunctionsExtensions).GetMethod(
+          nameof(NpgsqlDbFunctionsExtensions.ILike),
+          [typeof(DbFunctions), typeof(string), typeof(string)]),
+        Expression.Constant(EF.Functions),
+        element,
+        pattern));
+});
 ```

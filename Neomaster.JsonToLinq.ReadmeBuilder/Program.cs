@@ -12,6 +12,7 @@ var readme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template.md"))
   .InsertReadmeTemplate("tldr")
   .InsertReadmeTemplate("advantages")
   .InsertReadmeTemplate("quick-start")
+  .InsertReadmeTemplate("operators")
   ;
 
 var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-nuget.md"))
@@ -19,6 +20,7 @@ var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-
   .InsertReadmeTemplate("tldr")
   .InsertReadmeTemplate("advantages")
   .InsertReadmeTemplate("quick-start")
+  .InsertReadmeTemplate("operators")
   .Replace(@"`\|`", "`|`")
   .Replace(@"`\|\|`", "`||`")
   ;
