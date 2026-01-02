@@ -8,5 +8,6 @@
 {operators}
 {configuration}
 {testing}
+{demos}
 {limitations}
 {potential}
