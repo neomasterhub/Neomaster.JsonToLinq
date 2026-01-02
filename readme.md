@@ -22,7 +22,7 @@
 
 Use JSON to build LINQ expressions!
 
-## Table of Content
+## Table of Contents
 
 1. [Advantages](#advantages)
 1. [Quick Start](#quick-start)
@@ -164,7 +164,7 @@ var users = source.Where(u =>
 
 #### The word `not`
 
-The word `not` is alias for `!`.
+The word `not` is an alias for `!`.
 
 It improves readability but is not suitable for all operators:
 

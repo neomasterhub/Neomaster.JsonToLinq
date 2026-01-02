@@ -137,7 +137,7 @@ var users = source.Where(u =>
 
 #### The word `not`
 
-The word `not` is alias for `!`.
+The word `not` is an alias for `!`.
 
 It improves readability but is not suitable for all operators:
 
