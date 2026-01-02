@@ -2,7 +2,7 @@
 {shields}
 {title}
 {tldr}
-{table-of-content}
+{table-of-contents}
 {advantages}
 {quick-start}
 {operators}

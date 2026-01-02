@@ -22,7 +22,7 @@
 
 Use JSON to build LINQ expressions!
 
-## Table of Content
+## Table of Contents
 
 1. [Advantages](#advantages)
 1. [Quick Start](#quick-start)
