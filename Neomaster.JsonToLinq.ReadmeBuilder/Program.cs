@@ -35,9 +35,10 @@ var nugetReadme = File.ReadAllText(Path.Combine(readmeTemplateFolder, "template-
   .InsertReadmeTemplate("potential")
   .Replace(@"`\|`", "`|`")
   .Replace(@"`\|\|`", "`||`")
+  .Replace(@"<br>", string.Empty)
   ;
 
-nugetReadme = Regex.Replace(nugetReadme, @"<a name.*$", string.Empty, RegexOptions.Multiline);
+nugetReadme = Regex.Replace(nugetReadme, @"(<a name.*$)|(<br>)|(!\[.*)", string.Empty, RegexOptions.Multiline);
 
 File.WriteAllText(SolutionInfo.ReadmePath, readme);
 File.WriteAllText(SolutionInfo.NugetReadmePath, nugetReadme);

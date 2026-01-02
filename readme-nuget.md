@@ -273,10 +273,10 @@ JsonLinq.Configure(options =>
 ```
 
 The JSON filter structure settings are relevant.
-<br>For example, adding syntactic sugar:
-<br>`"Logic": "&&", "Rules": [...]` → `"&&": [...]`
-<br>Or specifying the property order to support [TONL][tonl] filters.
-<br>This may be implemented in future versions.
+For example, adding syntactic sugar:
+`"Logic": "&&", "Rules": [...]` → `"&&": [...]`
+Or specifying the property order to support [TONL][tonl] filters.
+This may be implemented in future versions.
 
 [tonl]: https://tonl.dev
 
@@ -323,7 +323,7 @@ This project provides examples of working with **EF Core** and a **PostgreSQL da
 
 [demo-project]: https://github.com/neomasterhub/Neomaster.JsonToLinq/tree/master/Neomaster.JsonToLinq.Demo
 
-![Demo project](https://github.com/neomasterhub/Neomaster.JsonToLinq/blob/master/Docs/img/demo-project.png?raw=true "Demo project")
+
 
 ## 🚧 Limitations
 
