@@ -1,6 +1,6 @@
 ## 🔬 Demos and Experiments
 
-This repository contains a project with **working examples**.
+This repository includes the [JsonToLinq.Demo][demo-project] project with **working examples**.
 You are welcome to submit a PR with your own examples, bug reports, or new features.
 **To describe a filter, use the following notation:**
 
@@ -27,3 +27,7 @@ This project provides examples of working with **EF Core** and a **PostgreSQL da
 ➕ You can add your own examples with other databases or ORMs via a PR.
 
 ▶️ Before running the demos, select the first menu item, **Prepare Data**, to apply migrations and populate the tables with test data.
+
+[demo-project]: https://github.com/neomasterhub/Neomaster.JsonToLinq/tree/master/Neomaster.JsonToLinq.Demo
+
+![Demo project](https://github.com/neomasterhub/Neomaster.JsonToLinq/blob/master/Docs/img/demo-project.png?raw=true "Demo project")
